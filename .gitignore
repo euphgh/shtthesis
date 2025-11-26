@@ -21,7 +21,6 @@ _minted*/
 *-converted-to.pdf
 *.thm
 *.lof
-reference.bib
 build*/
 release*/
 

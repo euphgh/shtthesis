@@ -1,0 +1,97 @@
+\documentclass[master]{shtthesis}
+\shtsetup{
+  degree-name = {工学硕士},
+  degree-name* = {Master~of~Science~in~Engineering},
+  secret-level = {白给},
+  title = {多FPGA硬件仿真系统的设计与实现},
+  title* = {Design and Implementation of a Multi-FPGA Hardware Replay Simulation System},
+  keywords = {上海科技大学，学位论文，\LaTeX{}},
+  keywords* = {ShanghaiTech~University, Thesis, \LaTeX{}},
+  author = {李润东},
+  author* = {Li~Rundong},
+  institution = {上海科技大学信息科学与技术学院},
+  institution* = {School~of~Information~Science~and~Technology\\%
+                  ShanghaiTech~University},
+  supervisor = {范睿~副教授},
+  supervisor* = {Professor~Fan~Rui},
+  supervisor-institution = {上海科技大学信息科学与技术学院},
+  discipline-level-1 = {计算机科学与技术},
+  discipline-level-1* = {Computer~Science~and~Technology},
+  bib-resource = {reference.bib},
+}
+
+% `latex' and `shell' environments are adapted from `thuthesis'
+\usepackage{listings}
+\newcommand\prompt{\textup{\$}}
+\lstdefinestyle{lstStyleBase}{%
+  basicstyle=\small\ttfamily,
+  aboveskip=\medskipamount,
+  belowskip=\medskipamount,
+  lineskip=0pt,
+  boxpos=c,
+  showlines=false,
+  extendedchars=true,
+  upquote=true,
+  tabsize=2,
+  showtabs=false,
+  showspaces=false,
+  showstringspaces=false,
+  numbers=none,
+  linewidth=\linewidth,
+  xleftmargin=4pt,
+  xrightmargin=0pt,
+  resetmargins=false,
+  breaklines=true,
+  breakatwhitespace=false,
+  breakindent=0pt,
+  breakautoindent=true,
+  columns=flexible,
+  keepspaces=true,
+  gobble=0,
+  framesep=3pt,
+  rulesep=1pt,
+  framerule=1pt,
+  frame=l,
+  rulecolor=\color{ShtRed},
+  backgroundcolor=\color{gray!5},
+  stringstyle=\color{green!40!black!100},
+  keywordstyle=\bfseries\color{blue!50!black},
+  commentstyle=\slshape\color{black!60},
+  escapeinside={`'},
+}
+\lstdefinestyle{lstStyleShell}{%
+  style=lstStyleBase,
+  language=bash}
+\lstdefinestyle{lstStyleLaTeX}{%
+  style=lstStyleBase,
+  language=[LaTeX]TeX}
+\lstnewenvironment{latex}{\lstset{style=lstStyleLaTeX}}{}
+\lstnewenvironment{shell}{\lstset{style=lstStyleShell}}{}
+
+\usepackage{hologo}
+\ifluahbtex
+  \usepackage{emoji}
+\else
+  \providecommand{\emoji}[1]{ \fbox{\emph{#1}} }
+\fi
+
+\usepackage{subcaption}
+\usepackage{ctable}
+\usepackage[list=off]{bicaption}
+\captionsetup[figure][bi-second]{name=Figure}
+\captionsetup[table][bi-second]{name=Table}
+
+\makeatletter
+  \def\ifundergraduate{\ifsht@undergraduate}
+  \def\ifgraduate{\ifsht@graduate}
+\makeatother
+
+\begin{document}
+
+\mainmatter
+
+\input{src/proposal/main.tex}
+
+\makebiblio
+
+\end{document}

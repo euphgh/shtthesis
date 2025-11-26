@@ -1,0 +1,423 @@
+# academic
+@inproceedings{whangbo_fireaxe_2024,
+  address    = {Buenos Aires, Argentina},
+  title      = {{FireAxe}: {Partitioned} {FPGA}-{Accelerated} {Simulation} of {Large}-{Scale} {RTL} {Designs}},
+  copyright  = {https://doi.org/10.15223/policy-029},
+  isbn       = {979-8-3503-2658-1},
+  shorttitle = {{FireAxe}},
+  url        = {https://ieeexplore.ieee.org/document/10609699/},
+  doi        = {10.1109/ISCA59077.2024.00044},
+  abstract   = {Pre-silicon validation and end-to-end system evaluation are integral parts of hardware development as they provide architects with insights about the complex interactions between various hardware components, system software, and application code. Although this process can be accelerated using FPGAs as a simulation host, existing platforms fall short when the resource requirements of a custom hardware design exceed a single FPGA. We present FireAxe, an open-source FPGA-accelerated RTL simulation platform that supports push-button user-guided partitioning across multiple FPGAs, using a compiler called FireRipper. Given a partition point, FireRipper automatically maps a monolithic RTL design onto multiple FPGAs while providing hardware designers quick feedback about the partition interface and expected simulation performance. Furthermore, FireRipper enables users to choose between an exact-mode which provides cycle-exact results with RTL-level fidelity, or a fast-mode that improves simulation rate while sacrificing fidelity only at the partition boundary. Built on FireSim, FireAxe preserves the ability to elastically scale simulations from on-premises FPGAs to cloud FPGAs. For example, pulling out a core from a systemon-chip (SoC) onto a separate FPGA, we achieve simulation rates of 1.6 MHz using on-premises FPGAs connected by direct-attach cables and 1 MHz on AWS F1 FPGAs using peer-to-peer PCIe. To show FireAxe’s ability to enable pre-silicon performance validation at unprecedented scale, we show several case studies. First, we replicate full-stack system-level effects such as latency spikes from garbage collection in a Golang application on an SoC containing 4 out-of-order (OoO) cores. We also boot Linux on, to our knowledge, the largest OoO core ever cycle-exactly simulated in academia. Lastly, we simulate a system-on-chip containing 24 OoO cores mapped onto five datacenter-class FPGAs. We discover an RTL bug when trying to run Linux user-space applications that did not appear with less substantial software stacks. This was discovered in less than 2 hours using FireAxe and would have taken weeks in a commercial software RTL simulator.},
+  language   = {en},
+  urldate    = {2025-10-10},
+  booktitle  = {2024 {ACM}/{IEEE} 51st {Annual} {International} {Symposium} on {Computer} {Architecture} ({ISCA})},
+  publisher  = {IEEE},
+  author     = {Whangbo, Joonho and Lim, Edwin and Zhang, Chengyi Lux and Anderson, Kevin and Gonzalez, Abraham and Gupta, Raghav and Krishnakumar, Nivedha and Karandikar, Sagar and Nikolić, Borivoje and Shao, Yakun Sophia and Asanović, Krste},
+  month      = jun,
+  year       = {2024},
+  pages      = {501--515},
+}
+
+
+@inproceedings{chirkov_smappic_2023,
+  address    = {Vancouver BC Canada},
+  title      = {{SMAPPIC}: {Scalable} {Multi}-{FPGA} {Architecture} {Prototype} {Platform} in the {Cloud}},
+  isbn       = {978-1-4503-9916-6},
+  shorttitle = {{SMAPPIC}},
+  url        = {https://dl.acm.org/doi/10.1145/3575693.3575753},
+  doi        = {10.1145/3575693.3575753},
+  abstract   = {Traditionally, architecture prototypes are built on top of FPGA infrastructure, with two associated problems. First, very large FPGAs are prohibitively expensive for most people and institutions. Second, the burden of FPGA development adds to an already uneasy life of researchers, especially those who focus on software. Large designs that do not fit into a single FPGA exacerbate these issues even more. This work presents SMAPPIC – the first open-source prototype platform for shared memory multi-die architectures on cloud FPGAs. SMAPPIC leverages the OpenPiton/BYOC infrastructure and AWS F1 instances to make FPGA-based prototypes of System-on-Chips, processor cores, accelerators, cache subsystems, etc., cheap, scalable, and straightforward. SMAPPIC enables many use cases that are not possible or significantly more complicated in existing software and FPGA tools. This work has the potential to accelerate the rate of innovation in computer engineering fields in the nearest future.},
+  language   = {en},
+  urldate    = {2025-10-10},
+  booktitle  = {Proceedings of the 28th {ACM} {International} {Conference} on {Architectural} {Support} for {Programming} {Languages} and {Operating} {Systems}, {Volume} 2},
+  publisher  = {ACM},
+  author     = {Chirkov, Grigory and Wentzlaff, David},
+  month      = jan,
+  year       = {2023},
+  pages      = {733--746}
+}
+
+
+@inproceedings{zha_hetero-vital_2021,
+  address    = {Valencia, Spain},
+  title      = {Hetero-{ViTAL}: {A} {Virtualization} {Stack} for {Heterogeneous} {FPGA} {Clusters}},
+  copyright  = {https://ieeexplore.ieee.org/Xplorehelp/downloads/license-information/IEEE.html},
+  isbn       = {978-1-6654-3333-4},
+  shorttitle = {Hetero-{ViTAL}},
+  url        = {https://ieeexplore.ieee.org/document/9499729/},
+  doi        = {10.1109/ISCA52012.2021.00044},
+  abstract   = {With ﬁeld-programmable gate arrays (FPGAs) being widely deployed into data centers, an efﬁcient virtualization support is required to fully unleash the potential of cloud FPGAs. Nevertheless, existing FPGA virtualization solutions only support a homogeneous FPGA cluster comprising identical FPGA devices. Representative work such as ViTAL provides sufﬁcient system support for scale-out acceleration and improves the overall resource utilization through a ﬁne-grained spatial sharing. While these existing solutions (including ViTAL) can efﬁciently virtualize a homogeneous cluster, it is hard to extend them to virtualizing a heterogeneous cluster which comprises multiple types of FPGAs. We expect the future cloud FPGAs are likely to be more heterogeneous due to hardware rolling upgrade.},
+  language   = {en},
+  urldate    = {2025-10-11},
+  booktitle  = {2021 {ACM}/{IEEE} 48th {Annual} {International} {Symposium} on {Computer} {Architecture} ({ISCA})},
+  publisher  = {IEEE},
+  author     = {Zha, Yue and Li, Jing},
+  month      = jun,
+  year       = {2021},
+  pages      = {470--483}
+}
+
+# industry
+@misc{synopsys_haps,
+  title      = {Introducing {ZeBu}-200 \& {HAPS}-200: {Faster} {Hardware} {Verification} {\textbar} {Synopsys}},
+  shorttitle = {Introducing {ZeBu}-200 \& {HAPS}-200},
+  url        = {https://www.synopsys.com/blogs/chip-design/introducing-zebu-200-haps-200.html},
+  abstract   = {Discover faster, more flexible hardware-assisted verification (HAV) with Synopsys ZeBu-200 and HAPS-200. Enhance your chip verification process today. Learn more!},
+  language   = {en},
+  urldate    = {2025-10-13},
+}
+
+% partitioning
+@inproceedings{ababei_multi-objective_2002,
+  title     = {Multi-objective circuit partitioning for cutsize and path-based delay minimization},
+  url       = {https://ieeexplore.ieee.org/document/1167532/},
+  doi       = {10.1109/ICCAD.2002.1167532},
+  abstract  = {In this paper we present multi-objective hMetis partitioning for simultaneous cutsize and circuit delay minimization. We change the partitioning process itself by introducing a new objective function that incorporates a truly path-based delay component for the most critical paths. To avoid semi-critical paths from becoming critical, the traditional slack-based delay component is also included in the cost function. The proposed timing driven partitioning algorithm is built on top of the hMetis algorithm, which is very efficient. Simulations results show that 14\% average delay improvement can be obtained. Smooth trade-off between cutsize and delay is possible in our algorithm.},
+  language  = {en-US},
+  urldate   = {2025-10-09},
+  booktitle = {{IEEE}/{ACM} {International} {Conference} on {Computer} {Aided} {Design}, 2002. {ICCAD} 2002.},
+  author    = {Ababei, C. and Navaratnasothie, S. and Bazargan, K. and Karypis, G.},
+  month     = nov,
+  year      = {2002},
+  note      = {ISSN: 1092-3152},
+  keywords  = {Circuit simulation, Complexity theory, Cost function, Delay, Integrated circuit interconnections, Minimization, Partitioning algorithms, Time to market, Timing, Wire},
+  pages     = {181--185}
+}
+
+@inproceedings{tritonpart_2023,
+  title     = {An {Open}-{Source} {Constraints}-{Driven} {General} {Partitioning} {Multi}-{Tool} for {VLSI} {Physical} {Design}},
+  url       = {https://ieeexplore.ieee.org/document/10323975/},
+  doi       = {10.1109/ICCAD57390.2023.10323975},
+  abstract  = {With the increasing complexity of IC products, large-scale designs must be efficiently partitioned into multiple blocks, tiles, or devices for concurrent backend place-and-route (P\&R) implementation. State-of-the-art partitioners focus on balanced min-cut without considering constraints such as timing or heterogeneity of resource types. They are thus increasingly unsuitable for current physical design requirements. We introduce TritonPart, the first open-source, constraints-driven partitioning tool for VLSI physical design. TritonPart employs efficient algorithms to handle constraints, including multi-dimensional balance, embedding, and timing constraints. Our experimental work affirms its benefits. For standard min-cut partitioning, TritonPart outperforms hMETIS [17], with improvements of up to 20\% on some benchmarks. For embedding-aware partitioning, TritonPart effectively leverages the embeddings generated by SpecPart [4] and improves upon it by 2\%. For timing-aware partitioning, TritonPart significantly reduces the number of cuts on timing-critical paths and prevents timing-noncritical paths from becoming critical ( 21X, 119X reduction relative to hMETIS and KaHyPar [31], respectively).},
+  language  = {en-US},
+  urldate   = {2025-10-08},
+  booktitle = {2023 {IEEE}/{ACM} {International} {Conference} on {Computer} {Aided} {Design} ({ICCAD})},
+  author    = {Bustany, Ismail and Gasparyan, Grigor and Kahng, Andrew B. and Koutis, Ioannis and Pramanik, Bodhisatta and Wang, Zhiang},
+  month     = oct,
+  year      = {2023},
+  note      = {ISSN: 1558-2434},
+  keywords  = {Benchmark testing, Complexity theory, Design automation, embedding, hypergraph partitioning, multi-dimensional weights, Partitioning algorithms, Standards, timing, Timing, Very large scale integration, VLSI constraints},
+  pages     = {1--9}
+}
+
+@article{kernighan_efficient_1970,
+  title    = {An efficient heuristic procedure for partitioning graphs},
+  volume   = {49},
+  issn     = {0005-8580},
+  url      = {https://ieeexplore.ieee.org/document/6771089/},
+  doi      = {10.1002/j.1538-7305.1970.tb01770.x},
+  abstract = {We consider the problem of partitioning the nodes of a graph with costs on its edges into subsets of given sizes so as to minimize the sum of the costs on all edges cut. This problem arises in several physical situations — for example, in assigning the components of electronic circuits to circuit boards to minimize the number of connections between boards. This paper presents a heuristic method for partitioning arbitrary graphs which is both effective in finding optimal partitions, and fast enough to be practical in solving large problems.},
+  language = {en-US},
+  number   = {2},
+  urldate  = {2025-10-13},
+  journal  = {The Bell System Technical Journal},
+  author   = {Kernighan, B. W. and Lin, S.},
+  month    = feb,
+  year     = {1970},
+  pages    = {291--307}
+}
+
+@inproceedings{breuer_class_1988,
+  title     = {A class of min-cut placement algorithms},
+  isbn      = {978-0-89791-267-9},
+  url       = {https://dl.acm.org/doi/10.1145/62882.62896},
+  doi       = {10.1145/62882.62896},
+  language  = {en},
+  urldate   = {2025-10-11},
+  booktitle = {Papers on {Twenty}-five years of electronic design automation},
+  publisher = {ACM},
+  author    = {Breuer, M. A.},
+  month     = jun,
+  year      = {1988},
+  pages     = {142--148}
+}
+
+@article{dunlop_procedure_1985,
+  title    = {A {Procedure} for {Placement} of {Standard}-{Cell} {VLSI} {Circuits}},
+  volume   = {4},
+  issn     = {1937-4151},
+  url      = {https://ieeexplore.ieee.org/document/1270101/},
+  doi      = {10.1109/TCAD.1985.1270101},
+  abstract = {This paper describes a method of automatic placement for standard cells (polycells) that yields areas within 10-20 percent of careful hand placements. The method is based on graph partitioning to identify groups of modules that ought to be close to each other, and a technique for properly accounting for external connections at each level of partitioning. The placement procedure is in production use as part of an automated design system; it has been used in the design of more than 40 chips, in CMOS, NMOS, and bipolar technologies.},
+  number   = {1},
+  urldate  = {2025-10-11},
+  journal  = {IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems},
+  author   = {Dunlop, A.E. and Kernighan, B.W.},
+  month    = jan,
+  year     = {1985},
+  keywords = {Computer networks, Computer science, Design automation, Very large scale integration, Books, Circuits and Systems Society, Computer industry, Design methodology, Time of arrival estimation},
+  pages    = {92--98}
+}
+
+
+@article{alpert_recent_1995,
+  title      = {Recent directions in netlist partitioning: a survey},
+  volume     = {19},
+  issn       = {01679260},
+  shorttitle = {Recent directions in netlist partitioning},
+  url        = {https://linkinghub.elsevier.com/retrieve/pii/0167926095000084},
+  doi        = {10.1016/0167-9260(95)00008-4},
+  abstract   = {This survey describes research directions in netlist partitioning during the past two decades in terms of both problem formulations and solution approaches. We discuss the traditional min-cut and ratio cut bipartitioning formulations along with multi-way extensions and newer problem formulations, e.g., constraint-driven partitioning (for FPGAs) and partitioning with module replication. Our discussion of solution approaches is divided into four major categories: move-based approaches, geometric representations, combinatorial formulations, and clustering approaches. Move-based algorithms iteratively explore the space of feasible solutions according to a neighborhood operator; such methods include greed, iterative exchange, simulated annealing, and evolutionary algorithms. Algorithms based on geometric representations embed the circuit netlist in some type of "geometry", e.g., a 1-dimensional linear ordering or a multidimensional vector space; the embeddings are commonly constructed using spectral methods. Combinatorial methods transform the partitioning problem into another type of optimization, e.g., based on network flows or mathematical programming. Finally, clustering algorithms merge the netlist modules into many small clusters; we discuss methods which combine clustering with existing algorithms (e.g., two-phase partitioning). The paper concludes with a discussion of benchmarking in the VLSI CAD partitioning literature and some perspectives on more promising directions for future work.},
+  language   = {en},
+  number     = {1-2},
+  urldate    = {2025-10-13},
+  journal    = {Integration},
+  author     = {Alpert, Charles J and Kahng, Andrew B},
+  month      = aug,
+  year       = {1995},
+  pages      = {1--81}
+}
+
+@inproceedings{karypis_multilevel_1999,
+  address   = {New Orleans Louisiana USA},
+  title     = {Multilevel \textit{k} -way hypergraph partitioning},
+  isbn      = {978-1-58113-109-3},
+  url       = {https://dl.acm.org/doi/10.1145/309847.309954},
+  doi       = {10.1145/309847.309954},
+  language  = {en},
+  urldate   = {2025-10-13},
+  booktitle = {Proceedings of the 36th annual {ACM}/{IEEE} {Design} {Automation} {Conference}},
+  publisher = {ACM},
+  author    = {Karypis, George and Kumar, Vipin},
+  month     = jun,
+  year      = {1999},
+  pages     = {343--348}
+}
+
+@article{farooq_prototyping_2023,
+  author     = {Farooq, Umer and Baig, Imran and Bhatti, Muhammad Khurram and Mehrez, Habib and Kumar, Arun and Gupta, Manoj},
+  title      = {Prototyping using multi-FPGA platform: A novel and complete flow},
+  year       = {2023},
+  issue_date = {Feb 2023},
+  publisher  = {Elsevier Science Publishers B. V.},
+  address    = {NLD},
+  volume     = {96},
+  number     = {C},
+  issn       = {0141-9331},
+  url        = {https://doi.org/10.1016/j.micpro.2022.104751},
+  doi        = {10.1016/j.micpro.2022.104751},
+  journal    = {Microprocess. Microsyst.},
+  month      = feb,
+  numpages   = {14},
+  keywords   = {Multi FPGA-based prototyping, Exploration environment, Partitioning, Inter-FPGA routing, Back-end flow}
+}
+
+@article{li_mapart_2024,
+  title      = {{MaPart}: {An} {Efficient} {Multi}-{FPGA} {System}-{Aware} {Hypergraph} {Partitioning} {Framework}},
+  volume     = {43},
+  issn       = {1937-4151},
+  shorttitle = {{MaPart}},
+  url        = {https://ieeexplore.ieee.org/document/10507195/},
+  doi        = {10.1109/TCAD.2024.3392758},
+  abstract   = {Multi-FPGA systems (MFSs) are increasingly important in addressing VLSI circuit emulation and prototyping. However, the limitations of I/O resources between Field programmable gate arrays (FPGAs) have driven the usage of TDM and FPGA-hop technologies, which complicate the partitioning problem. Consequently, designing a suitable partitioning process for MFS has emerged as a critical research question affecting overall system performance. This article proposes MaPart, a novel hypergraph partitioning framework, which aims to minimize the maximum path delay in MFS. MaPart combines binary search with a nonhop partitioner, TopoPart+, to minimize the maximum hop count during the partitioning process. Compared to previous nonhop partitioner, TopoPart+ provides enhanced problem-solving capabilities and achieves a remarkable 96\% reduction in cut-size. Furthermore, the framework incorporates two successive local refinement algorithms that optimize the time-division multiplexing ratio, reduce total hop count, and alleviate congestion on critical paths. Additionally, MaPart includes a system-level router based on layered graphs, enabling flexible control of the hop count based on the timing criticality of each path. Experimental results demonstrate that the proposed framework achieves a significant 37\% reduction in delay compared to baseline algorithms when evaluated using publicly available benchmarks.},
+  number     = {10},
+  urldate    = {2025-10-13},
+  journal    = {IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems},
+  author     = {Li, Benzheng and Bi, Shunyang and You, Hailong and Qi, Zhongdong and Guo, Guangxin and Sun, Richard and Zhang, Yuming},
+  month      = oct,
+  year       = {2024},
+  keywords   = {Delays, Field programmable gate array (FPGA), Field programmable gate arrays, hardware emulation, Logic gates, partitioning, Partitioning algorithms, routing, Routing, Time division multiplexing, timing driven, Wires},
+  pages      = {3212--3225},
+}
+
+% encapsulation
+@inproceedings{libdn_2009,
+  author    = {Vijayaraghavan, Muralidaran and Arvind},
+  booktitle = {2009 7th IEEE/ACM International Conference on Formal Methods and Models for Co-Design},
+  title     = {Bounded Dataflow Networks and Latency-Insensitive circuits},
+  year      = {2009},
+  volume    = {},
+  number    = {},
+  pages     = {171-180},
+  keywords  = {Field programmable gate arrays;Timing;Delay;Clocks;Wire;Sequential circuits;Registers;Computer networks;Computer science;Artificial intelligence},
+  doi       = {10.1109/MEMCOD.2009.5185393}
+}
+
+@inproceedings{babb_virtual_1993,
+  title      = {Virtual wires: overcoming pin limitations in {FPGA}-based logic emulators},
+  shorttitle = {Virtual wires},
+  url        = {https://ieeexplore.ieee.org/document/279469/},
+  doi        = {10.1109/FPGA.1993.279469},
+  abstract   = {Existing FPGA-based logic emulators only use a fraction of potential communication bandwidth because they dedicate each FPGA pin (physical wire) to a single emulated signal (logical wire). Virtual wires overcome pin limitations by intelligently multiplexing each physical wire among multiple logical wires and pipelining these connections at the maximum clocking frequency of the FPGA. A virtual wire represents a connection from a logical output on one FPGA to a logical input on another FPGA. Virtual wires not only increase usable bandwidth, but also relax the absolute limits imposed on gate utilization. The resulting improvement in bandwidth reduces the need for global interconnect, allowing effective use of low dimension inter-chip connections (such as nearest-neighbor). Nearest-neighbor topologies, coupled with the ability of virtual wires to overlap communication with computation, can even improve emulation speeds. The authors present the concept of virtual wires and describe their first implementation, a 'softwire' compiler which utilizes static routing and relies on minimal hardware support. Results from compiling netlists for the 18 K gate Sparcle microprocessor and the 86 K gate Alewife Communications and Cache Controller indicate that virtual wires can increase FPGA gate utilization beyond 80 percent without a significant slowdown in emulation speed.{\textless}{\textgreater}},
+  language   = {en-US},
+  urldate    = {2025-10-13},
+  booktitle  = {[1993] {Proceedings} {IEEE} {Workshop} on {FPGAs} for {Custom} {Computing} {Machines}},
+  author     = {Babb, J. and Tessier, R. and Agarwal, A.},
+  month      = apr,
+  year       = {1993},
+  keywords   = {Bandwidth, Clocks, Emulation, Field programmable gate arrays, Frequency, Logic, Pipeline processing, Routing, Topology, Wires},
+  pages      = {142--151}
+}
+
+
+
+
+% communication
+@manual{xilinx_gty_ug578,
+  title        = {UltraScale Architecture GTY Transceivers User Guide (UG578)},
+  organization = {Xilinx Inc.},
+  year         = {2023},
+  url          = {https://www.xilinx.com/support/documentation/user_guides/ug578-ultrascale-gty-transceivers.pdf}
+}
+
+@manual{intel_htile_phy,
+  title        = {Stratix 10 Transceiver PHY User Guide},
+  organization = {Intel Corporation},
+  year         = {2022},
+  url          = {https://www.intel.com/content/www/us/en/docs/programmable/683082}
+}
+
+@inproceedings{hoe2007fpga_partitioning,
+  author    = {J. C. Hoe and C. Weinhardt and S. Goldstein},
+  title     = {Automatic partitioning and pipelining for FPGA-based computing},
+  booktitle = {Proc. ACM/SIGDA International Symposium on Field Programmable Gate Arrays (FPGA)},
+  pages     = {259--268},
+  year      = {2007}
+}
+
+@article{andrews2016_fpga_mpsoc,
+  author  = {D. Andrews and J. Kim and T. G. Lenart and W. B. Culbertson},
+  title   = {An Overview of FPGA-Based Multiprocessor Systems},
+  journal = {IEEE Transactions on Computers},
+  volume  = {65},
+  number  = {3},
+  pages   = {561--574},
+  year    = {2016},
+  doi     = {10.1109/TC.2015.2435773}
+}
+
+
+@inproceedings{chen_remu_2023,
+	address = {Washington, DC, USA},
+	title = {{REMU}: {Enabling} {Cost}-{Effective} {Checkpointing} and {Deterministic} {Replay} in {FPGA}-based {Emulation}},
+	copyright = {https://doi.org/10.15223/policy-029},
+	isbn = {979-8-3503-4291-8},
+	shorttitle = {{REMU}},
+	url = {https://ieeexplore.ieee.org/document/10360968/},
+	doi = {10.1109/ICCD58817.2023.00014},
+	abstract = {Left-shifted integration and evaluation of hardware and software design are increasingly crucial in pre-silicon validation of processor-centric computing systems. With the inherent cycle-accurate deployment of target processor design in programmable logic fabrics, FPGA-based emulation has attracted academic attention for early-stage performance evaluations. However, it is difﬁcult to conduct system-level inspection and debugging within open-source academic FPGA-based emulation frameworks due to the limited HW-SW visibility at run-time.},
+	language = {en},
+	urldate = {2025-09-28},
+	booktitle = {2023 {IEEE} 41st {International} {Conference} on {Computer} {Design} ({ICCD})},
+	publisher = {IEEE},
+	author = {Chen, Yuxiao and Chang, Yisong and Zhang, Ke and Chen, Mingyu and Bao, Yungang},
+	month = nov,
+	year = {2023},
+	pages = {21--29},
+	file = {PDF:/home/hgh/Zotero/storage/UTWEWI8T/Chen et al. - 2023 - REMU Enabling Cost-Effective Checkpointing and Deterministic Replay in FPGA-based Emulation.pdf:application/pdf},
+}
+
+@mastersthesis{zhu_duohuafen_2024,
+  author  = {Zhu, Guiyuan},
+  title   = {Cross-Node Deployment of Digital Logic Design for FPGA Cloud},
+  school  = {ShanghaiTech University},
+  year    = {2024},
+  address = {Shanghai, China},
+  type    = {Master's thesis}
+}
+
+// 软件仿真仅有 kHz–百 kHz，FPGA 可达数十 MHz
+@inproceedings{fujimoto_parallel_1990,
+  title        = {Parallel discrete event simulation},
+  author       = {Fujimoto, Richard M.},
+  booktitle    = {Proceedings of the 1990 Winter Simulation Conference},
+  pages        = {19--28},
+  year         = {1990},
+  organization = {IEEE}
+}
+
+@inproceedings{nikolic_hardcloud_2019,
+  title     = {HardCloud: FPGA-Accelerated Distributed Simulation},
+  author    = {Nikolic, Borislav and Gaillardon, Pierre-Emmanuel},
+  booktitle = {Proceedings of the IEEE/ACM International Conference on Computer-Aided Design (ICCAD)},
+  pages     = {1--8},
+  year      = {2019}
+}
+
+@inproceedings{chung_firesim_2018,
+  title     = {FireSim: FPGA-Accelerated Cycle-Exact Scale-Out System Simulation in the Cloud},
+  author    = {Chung, Yunsup and Kim, Donggyu and Schmidt, Colin and others},
+  booktitle = {Proceedings of the 45th International Symposium on Computer Architecture (ISCA)},
+  pages     = {29--42},
+  year      = {2018}
+}
+
+// FPGA 原型验证速度提升
+@inproceedings{lattice_fpga_2013,
+  title     = {FPGA-based prototyping for SoC verification},
+  author    = {Lattice Semiconductor},
+  booktitle = {Design Automation Conference Tutorial},
+  year      = {2013}
+}
+
+@article{kuon_measuring_2007,
+  title   = {Measuring and mitigating FPGA routing overhead},
+  author  = {Kuon, Ian and Rose, Jonathan},
+  journal = {IEEE Transactions on Very Large Scale Integration (VLSI) Systems},
+  volume  = {15},
+  number  = {10},
+  pages   = {1173--1186},
+  year    = {2007}
+}
+
+// 摩尔定律失效导致复杂性增长
+
+@book{hennessy2019caqa,
+  title     = {Computer Architecture: A Quantitative Approach},
+  author    = {Hennessy, John L and Patterson, David A},
+  edition   = {6},
+  year      = {2019},
+  publisher = {Morgan Kaufmann}
+}
+
+@misc{itrs2015,
+  title        = {{International Technology Roadmap for Semiconductors (ITRS) 2.0}},
+  year         = {2015},
+  howpublished = {\url{https://itrs2.net}}
+}
+
+@inproceedings{esmaeilzadeh2011darksilicon,
+  title     = {Dark silicon and the end of multicore scaling},
+  author    = {Esmaeilzadeh, Hadi and others},
+  booktitle = {Proceedings of the 38th Annual International Symposium on Computer Architecture},
+  year      = {2011}
+}
+
+@article{taylor2017end,
+  title   = {The end of Dennard scaling and the end of multicore scaling},
+  author  = {Taylor, Michael Bedford},
+  journal = {IEEE Micro},
+  volume  = {37},
+  number  = {1},
+  year    = {2017}
+}
+
+// 设计规模扩大导致流片风险与成本上升
+
+@article{mutschler2016costofscaling,
+  title   = {The Cost of Scaling},
+  author  = {Mutschler, Ann},
+  journal = {Semiconductor Engineering},
+  year    = {2016}
+}
+
+@inproceedings{chin2012socverification,
+  title     = {SoC verification challenges: complexity, cost, and risk},
+  author    = {Chin, Shih-Lien C and others},
+  booktitle = {Proceedings of the 49th Annual Design Automation Conference},
+  year      = {2012}
+}
+
+@article{binkert2011role,
+  title   = {The role of software in hardware design},
+  author  = {Binkert, Nathan and others},
+  journal = {IEEE Micro},
+  year    = {2011}
+}
+
+@article{noufal2018systemlevel,
+  title   = {System-level verification challenges in complex SoCs},
+  author  = {Noufal, T.M. and others},
+  journal = {IEEE Design \& Test},
+  year    = {2018}
+}
