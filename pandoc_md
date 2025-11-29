@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# pandoc中文Markdown编译脚本
+
+# 设置默认值
+INPUT_FILE="$1"
+OUTPUT_FORMAT="${2:-pdf}"  # 默认输出PDF
+
+# 检查输入文件
+if [ -z "$INPUT_FILE" ]; then
+    echo "错误: 请指定输入文件"
+    echo "用法: $0 input.md [pdf|html|docx|epub]"
+    exit 1
+fi
+
+if [ ! -f "$INPUT_FILE" ]; then
+    echo "错误: 文件 '$INPUT_FILE' 不存在"
+    exit 1
+fi
+
+# 获取文件名（不含扩展名）
+BASENAME=$(basename "$INPUT_FILE" .md)
+OUTPUT_FILE="${BASENAME}.${OUTPUT_FORMAT}"
+
+# 根据输出格式设置pandoc参数
+case $OUTPUT_FORMAT in
+    pdf)
+        # PDF输出 - 使用xelatex支持中文
+        pandoc "$INPUT_FILE" -o "$OUTPUT_FILE" \
+            --pdf-engine=xelatex \
+            -V mainfont="Noto Serif CJK SC" \
+            -V CJKmainfont="Noto Serif CJK SC" \
+            -V geometry:margin=1in \
+            --template=eisvogel
+        ;;
+    html)
+        # HTML输出
+        pandoc "$INPUT_FILE" -o "$OUTPUT_FILE" \
+            --standalone \
+            --css=github-pandoc.css
+        ;;
+    docx)
+        # Word文档输出
+        pandoc "$INPUT_FILE" -o "$OUTPUT_FILE"
+        ;;
+    epub)
+        # EPUB电子书输出
+        pandoc "$INPUT_FILE" -o "$OUTPUT_FILE" \
+            --toc \
+            --toc-depth=2
+        ;;
+    *)
+        echo "错误: 不支持的输出格式 '$OUTPUT_FORMAT'"
+        echo "支持的格式: pdf, html, docx, epub"
+        exit 1
+        ;;
+esac
+
+# 检查是否成功
+if [ $? -eq 0 ]; then
+    echo "成功: 已生成 '$OUTPUT_FILE'"
+else
+    echo "错误: 编译失败"
+    exit 1
+fi
