@@ -8,6 +8,47 @@
 
 在电路和超图建模方面，首先使用开源综合工具Yosys解析RTL，将其初步转化为Yosys的中间表示，这时后期处理的基础。下一步是关键的预处理，这是实现自适应粒度的核心。如表所示，该算法会递归地遍历模块实例化树，计算每个模块的资源使用情况，并根据预设的资源阈值决定是否展开子模块。该方式能够动态地调整划分的粒度，在使得每个模块的资源使用更加均衡的同时，加快了划分算法的运行速度，不需要展开整个设计，减小了超图划分算法的输入规模。这种自适应的粒度调整机制，使得我们的划分框架能够灵活地适应不同的电路划分需求，在效率和性能之间进行良好的折中。
 
+\begin{algorithm}[hbt!]
+    \caption{Resource-Aware Adaptive Granularity Partitioning}
+    \label{alg:adaptive_partitioning}
+    \begin{algorithmic}[1]
+        % 输入输出定义
+        \Require Top-level design hierarchy tree $T$, Resource threshold vector $R_{th}$ (LUTs, FFs, BRAMs)
+        \Ensure Set of partitionable units $S$
+        
+        % 初始化
+        \State $S \gets \emptyset$
+        \State $Q \gets \text{Queue}()$
+        \State $Q.\text{enqueue}(T.\text{root})$ \Comment{Start from the top-level module}
+        
+        % 主循环
+        \While{$Q \text{ is not empty}$}
+        \State $m \gets Q.\text{dequeue}()$
+        \State $usage \gets \text{EstimateResource}(m)$ \Comment{Evaluate resource consumption}
+        
+        % 判断逻辑
+        \If{$usage \le R_{th}$}
+        \State $S \gets S \cup \{m\}$ \Comment{Module fits, preserve hierarchy}
+        \Else
+        \If{$\text{IsLeaf}(m)$}
+        \State \Comment{Large leaf node (e.g., huge netlist block)}
+        \State $sub\_blocks \gets \text{NetlistDecomposition}(m)$
+        \State $S \gets S \cup sub\_blocks$
+        \Else
+        \State \Comment{Module too large, flatten one level}
+        \State $children \gets \text{GetChildInstances}(m)$
+        \For{$child \in children$}
+        \State $Q.\text{enqueue}(child)$
+        \EndFor
+        \State \text{HandleGlueLogic}(m) \Comment{Add top-level glue logic to S}
+        \EndIf
+        \EndIf
+        \EndWhile
+        
+        \Return $S$
+    \end{algorithmic}
+\end{algorithm}
+
 完成自适应预处理后，需要将设计转化为超图并调用超图划分算法。当输入是一个网表的时候，设计中的每一个实例化都是一个标准库单元，每条连接都是1位长度。每个标准库单元被抽象成为权重相同的超图节点，连接被抽象成为权重相同的超边。对于大规模的设计，转化出来的超图也会十分庞大，这对解析器和算法都提出了性能上的挑战。但这依然存在压缩的空间，因此REMUS提出了模块级的抽象策略。对于层次结构设计，仅扫描顶层的所有实例化和连接。按照连接关系，将所有实例和所有端口转化成顶点，所有的连接抽象成一条超边。此时连接不再以位为单位，而是以线网作为单位。为了实现更好的划分平衡度和真实性，我们为每一个顶点和超边赋予权重。目前顶点的权重是基于综合工具的资源评估结果，超边的权重则是基于连接的位宽。这种赋值权重的方式能很好的适配TritonPart的超图划分算法，节点的权重类型可以是一个向量，用于描述该模块所消耗的各种资源的数目。这能够使得划分结果从不同的资源占用的角度看都足够均衡。
 
 \subsection{LI-TDM与扫描链统一的集成控制器的实现}
