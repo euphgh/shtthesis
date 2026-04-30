@@ -42,5 +42,6 @@
       ]
     },
   ],
-  "latex-workshop.latex.recipe.default": "latexmk (xelatex)"
+  "latex-workshop.latex.recipe.default": "latexmk (xelatex)",
+  "svg.preview.background": "transparent"
 }

@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+
+\begin{document}
+
+% -----------------------------------------------------------------------------
+% Resource-Aware Adaptive Partitioning Algorithm
+% -----------------------------------------------------------------------------
+
+\begin{algorithm}[hbt!]
+    \caption{Resource-Aware Adaptive Granularity Partitioning}
+    \label{alg:adaptive_partitioning}
+    \begin{algorithmic}[1]
+        % 输入输出定义
+        \Require Top-level design hierarchy tree $T$, Resource threshold vector $R_{th}$ (LUTs, FFs, BRAMs)
+        \Ensure Set of partitionable units $S$
+
+        % 初始化
+        \State $S \gets \emptyset$
+        \State $Q \gets \text{Queue}()$
+        \State $Q.\text{enqueue}(T.\text{root})$ \Comment{Start from the top-level module}
+
+        % 主循环
+        \While{$Q \text{ is not empty}$}
+        \State $m \gets Q.\text{dequeue}()$
+        \State $usage \gets \text{EstimateResource}(m)$ \Comment{Evaluate resource consumption}
+
+        % 判断逻辑
+        \If{$usage \le R_{th}$}
+        \State $S \gets S \cup \{m\}$ \Comment{Module fits, preserve hierarchy}
+        \Else
+        \If{$\text{IsLeaf}(m)$}
+        \State \Comment{Large leaf node (e.g., huge netlist block)}
+        \State $sub\_blocks \gets \text{NetlistDecomposition}(m)$
+        \State $S \gets S \cup sub\_blocks$
+        \Else
+        \State \Comment{Module too large, flatten one level}
+        \State $children \gets \text{GetChildInstances}(m)$
+        \For{$child \in children$}
+        \State $Q.\text{enqueue}(child)$
+        \EndFor
+        \State \text{HandleGlueLogic}(m) \Comment{Add top-level glue logic to S}
+        \EndIf
+        \EndIf
+        \EndWhile
+
+        \Return $S$
+    \end{algorithmic}
+\end{algorithm}
+
+\end{document}
