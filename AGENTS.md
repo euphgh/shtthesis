@@ -19,8 +19,8 @@
 | `src/proposal/outline.md` | 开题报告大纲与写作材料 |
 | `src/midterm/outline.md` | 中期报告大纲；目前仓库中尚无独立的`midterm.tex`编译入口 |
 | `reference.bib` | BibLaTeX文献数据库 |
-| `figure/` | 论文插图与架构图（包括部分SVG原稿） |
-| `pptx/` | 答辩PPTX及可复用PNG插图资产 |
+| `figure/` | 论文与PPT共用的插图资产，统一存放独立PNG及其他图像（包括部分SVG原稿） |
+| `pptx/` | 答辩PPTX文件；共用插图从`figure/`复用 |
 | `shtthesis.cls`、`shtthesis-user-guide.tex` | 模板类文件和用户手册，非日常论文正文 |
 | `Makefile`、`.vscode/settings.json` | 本地编译命令和编辑器配置 |
 | `.github/workflows/build.yaml` | GitHub Actions构建配置，当前主要编译模板用户手册 |
@@ -68,7 +68,8 @@ make clean
 
 ## PPT与图像资产
 
-- `pptx/`已存放英文答辩页面和FPGA芯片、波形显示器、数据库快照等PNG资产。延续已采用的**16:9、白底、红色标题、橙色分隔线、低文字密度**的学术展示风格。
+- `pptx/`存放英文答辩PPTX；FPGA芯片、波形显示器、数据库快照等独立PNG资产统一存放在`figure/`，供论文与PPT复用，不在`pptx/`保留重复副本。PPTX内部嵌入的图片保留，以保证演示文稿可独立打开。
+- 延续已采用的**16:9、白底、红色标题、橙色分隔线、低文字密度**的学术展示风格。
 - PPT中的标题、说明、图形框、箭头等尽量保持可编辑；复杂插图可作为独立的高分辨率图片嵌入。已有插图应优先复用，避免同一种符号在不同页出现不一致的样式。
 - 不把生成的整页图片当成唯一PPT内容来代替可编辑文件；交付PPTX时尽量同时检查渲染预览、文字溢出、图片透明背景、对齐与长宽比。
 - 图表和测试结果只能依据已有数据绘制；示意图应与实际系统架构或明确的规划相符。
