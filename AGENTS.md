@@ -5,7 +5,7 @@
 ## 项目定位
 
 - 本仓库基于上海科技大学的非官方LaTeX学位论文模板`shtthesis`，同时承载多FPGA硬件仿真课题的开题报告、中期报告大纲、参考文献、插图和答辩PPT。
-- 课题系统名为**SMART**（Scalable Multi-FPGA Automated Replayable Technology）。研究重点不是单纯构建可运行的多FPGA原型验证系统，而是在多FPGA环境中实现**周期精确运行、全局一致暂停、分布式Scan Dump状态提取、状态恢复与确定性重放**。
+- 后续论文使用的系统名称为**REMUS**（Replay EMUlation System），承接课题组已有的单FPGA系统REMU（Replay EMUlation）；**SMART**（Scalable Multi-FPGA Automated Replayable Technology）是开题阶段的工作名称。研究重点不是单纯构建可运行的多FPGA原型验证系统，而是在多FPGA环境中实现**周期精确运行、全局一致暂停、分布式Scan Dump状态提取、状态恢复与确定性重放**。
 - 自动化电路划分（包括自适应粒度、资源平衡、Cut Size和PPD）与可扩展的Fabric/Runtime是支撑上述目标的关键技术。
 - `src/midterm/outline.md`包含阶段性成果、正在进行的工作和后续计划；**大纲中的计划、目标及待验证项目不能直接当作已实现或已测得的结果**。
 
@@ -18,6 +18,7 @@
 | `src/proposal/*.tex` | 开题报告研究背景、目标、技术路线、实验与进度的正文 |
 | `src/proposal/outline.md` | 开题报告大纲与写作材料 |
 | `src/midterm/outline.md` | 中期报告大纲；目前仓库中尚无独立的`midterm.tex`编译入口 |
+| `docs/thesis-writing-guidelines.md` | 中期与最终学位论文共用的研究定位、命名和写作指导 |
 | `reference.bib` | BibLaTeX文献数据库 |
 | `figure/` | 论文与PPT共用的插图资产，统一存放独立PNG及其他图像（包括部分SVG原稿） |
 | `pptx/` | 答辩PPTX文件；共用插图从`figure/`复用 |
@@ -30,6 +31,8 @@
 注意：`proposal.tex`的`\shtsetup`中仍保留部分模板示例字段；不要把这些字段当作已核实的作者、导师、关键词等正式信息，也不要在无明确要求时擅自改写。
 
 ## 学术内容与写作约定
+
+- **长期写作指导**：编写或修改中期报告、学位论文及相关答辩材料前，先阅读[学位论文研究定位与写作指导](docs/thesis-writing-guidelines.md)，遵循其中关于REMUS命名、系统与学术贡献区分、术语引入位置及成果组织的约定。不要未经要求批量替换开题阶段已有的SMART名称。
 
 - **区分问题、方法、证据与计划**：例如资源平衡、Cut Size、PPD、自动化和划分粒度选择是划分问题的约束或评价维度；自适应粒度划分是所采用的方法。已完成内容、初步结果和后续目标必须分开描述。
 - **突出课题差异**：多FPGA原型验证主要解决大规模设计的部署与运行；本课题进一步关注同一DUT逻辑周期的一致暂停、跨FPGA全局状态聚合、Snapshot/Restore、Replay及波形观测。
