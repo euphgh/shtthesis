@@ -19,6 +19,8 @@
 | `src/proposal/outline.md` | 开题报告大纲与写作材料 |
 | `src/midterm/outline.md` | 中期报告大纲；目前仓库中尚无独立的`midterm.tex`编译入口 |
 | `docs/thesis-writing-guidelines.md` | 中期与最终学位论文共用的研究定位、命名和写作指导 |
+| `docs/midterm-presentation-outline.md` | 中期答辩逐页内容、图示与工作状态规划 |
+| `docs/presentation-style-guide.md` | 中期及最终答辩共用的颜色、Arial字体、布局和质量规范 |
 | `reference.bib` | BibLaTeX文献数据库 |
 | `figure/` | 论文与PPT共用的插图资产，统一存放独立PNG及其他图像（包括部分SVG原稿） |
 | `pptx/` | 答辩PPTX文件；共用插图从`figure/`复用 |
@@ -71,8 +73,10 @@ make clean
 
 ## PPT与图像资产
 
+- 制作中期PPT前先阅读`docs/midterm-presentation-outline.md`（逐页内容）和`docs/presentation-style-guide.md`（统一视觉规范）；两者分别管理内容与样式，不以开题PPT的旧红橙配色覆盖新规范。
+
 - `pptx/`存放英文答辩PPTX；FPGA芯片、波形显示器、数据库快照等独立PNG资产统一存放在`figure/`，供论文与PPT复用，不在`pptx/`保留重复副本。PPTX内部嵌入的图片保留，以保证演示文稿可独立打开。
-- 延续已采用的**16:9、白底、红色标题、橙色分隔线、低文字密度**的学术展示风格。
+- **新PPT统一风格**：延续开题的16:9、白底和低文字密度，但新主题采用**深蓝标题（#183B56）、青绿分隔线（#008C95）、琥珀橙强调（#DF973E）**。英文标题、正文和图表标签统一Arial；详见`docs/presentation-style-guide.md`。
 - PPT中的标题、说明、图形框、箭头等尽量保持可编辑；复杂插图可作为独立的高分辨率图片嵌入。已有插图应优先复用，避免同一种符号在不同页出现不一致的样式。
 - 不把生成的整页图片当成唯一PPT内容来代替可编辑文件；交付PPTX时尽量同时检查渲染预览、文字溢出、图片透明背景、对齐与长宽比。
 - 图表和测试结果只能依据已有数据绘制；示意图应与实际系统架构或明确的规划相符。
