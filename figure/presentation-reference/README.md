@@ -10,6 +10,14 @@ These five generated 16:9 images are visual references for rebuilding editable P
 | 4 | `midterm-background-04.png` | Research Gap and Goal |
 | 5 | `midterm-background-05.png` | REMUS: Overall Workflow and Mid-Term Scope |
 
-Design references: `docs/presentation-style-guide.md` and `docs/midterm-presentation-outline.md`.
+All five images are 1672×941 pixels (approximately 16:9). Preserve the original files as visual references.
 
-Preserve the exact 16:9 reference images. The current repository file `figure/可回放多FPGA仿真系统研究概览.png` is an older combined reference montage and can be removed after adding these five images. Do not remove the individual component icons (e.g., `figure/FPGA.png`, `figure/Waveform.png`, `figure/database.png`).
+Read the [style guide](../../docs/presentation-style-guide.md),
+[slide outline](../../docs/midterm-presentation-outline.md), and
+[OfficeCLI implementation plan](../../docs/pptx-implementation-plan.md) before rebuilding them.
+Reusable illustrations are indexed in [ppt-assets](../ppt-assets/README.md).
+
+The references are at the `Designed` stage. Their checkmarks and capability claims are not evidence of completed experiments; in particular, slides 4–5 need explicit research-goal and implementation-status labels.
+Future rendered previews belong in `figure/presentation-preview/`, separate from these references.
+
+The older combined montage is no longer present in the current tree. Keep the existing individual component icons (`figure/FPGA.png`, `figure/Waveform.png`, and `figure/database.png`) for historical material and reuse.

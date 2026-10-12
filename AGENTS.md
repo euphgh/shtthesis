@@ -21,6 +21,7 @@
 | `docs/thesis-writing-guidelines.md` | 中期与最终学位论文共用的研究定位、命名和写作指导 |
 | `docs/midterm-presentation-outline.md` | 中期答辩逐页内容、图示与工作状态规划 |
 | `docs/presentation-style-guide.md` | 中期及最终答辩共用的颜色、Arial字体、布局和质量规范 |
+| `docs/pptx-implementation-plan.md` | 设计参考与资产索引、前五页OfficeCLI实施计划和验证边界 |
 | `reference.bib` | BibLaTeX文献数据库 |
 | `figure/` | 论文与PPT共用的插图资产，统一存放独立PNG及其他图像（包括部分SVG原稿） |
 | `pptx/` | 答辩PPTX文件；共用插图从`figure/`复用 |
@@ -74,6 +75,7 @@ make clean
 ## PPT与图像资产
 
 - 制作中期PPT前先阅读`docs/midterm-presentation-outline.md`（逐页内容）和`docs/presentation-style-guide.md`（统一视觉规范）；两者分别管理内容与样式，不以开题PPT的旧红橙配色覆盖新规范。
+- 将设计图转为可编辑PPTX时，接着阅读[OfficeCLI制作计划](docs/pptx-implementation-plan.md)，按页复用`figure/ppt-assets/`中的组件，并将渲染预览与`figure/presentation-reference/`中的原始设计参考分开。
 
 - `pptx/`存放英文答辩PPTX；FPGA芯片、波形显示器、数据库快照等独立PNG资产统一存放在`figure/`，供论文与PPT复用，不在`pptx/`保留重复副本。PPTX内部嵌入的图片保留，以保证演示文稿可独立打开。
 - **新PPT统一风格**：延续开题的16:9、白底和低文字密度，但新主题采用**深蓝标题（#183B56）、青绿分隔线（#008C95）、琥珀橙强调（#DF973E）**。英文标题、正文和图表标签统一Arial；详见`docs/presentation-style-guide.md`。

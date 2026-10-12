@@ -55,7 +55,8 @@
 
 ## 制作状态与内容依赖
 
-- 第1–2页：已有早期PPTX草稿，尚需依据新的深蓝+青绿+琥珀橙风格统一重制。
-- 第3–5页：已有设计思路，待按新风格制作。
+- 第1–2页：已有早期PPTX草稿和新主题设计参考图；新主题状态为`Designed`，尚需制作可编辑PPTX。
+- 第3–5页：已有新主题设计参考图，状态为`Designed`，尚未制作可编辑PPTX。
 - 第6–15页：大纲已确定，图示细节应与真实实现和实验材料对应。
 - 建议维护状态：`Planned`、`Designed`、`PPTX Created`、`Reviewed`。完成状态需随提交更新，避免以规划代替实际进度。
+- 制作入口：[OfficeCLI实施计划](pptx-implementation-plan.md)、[设计参考索引](../figure/presentation-reference/README.md)、[组件资产索引](../figure/ppt-assets/README.md)。
