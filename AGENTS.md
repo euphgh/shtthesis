@@ -76,6 +76,7 @@ make clean
 
 - 制作中期PPT前先阅读`docs/midterm-presentation-outline.md`（逐页内容）和`docs/presentation-style-guide.md`（统一视觉规范）；两者分别管理内容与样式，不以开题PPT的旧红橙配色覆盖新规范。
 - 将设计图转为可编辑PPTX时，接着阅读[OfficeCLI制作计划](docs/pptx-implementation-plan.md)，按页复用`figure/ppt-assets/`中的组件，并将渲染预览与`figure/presentation-reference/`中的原始设计参考分开。
+- **OfficeCLI执行与预览**：所有OfficeCLI命令（包括读取、编辑、校验和截图）必须在沙箱外运行；由脚本调用时，脚本也应在沙箱外执行。PPTX预览统一使用`officecli view <file> screenshot --page N -o <output.png>`导出PNG。当前沙箱外PATH若找不到命令，使用`/home/hgh/.local/bin/officecli`。导出与交付前执行`save`或`close`，预览PNG存放于`figure/presentation-preview/`。
 
 - `pptx/`存放英文答辩PPTX；FPGA芯片、波形显示器、数据库快照等独立PNG资产统一存放在`figure/`，供论文与PPT复用，不在`pptx/`保留重复副本。PPTX内部嵌入的图片保留，以保证演示文稿可独立打开。
 - **新PPT统一风格**：延续开题的16:9、白底和低文字密度，但新主题采用**深蓝标题（#183B56）、青绿分隔线（#008C95）、琥珀橙强调（#DF973E）**。英文标题、正文和图表标签统一Arial；详见`docs/presentation-style-guide.md`。

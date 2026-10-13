@@ -1,9 +1,17 @@
 # REMUS中期PPT制作计划：从设计图到可编辑PPTX
 
 本文面向后续制作PPT的作者与agent，记录材料入口、前五页的元素拆分和OfficeCLI实施步骤。
-当前阶段为**材料整理与制作准备**，尚未生成新主题的正式PPTX。
+当前已完成**第1–3页新主题PPTX及OfficeCLI PNG检查**；第4–5页仍待制作。
+第1页文件：[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_1.pptx)、
+[PNG预览](../figure/presentation-preview/midterm-background-01.png)。
+第2页文件：[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_2.pptx)、
+[PNG预览](../figure/presentation-preview/midterm-background-02.png)。
+第3页文件：[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_3.pptx)、
+[PNG预览](../figure/presentation-preview/midterm-background-03.png)。
+已通过OpenXML校验、OfficeCLI问题检查、字体/对象边界检查和独立PNG视觉复核；
+尚未在PowerPoint桌面端复核。
 
-2026-10-12核对环境：REMUS工作树为`fix-shell`，`thesis/`为独立的`main`工作树。
+2026-10-13核对环境：REMUS工作树为`fix-shell`，`thesis/`为独立的`main`工作树。
 下文的目录均相对`thesis/`，命令也在该目录执行。
 
 ## 1. 材料分工与阅读顺序
@@ -66,6 +74,8 @@
 ### 页面与组件
 
 以OfficeCLI的`create`、`set`、`add`和`batch`为主实现，不直接批量拼接底层XML。
+所有OfficeCLI命令必须在沙箱外运行，包括读取、编辑、校验和截图；由脚本调用时，脚本也应在沙箱外执行。
+PPTX预览统一使用OfficeCLI直接导出PNG。
 创建空白宽屏幻灯片，显式设置主题字体和每个文本对象的Arial字体、字号及颜色。
 标题先采用视觉规范建议的28–32pt，正文17–20pt；这些项目约定优先于通用skill中的字号与字体建议。
 
@@ -86,24 +96,52 @@
 多FPGA拓扑用重复的芯片图标与可编辑连线组合，不截取整页设计图中的局部文字。
 正式标签全部用文本框；图标内部已有的“FPGA”是栅格文字，不能宣称可编辑或保证其字体文件为Arial。
 
-### 生成源与输出约定（待实施）
+### 生成源与输出约定
 
-建议制作开始时增加一个小型Python脚本，仅负责计算坐标、生成JSON命令和调用OfficeCLI，
-不引入第二套PPTX生成库。使用参数数组调用子进程，避免英文内容中的引号、美元符号或换行被shell解释。
+生成脚本负责计算坐标、生成JSON命令和调用OfficeCLI，不引入第二套PPTX生成库。
+使用参数数组调用子进程，避免英文内容中的引号、美元符号或换行被shell解释。
 
 | 拟用路径 | 用途 |
 | --- | --- |
-| `scripts/build_midterm_pptx.py` | 公共组件、逐页布局、OfficeCLI调用；尚未创建 |
+| `scripts/build_midterm_pptx.py` | 已实现第1–3页的形状、文字、PNG裁剪、箭头、讲稿及OfficeCLI调用；通过`--slide`选择页面 |
 | `build/pptx/` | 批量命令、临时PPTX和检查日志；沿用现有忽略规则 |
+| `pptx/midterm/REMUS_Background_Slide_1.pptx` | 已生成的独立第1页；33个可编辑形状（含文字）和4个图片对象 |
+| `pptx/midterm/REMUS_Background_Slide_2.pptx` | 已生成的独立第2页；65个可编辑形状（含文字）、9条连接线和5个图片对象 |
+| `pptx/midterm/REMUS_Background_Slide_3.pptx` | 已生成的独立第3页；四象限面板、文字、周期脉冲、同步与状态汇聚连线可编辑，12个图片对象复用组件资产 |
 | `pptx/midterm/REMUS_Midterm_Background.pptx` | 第一批五页PPTX；尚未创建 |
-| `figure/presentation-preview/midterm-background-01.png`至`05.png` | 新PPTX的渲染预览；与原始设计参考分开，尚未创建 |
+| `figure/presentation-preview/midterm-background-01.png`至`05.png` | 第1–3页预览已生成；第4–5页待制作，与原始设计参考分开 |
 
 生成过程先输出到`build/pptx/`，通过检查后再交付到`pptx/midterm/`。
 历史SMART草稿与开题PPT保留。手工调整若需长期保留，应同步回生成源，避免下次生成时丢失。
 
+在沙箱外、`thesis/`目录执行以下命令可分别重建第1–3页到`build/pptx/`，并完成结构检查与PNG导出：
+
+```bash
+/usr/bin/python3 scripts/build_midterm_pptx.py
+/usr/bin/python3 scripts/build_midterm_pptx.py --slide 2
+/usr/bin/python3 scripts/build_midterm_pptx.py --slide 3
+```
+
+脚本只使用Python标准库和OfficeCLI；PNG保留原始像素，通过PPT内部裁剪去除透明留白。
+当前第1页使用32pt主标题、22pt分区标题、18pt正文与10pt页码，文字和主题字体均为Arial。
+第2页使用30pt主标题、22pt分区标题、18pt正文、16pt流程节点、15pt范围说明、
+14pt图标标签与10pt页码；全页均为Arial。左栏使用琥珀色减号表示常见局限，
+右栏明确标注`Target capabilities`；勾号与闭环流程表示研究目标，不代表REMUS功能全部验证。
+PNG复核已修正Restore节点换行与底部标签位置；`validate`通过，`view issues`为0。
+源PNG和历史PPTX的内容哈希与Git版本一致，第1页交付文件未改动。
+
+第3页使用30pt主标题、20pt两行分区标题、17pt正文、13–14pt图标标签、18pt总结与10pt页码，
+全部可编辑文字为Arial。正文展开Partition Propagation Depth（PPD），用跨FPGA通信延迟描述
+周期执行约束，避免在背景页额外引入LI-TDM缩写。全局暂停图标与三片FPGA、同步连线及
+共同DUT周期标签组合；局部状态经可编辑连线汇聚为Global Snapshot。三片FPGA为概念示意，
+不代表已完成三FPGA实验。已修正文本溢出提示和状态汇聚连线，`validate`通过、
+`view issues`为0，独立PNG视觉复核通过；第1–2页交付文件及全部原始PNG/PPTX哈希未变。
+
 ### 命令骨架
 
 以下是后续制作的基本调用形式；逐页JSON命令需要由生成脚本提供，并非当前已有文件。
+以下命令均在沙箱外执行。当前沙箱外的PATH未包含`/home/hgh/.local/bin`，
+可先执行`export PATH="/home/hgh/.local/bin:$PATH"`，或使用OfficeCLI的绝对路径。
 
 ```bash
 mkdir -p build/pptx
@@ -123,7 +161,25 @@ officecli view build/pptx/background.pptx text
 ```
 
 属性不确定时先用`officecli help pptx shape|picture|connector|theme`分别查询。
-OfficeCLI可能在resident进程中保留修改，外部渲染器读取文件前必须`save`或`close`。
+OfficeCLI可能在resident进程中保留修改，导出PNG和交付PPTX前必须`save`或`close`。
+
+### 导出PNG预览
+
+使用`view screenshot`逐页导出，输出仍放在`figure/`下。以第一批五页文件为例：
+
+```bash
+# 在沙箱外、thesis/目录执行；输入为已生成的五页PPTX。
+mkdir -p figure/presentation-preview
+officecli save pptx/midterm/REMUS_Midterm_Background.pptx
+for page in 1 2 3 4 5; do
+  officecli view pptx/midterm/REMUS_Midterm_Background.pptx screenshot \
+    --page "$page" \
+    -o "figure/presentation-preview/midterm-background-0${page}.png" || break
+done
+```
+
+导出后检查每张PNG是否存在、可解码且对应正确页码，再逐页检查布局。
+不得用先前留下的同名PNG代替本次成功导出的证据。
 
 ## 6. 当前工具验证与制作前待办
 
@@ -131,16 +187,17 @@ OfficeCLI可能在resident进程中保留修改，外部渲染器读取文件前
 
 | 检查 | 结果与边界 |
 | --- | --- |
-| OfficeCLI | 已安装，版本1.0.155 |
+| OfficeCLI | 初次组件检查为1.0.155；本次沙箱外PNG导出实测版本为1.0.156 |
 | Arial | `fc-match Arial`命中Arial字体 |
 | 现有PPT读取 | 已读取19页开题PPT的结构及旧中期第1页对象；旧中期页面包含可编辑文字和内嵌图片 |
 | 组件写入 | 在`/tmp`创建一页组件探针，包含主题设置、两个文本形状、一张PNG、绑定连接线和notes；不是设计样张或正式交付 |
 | 结构检查 | 组件探针的`validate`通过，`view issues`为0；这不能证明实际版面无问题 |
 | HTML导出 | 旧中期第1页和组件探针已成功导出HTML；未完成浏览器视觉验收 |
-| 内置截图 | 未通过：先遇到浏览器用户目录创建失败，改用临时XDG目录后遇到`setsockopt: Operation not permitted` |
-| LibreOffice备选渲染 | 可执行程序存在；本次转换尝试退出失败，未验证为可用备选路径 |
+| 沙箱外PNG导出 | 已通过：使用`/home/hgh/.local/bin/officecli view … screenshot --page 1 -o …`导出旧中期第1页，得到可解码的1280×720 PNG，并已查看图像 |
 
-制作第一张样张时，先解决本地浏览器截图或LibreOffice渲染环境。
+PPTX预览采用沙箱外运行OfficeCLI的截图路径。此前沙箱内曾出现浏览器用户目录创建失败及
+`setsockopt: Operation not permitted`；沙箱外调用已成功，无须继续排查沙箱内截图。
+本次验证复用旧中期草稿，仅证明导出路径可用，不代表新主题页面完成或旧稿已通过内容与版式验收。
 HTML文本检查可以辅助排查，但不能代替对重叠、箭头方向、透明边缘和视觉对齐的检查。
 当前不需要重新安装OfficeCLI，也没有修改系统字体或全局工具配置。
 
