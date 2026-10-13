@@ -58,7 +58,8 @@
 - 第1页：新主题状态为`PPTX Created`；[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_1.pptx)和[PNG预览](../figure/presentation-preview/midterm-background-01.png)已生成，OfficeCLI结构检查与独立PNG视觉检查通过，PowerPoint桌面端复核待完成。
 - 第2页：新主题状态为`PPTX Created`；[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_2.pptx)和[PNG预览](../figure/presentation-preview/midterm-background-02.png)已生成，OfficeCLI结构检查与独立PNG视觉检查通过，PowerPoint桌面端复核待完成。右栏以`Target capabilities`标明研究目标。
 - 第3页：新主题状态为`PPTX Created`；[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_3.pptx)和[PNG预览](../figure/presentation-preview/midterm-background-03.png)已生成，OfficeCLI结构检查与独立PNG视觉检查通过，PowerPoint桌面端复核待完成。四象限表达研究挑战，正文已展开PPD全称并说明全局暂停的共同逻辑周期与链路排空要求。
-- 第4–5页：已有新主题设计参考图，状态为`Designed`，尚未制作可编辑PPTX。
+- 第4页：新主题状态为`PPTX Created`；[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_4.pptx)和[PNG预览](../figure/presentation-preview/midterm-background-04.png)已生成，OfficeCLI结构检查与独立PNG视觉检查通过，PowerPoint桌面端复核待完成。三栏区分原型验证侧重点、单FPGA容量限制与REMUS研究目标。
+- 第5页：已有新主题设计参考图，状态为`Designed`，尚未制作可编辑PPTX。
 - 第6–15页：大纲已确定，图示细节应与真实实现和实验材料对应。
 - 建议维护状态：`Planned`、`Designed`、`PPTX Created`、`Reviewed`。完成状态需随提交更新，避免以规划代替实际进度。
 - 制作入口：[OfficeCLI实施计划](pptx-implementation-plan.md)、[设计参考索引](../figure/presentation-reference/README.md)、[组件资产索引](../figure/ppt-assets/README.md)。
