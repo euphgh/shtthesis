@@ -4,7 +4,7 @@
 
 本规范适用于REMUS中期与最终学位答辩PPT。延续开题PPT的**白底、醒目标题、细分隔线、图文结合、技术内容优先**的学术风格，同时将旧的红橙主题升级为**深蓝（Deep Navy）+青绿（Academic Teal）+琥珀橙（Amber Orange）**。
 
-开题PPT源文件：`pptx/proposal/proposal-slides.pptx`；中期内容参照[逐页大纲](midterm-presentation-outline.md)。旧开题样式是视觉来源，不是新配色模板；已存在的红橙配色中期草稿也应在最终整合时统一升级。开题材料本身不必改色。
+开题PPT源文件：`pptx/proposal/proposal-slides.pptx`；中期内容参照[逐页大纲](midterm-presentation-outline.md)。旧开题样式是视觉来源，不是新配色模板；红橙配色中期草稿已由REMUS新主题页面替代并清理。开题材料本身不必改色。
 
 ## 2. 色彩规范
 

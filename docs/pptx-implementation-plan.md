@@ -23,7 +23,7 @@
 | [视觉规范](presentation-style-guide.md) | 配色、Arial字体、16:9画幅、可编辑性 | 决定新PPT的统一样式 |
 | [五张设计参考图](../figure/presentation-reference/README.md) | 前五页的构图、比例、图文关系 | 用于重建布局；图中文字和完成状态仍需核对 |
 | [十张组件插图](../figure/ppt-assets/README.md) | 芯片、波形、快照等可复用PNG | 只承担图示，不代替可编辑标签与技术连线 |
-| [旧中期草稿](../pptx/midterm/) | 前两页的文字和可编辑对象参考 | 保留历史版本，新稿按新主题重制 |
+| [当前中期PPTX](../pptx/midterm/) | 已完成的REMUS新主题页面 | 以第1–3页及对应预览为后续制作基准；SMART旧稿已清理 |
 | [开题PPT](../pptx/proposal/proposal-slides.pptx) | 19页历史材料、技术图和叙事背景 | 不直接继承旧主题或将开题目标改称成果 |
 | [中期报告大纲](../src/midterm/outline.md) | 技术背景、研究进展和计划 | 与当前代码、实验记录一起核对技术内容 |
 
@@ -112,7 +112,8 @@ PPTX预览统一使用OfficeCLI直接导出PNG。
 | `figure/presentation-preview/midterm-background-01.png`至`05.png` | 第1–3页预览已生成；第4–5页待制作，与原始设计参考分开 |
 
 生成过程先输出到`build/pptx/`，通过检查后再交付到`pptx/midterm/`。
-历史SMART草稿与开题PPT保留。手工调整若需长期保留，应同步回生成源，避免下次生成时丢失。
+已被替代的SMART中期草稿和未引用的旧组件已清理；开题PPT、论文插图、五张设计参考图与新组件保留。
+手工调整若需长期保留，应同步回生成源，避免下次生成时丢失。
 
 在沙箱外、`thesis/`目录执行以下命令可分别重建第1–3页到`build/pptx/`，并完成结构检查与PNG导出：
 

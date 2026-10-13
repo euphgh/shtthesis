@@ -18,7 +18,7 @@
 | 4 | Research Gap and Goal | 多FPGA原型验证具备扩展能力；单FPGA Scan Dump有状态重放基础；研究目标是同时具备多FPGA扩展和全局状态调试。 | 3列能力对比矩阵，明确区别“已知技术能力”和“本课题拟实现能力”。 |
 | 5 | REMUS: Overall Workflow and Mid-Term Scope | 统一呈现RTL输入、自动划分、LI-TDM/Cycle Control/Scan Dump、Runtime、Global Snapshot与Replay路径；界定中期工作范围。 | 一张主流程/系统架构图，配简短的中期里程碑栏。 |
 
-第1–2页在仓库中已有旧配色的PPTX草稿（位于`pptx/midterm/`），新风格制作时应依照视觉规范升级，不应把旧页面的红橙色视为今后的标准。
+`pptx/midterm/`保留当前REMUS新主题页面，已被替代的SMART旧配色草稿已清理；后续页面继续遵循统一视觉规范。
 
 ## 第二部分：Mid-term Research Progress（第6–12页）
 

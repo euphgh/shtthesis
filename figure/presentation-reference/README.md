@@ -20,4 +20,5 @@ Reusable illustrations are indexed in [ppt-assets](../ppt-assets/README.md).
 The references are at the `Designed` stage. Their checkmarks and capability claims are not evidence of completed experiments; in particular, slides 4–5 need explicit research-goal and implementation-status labels.
 Future rendered previews belong in `figure/presentation-preview/`, separate from these references.
 
-The older combined montage is no longer present in the current tree. Keep the existing individual component icons (`figure/FPGA.png`, `figure/Waveform.png`, and `figure/database.png`) for historical material and reuse.
+Superseded SMART mid-term drafts and their unused legacy icons have been removed.
+Use the current [ppt-assets](../ppt-assets/README.md) components for new slides.
