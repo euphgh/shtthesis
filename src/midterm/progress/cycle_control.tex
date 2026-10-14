@@ -10,6 +10,16 @@
 
 在同步RTL设计中，寄存器在有效时钟边沿更新状态，寄存器之间的组合逻辑则根据当前状态和输入计算下一次更新所需的值。将设计部署到多个FPGA后，部分组合逻辑路径可能跨越FPGA边界。例如，一条路径从FPGA A中的源寄存器出发，经过FPGA B中的组合逻辑，再返回FPGA A中的目标寄存器。在目标寄存器更新之前，信号必须先从A传递到B，经过组合计算后再传回A。
 
+这条组合逻辑路径及其划分后的跨片传输过程如图\ref{fig:midterm-cross-fpga-path-timing}所示。
+
+\begin{figure}[htbp]
+    \centering
+    % 原图底部包含固定图号，使用trim隐藏，交由LaTeX自动编号。
+    \includegraphics[width=\linewidth,trim=0 3.4cm 0 0,clip]{figure/cross-fpga-combinational-path-timing.png}
+    \caption{跨FPGA组合逻辑路径与DUT逻辑时钟推进示意图}
+    \label{fig:midterm-cross-fpga-path-timing}
+\end{figure}
+
 与片内连接不同，跨FPGA信号需要经过数据打包、物理链路传输和接收重组等过程。如果目标寄存器在数据尚未返回时就更新，得到的结果可能与原始RTL不同。因此，多FPGA周期精确执行的关键，是将跨分区数据传播与DUT逻辑时钟推进协调起来，保证当前周期所需的组合计算完成后再更新时序状态。
 
 DUOHUAFEN提出的LI-TDM机制为跨片执行提供了技术基础\cite{zhu_duohuafen_2024}。该机制结合延迟不敏感（Latency-Insensitive，LI）握手与时分复用（Time-Division Multiplexing，TDM）：前者用于协调跨片数据传输中的等待，后者将较宽的逻辑边界信号分拍映射到有限位宽的物理通信通道。
@@ -34,7 +44,14 @@ REMUS沿用LI-TDM分阶段传播的基本机制，但对每个逻辑周期的首
 
 在最后一个传播阶段，所需的边界数据已经到达，分区完成相应组合计算后，当前周期的跨分区依赖得到满足，可以推进DUT逻辑时钟。由于不再需要执行下一传播阶段，此时也无须再次发送计算结果。
 
-因此，REMUS将首阶段调整为“计算、发送”，中间阶段保持“接收、计算、发送”，末阶段则调整为“接收、计算、更新DUT逻辑时钟”。两种流程的区别如表\ref{tab:midterm-li-tdm-stages}所示。
+因此，REMUS将首阶段调整为“计算、发送”，中间阶段保持“接收、计算、发送”，末阶段则调整为“接收、计算、更新DUT逻辑时钟”。两种流程的区别如图\ref{fig:midterm-li-tdm-stage-optimization}和表\ref{tab:midterm-li-tdm-stages}所示。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figure/li-tdm-propagation-stage-optimization.png}
+    \caption{LI-TDM原始传播流程与REMUS首尾阶段收发优化对比}
+    \label{fig:midterm-li-tdm-stage-optimization}
+\end{figure}
 
 \begin{table}[htbp]
     \centering
@@ -105,6 +122,15 @@ REMUS复用扫描链控制器中的逻辑周期计数、运行状态和定步执
 这里的一步表示完成一个DUT逻辑周期，而非一个FPGA物理时钟周期。由于$T$大于所有已采样的$c_i$，各分区都至少需要再执行一步，不必回退已经更新的DUT状态。
 
 仍以前述双FPGA为例。若在接收屏障处采样到$c_A=42$、$c_B=41$，则$T=43$。主机分别配置$s_A=1$、$s_B=2$：FPGA A再完成一个逻辑周期，FPGA B再完成两个逻辑周期，最终均停在第43个周期结束的位置。这说明一致暂停不要求两个FPGA执行相同的剩余步数，而要求它们到达相同的终点。
+
+双FPGA一致暂停的协调时序如图\ref{fig:midterm-dual-fpga-pause-timing}所示。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figure/dual-fpga-consistent-pause-timing.png}
+    \caption{双FPGA一致暂停的屏障协调与共同目标周期示意图}
+    \label{fig:midterm-dual-fpga-pause-timing}
+\end{figure}
 
 所有步数均在屏障保持期间写入。配置完成后，主机按已采样进度从落后到领先的顺序解除屏障，上例中先解除FPGA B，再解除FPGA A。解除屏障只允许分区继续参与原有的LI-TDM握手，并不绕过跨分区数据依赖；各分区在完成所需的组合传播后推进DUT逻辑周期，每完成一个周期便递减剩余步数。采用这一释放顺序，是为了使落后分区先获得继续传播的机会；在不同拓扑中的等待关系和正确性仍需结合实际通信协议验证。
 
