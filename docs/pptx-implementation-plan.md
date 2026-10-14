@@ -107,7 +107,9 @@ PPTX预览统一使用OfficeCLI直接导出PNG。
 
 | 拟用路径 | 用途 |
 | --- | --- |
-| `scripts/build_midterm_pptx.py` | 已实现第1–5页的形状、文字、PNG裁剪、箭头、讲稿及OfficeCLI调用；通过`--slide`选择页面 |
+| `scripts/build_midterm_pptx.py` | 命令行入口与页面注册；通过`--slide`选择页面，统一调用OfficeCLI、检查并导出 |
+| `scripts/midterm_pptx/common.py` | 公共路径、颜色及`SlideAPI`，生成标题、形状、图片裁剪和连接线命令 |
+| `scripts/midterm_pptx/slide_01.py`至`slide_05.py` | 每页独立定义`TITLE`和`build_commands()`，保存该页的布局、内容及讲稿 |
 | `build/pptx/` | 批量命令、临时PPTX和检查日志；沿用现有忽略规则 |
 | `pptx/midterm/REMUS_Background_Slide_1.pptx` | 已生成的独立第1页；33个可编辑形状（含文字）和4个图片对象 |
 | `pptx/midterm/REMUS_Background_Slide_2.pptx` | 已生成的独立第2页；65个可编辑形状（含文字）、9条连接线和5个图片对象 |
@@ -118,6 +120,9 @@ PPTX预览统一使用OfficeCLI直接导出PNG。
 | `figure/presentation-preview/midterm-background-01.png`至`05.png` | 第1–5页预览均已生成，与原始设计参考分开 |
 
 生成过程先输出到`build/pptx/`，通过检查后再交付到`pptx/midterm/`。
+修改单页时只需编辑对应的`slide_XX.py`；调整共用样式与绘图接口时编辑`common.py`。
+新增页面时提供`TITLE`和`build_commands()`，再加入主文件的`SLIDES`注册表。
+页面模块只构造命令，不调用OfficeCLI；各页不依赖其他页面。命令行参数与输出路径保持不变。
 已被替代的SMART中期草稿和未引用的旧组件已清理；开题PPT、论文插图、五张设计参考图与新组件保留。
 手工调整若需长期保留，应同步回生成源，避免下次生成时丢失。
 

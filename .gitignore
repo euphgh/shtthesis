@@ -47,3 +47,6 @@ Fonts/LICENSE-Source.txt
 
 # ignore duplicated files
 * [2-9].*
+
+# ignore Python import caches from presentation scripts
+__pycache__/
