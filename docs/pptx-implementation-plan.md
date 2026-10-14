@@ -1,7 +1,7 @@
 # REMUS中期PPT制作计划：从设计图到可编辑PPTX
 
 本文面向后续制作PPT的作者与agent，记录材料入口、前五页的元素拆分和OfficeCLI实施步骤。
-当前已完成**第1–4页新主题PPTX及OfficeCLI PNG检查**；第5页仍待制作。
+当前已完成**第1–5页独立新主题PPTX及OfficeCLI PNG检查**；五页合并文件尚未创建。
 第1页文件：[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_1.pptx)、
 [PNG预览](../figure/presentation-preview/midterm-background-01.png)。
 第2页文件：[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_2.pptx)、
@@ -10,6 +10,8 @@
 [PNG预览](../figure/presentation-preview/midterm-background-03.png)。
 第4页文件：[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_4.pptx)、
 [PNG预览](../figure/presentation-preview/midterm-background-04.png)。
+第5页文件：[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_5.pptx)、
+[PNG预览](../figure/presentation-preview/midterm-background-05.png)。
 已通过OpenXML校验、OfficeCLI问题检查、字体/对象边界检查和独立PNG视觉复核；
 尚未在PowerPoint桌面端复核。
 
@@ -25,7 +27,7 @@
 | [视觉规范](presentation-style-guide.md) | 配色、Arial字体、16:9画幅、可编辑性 | 决定新PPT的统一样式 |
 | [五张设计参考图](../figure/presentation-reference/README.md) | 前五页的构图、比例、图文关系 | 用于重建布局；图中文字和完成状态仍需核对 |
 | [十张组件插图](../figure/ppt-assets/README.md) | 芯片、波形、快照等可复用PNG | 只承担图示，不代替可编辑标签与技术连线 |
-| [当前中期PPTX](../pptx/midterm/) | 已完成的REMUS新主题页面 | 以第1–4页及对应预览为后续制作基准；SMART旧稿已清理 |
+| [当前中期PPTX](../pptx/midterm/) | 已完成的REMUS新主题页面 | 以第1–5页及对应预览为后续制作基准；SMART旧稿已清理 |
 | [开题PPT](../pptx/proposal/proposal-slides.pptx) | 19页历史材料、技术图和叙事背景 | 不直接继承旧主题或将开题目标改称成果 |
 | [中期报告大纲](../src/midterm/outline.md) | 技术背景、研究进展和计划 | 与当前代码、实验记录一起核对技术内容 |
 
@@ -57,7 +59,7 @@
 | 2 | 左右面板、能力条目、状态符号、Run→Pause→Dump→Restore→Replay节点、方向箭头与标签 | `fpga-chip.png`、`global-snapshot.png`、`waveform-monitor.png` | 右栏表达可重放仿真的目标能力；不能让勾号暗示REMUS全部功能已经验证 |
 | 3 | 四象限面板、标题、短句、局部框图、同步连线、状态汇聚箭头 | `fpga-chip.png`、`cycle-control.png`、`global-pause.png`、`global-snapshot.png`、`circuit-partitioning.png` | 周期执行、全局暂停、状态管理、自动划分分别讲清一个问题；控制时序用独立形状表达 |
 | 4 | 三列面板、能力行、说明标签、目标栏、连接线 | `fpga-chip.png`、`global-snapshot.png`、`restore-replay.png` | 保留三列比较结构，逐项核对能力表述；REMUS列明确标注Research Goal |
-| 5 | 六阶段卡片、编号、阶段标题、方向箭头、Runtime/Fabric/Host支撑栏、中期范围栏 | `rtl-design.png`、`circuit-partitioning.png`、多个`fpga-chip.png`、`cycle-control.png`、`state-capture.png`、`restore-replay.png`、`waveform-monitor.png`、`fabric-topology.png` | Restore/Replay标明计划或实际状态；六阶段图中的四芯片组合只作部署示意，不作为四FPGA实验完成证据 |
+| 5 | 五阶段卡片、编号、阶段标题、方向箭头、原生时钟/暂停图标、同步连线、中期范围栏 | `rtl-design.png`、`circuit-partitioning.png`、多个`fpga-chip.png`、`global-snapshot.png`、`waveform-monitor.png` | 按更新后的五阶段图制作；Fabric/Runtime并入部署，执行与暂停合为一个阶段，状态捕获/恢复/重放合为一个阶段；第5阶段沿用蓝色系，Restore/Replay标为计划，四芯片组合仅作部署示意 |
 
 第3页的`global-pause.png`只画出了暂停与循环符号，需要与多个FPGA、共同周期标签和同步连线组合，
 才能表达全局一致暂停。`state-capture.png`是状态采集的概念插图，不能代替扫描链或DMA结构图。
@@ -66,7 +68,7 @@
 
 - **第2、4页的能力比较**：用“典型侧重点/常见局限”描述原型验证。没有文献依据时，不用一组叉号断言所有原型系统均不支持暂停或重放。第4页可使用`Primary focus`、`Limited by one FPGA`、`Research goal`等明确文字。
 - **第3页的术语**：PPD首次出现时解释为Partition Propagation Depth；若空间不足，改写短句或放入紧随其后的说明，不将关键解释只藏在讲稿中。
-- **第5页的完成标记**：参考图中的勾号不是实验记录。`Completed`、`In Progress`、`Planned`必须逐项对应实现和验证依据；未核对项先在制作清单中标记`Needs evidence`，正式展示前解决。
+- **第5页的完成标记**：参考图中的勾号不是实验记录。制作时改用中性圆点表示工作范围，并根据中期大纲将Restore/Replay标为`Planned`。后续若使用`Completed`或`In Progress`，必须逐项对应实现和验证依据。
 - **状态流向**：Dump/Scan Dump导出局部状态，聚合后形成Global Snapshot；Restore与Replay的执行端和方向在技术页明确，不把FPGA状态恢复与软件RTL重放画成无条件等价的步骤。
 - **缺少的图标**：`runtime-control`和`host-interface`尚无独立PNG。Runtime可用原生齿轮/控制框，Host可用矩形显示器及标签制作；无须因此阻塞第一批页面。
 - **色彩与文字**：参考图中额外的紫色、红色流程框和渐变不必逐像素复制。按照视觉规范统一颜色、文字、留白与层次。
@@ -105,26 +107,28 @@ PPTX预览统一使用OfficeCLI直接导出PNG。
 
 | 拟用路径 | 用途 |
 | --- | --- |
-| `scripts/build_midterm_pptx.py` | 已实现第1–4页的形状、文字、PNG裁剪、箭头、讲稿及OfficeCLI调用；通过`--slide`选择页面 |
+| `scripts/build_midterm_pptx.py` | 已实现第1–5页的形状、文字、PNG裁剪、箭头、讲稿及OfficeCLI调用；通过`--slide`选择页面 |
 | `build/pptx/` | 批量命令、临时PPTX和检查日志；沿用现有忽略规则 |
 | `pptx/midterm/REMUS_Background_Slide_1.pptx` | 已生成的独立第1页；33个可编辑形状（含文字）和4个图片对象 |
 | `pptx/midterm/REMUS_Background_Slide_2.pptx` | 已生成的独立第2页；65个可编辑形状（含文字）、9条连接线和5个图片对象 |
 | `pptx/midterm/REMUS_Background_Slide_3.pptx` | 已生成的独立第3页；四象限面板、文字、周期脉冲、同步与状态汇聚连线可编辑，12个图片对象复用组件资产 |
 | `pptx/midterm/REMUS_Background_Slide_4.pptx` | 已生成的独立第4页；99个可编辑形状（含文字）、1条连接线和8个图片对象 |
+| `pptx/midterm/REMUS_Background_Slide_5.pptx` | 已生成的独立第5页；57个可编辑形状（含文字）、14条连接线和8个图片对象 |
 | `pptx/midterm/REMUS_Midterm_Background.pptx` | 第一批五页PPTX；尚未创建 |
-| `figure/presentation-preview/midterm-background-01.png`至`05.png` | 第1–4页预览已生成；第5页待制作，与原始设计参考分开 |
+| `figure/presentation-preview/midterm-background-01.png`至`05.png` | 第1–5页预览均已生成，与原始设计参考分开 |
 
 生成过程先输出到`build/pptx/`，通过检查后再交付到`pptx/midterm/`。
 已被替代的SMART中期草稿和未引用的旧组件已清理；开题PPT、论文插图、五张设计参考图与新组件保留。
 手工调整若需长期保留，应同步回生成源，避免下次生成时丢失。
 
-在沙箱外、`thesis/`目录执行以下命令可分别重建第1–4页到`build/pptx/`，并完成结构检查与PNG导出：
+在沙箱外、`thesis/`目录执行以下命令可分别重建第1–5页到`build/pptx/`，并完成结构检查与PNG导出：
 
 ```bash
 /usr/bin/python3 scripts/build_midterm_pptx.py
 /usr/bin/python3 scripts/build_midterm_pptx.py --slide 2
 /usr/bin/python3 scripts/build_midterm_pptx.py --slide 3
 /usr/bin/python3 scripts/build_midterm_pptx.py --slide 4
+/usr/bin/python3 scripts/build_midterm_pptx.py --slide 5
 ```
 
 脚本只使用Python标准库和OfficeCLI；PNG保留原始像素，通过PPT内部裁剪去除透明留白。
@@ -149,6 +153,14 @@ PNG复核已修正Restore节点换行与底部标签位置；`validate`通过，
 底部目标是结合多FPGA可扩展性与可重放仿真，不将该比较作为穷尽相关工作或证明创新性的证据。
 已调整状态符号和主机连线对齐，`validate`通过、`view issues`为0，独立PNG视觉复核通过；
 第1–3页交付文件及现有图片资产哈希未变。
+
+第5页以用户更新的五阶段参考图为准，使用30pt主标题、22pt分节标题、17pt阶段标题、
+14pt阶段说明、15pt范围标题及13pt范围说明；所有可编辑文字为Arial。
+State Capture阶段的背景为`EAF4F3`，编号与状态箭头为`008C95`，与前四阶段保持一致，
+不使用黄色强调。时钟、暂停符号和同步总线均为原生可编辑元素；四FPGA示意标注
+`Illustrative topology`。Restore/Replay依据中期大纲标为`Planned`，底部范围栏用圆点代替完成勾号。
+已修正长标题、底部说明换行和流程箭头遮挡，`validate`通过、`view issues`为0，
+独立PNG视觉复核通过；前四页交付文件和用户更新的参考图哈希未变。
 
 ### 命令骨架
 
