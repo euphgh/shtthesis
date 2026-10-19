@@ -294,30 +294,23 @@
 
 #### 1.3.1 分布式状态模型与全局检查点设计
 
-- 介绍REMU的Scan Chain、Memory及Input三类信息：扫描链覆盖DUT全部FF与SRAM，Memory记录所需内存状态，Input保存按DUT逻辑周期标记的完整输入变化记录；当前REMUS中Memory与Input仍集中在一块FPGA。
-- 多FPGA划分后，各FPGA独立保存本地扫描状态，Host通过各分区扫描文件及配套信息形成Global Snapshot；其关键新增要求为同一DUT逻辑周期及映射到未划分DUT逻辑状态对象。
-- 建立“分区标识→局部扫描位置→原始DUT状态”的映射，说明FPGA按分区Scanin与软件RTL按逻辑对象加载的不同需要；扫描布局和重放RTL与编译产物配套。
-- 检查点关联分区扫描文件、Memory及完整Input事件记录。Input当前值不单独保存在检查点中，恢复时由Driver或软件Replay VPI根据完整记录计算。
+- 简要介绍REMU的Scan Chain、Memory和Input机制，以及多FPGA划分后扫描状态分散在各分区的问题；Memory与Input仍沿用原有集中管理方式。
+- 定义Global Snapshot，通过共同DUT逻辑周期和状态映射关联各分区扫描文件及配套数据，使局部扫描位置能够对应到未划分DUT的逻辑状态。
 
 #### 1.3.2 分布式状态提取与扫描控制协同
 
-- 将LI-TDM跨分区传播完成条件接入REMU运行与模式控制，保持DUT状态更新、逻辑周期计数和定步执行的周期边界一致。
-- 复用1.2节全局一致暂停：接收屏障用于稳定采样，最终到达共同目标周期并满足扫描条件后才切换至局部扫描模式。
-- 每个FPGA的本地扫描链将FF、SRAM状态导出至本地DDR；Host通过DMA分别收集为`scan_chain0`、`scan_chain1`等文件，按共同逻辑周期与状态映射组织全局检查点。
-- Host分布式控制与DDR访问的具体实现留在1.5节，本节说明从一致暂停到Global Snapshot的关键流程。
+- 将LI-TDM的周期完成条件接入运行控制，并复用1.2的一致暂停机制，使各分区在共同逻辑周期后进入扫描模式。
+- 各FPGA分别执行Scan Dump并写入本地DDR，Host按分区收集数据，组织Global Snapshot；具体控制和传输方式在1.5介绍。
 
 #### 1.3.3 基于全局检查点的状态恢复与确定性重放
 
-- **Restore是Replay的第一步**：硬件按分区将扫描数据写回对应FPGA并Scanin；软件将分区扫描数据映射到未划分DUT的逻辑对象，加载进配套重放RTL；两者均需恢复Memory与检查点的初始Input值。
-- Global Snapshot包含完整Input变化记录而不是检查点时刻的Input独立快照；Host Driver和软件VPI据此重建初始Input，再按DUT逻辑周期重新施加之后的事件。
-- **硬件Replay**复用REMU Step机制运行至下一个Input事件的逻辑周期，由Host写入Input控制寄存器后继续运行；**软件Replay**通过`vpi_register_cb`注册采用`vpiSimTime`的回调，以“事件周期－检查点周期”确定相对仿真时间。
-- 以检查点周期1000、输入事件周期1024为例说明Step推进24个逻辑周期和软件相对仿真时间24的对应；重放区间内可使用软件RTL观测内部波形，不将REMU继承的机制单独作为新增贡献。
+- Restore作为Replay的起点：硬件按分区Scanin，软件通过全局映射加载RTL状态；两者均恢复Memory，并根据完整Input记录确定检查点的初始Input值。
+- Replay在恢复后按DUT逻辑周期重现Input变化，复用REMU已有的硬件Step与软件VPI机制；不展开两者的实现细节。
 
 #### 1.3.4 功能验证与阶段性结果
 
-- **状态提取与映射**：PicoRV32和KMH多分区Cosim的Scan Dump、落盘和解码结果，在已比较状态范围内与相同逻辑周期的单体RTL参考一致；补充实际比较范围。
-- **Restore/Replay**：已有非零周期检查点的软件Replay、FPGA Replay/Restore及再次保存检查点的测试结果符合预期；补充各组DUT、平台、执行周期和比较对象，不推定已完成所有信号的逐周期验证。
-- 后续核实检查点初始Input重建、连续Input事件的硬件Step与软件VPI时间对应，以及Scan Dump数据规模、导出耗时、资源开销和规模扩展实验，不填写未经测量的数据。
+- 对照PicoRV32和KMH多分区Scan Dump解码状态与同周期单体RTL状态；已有结果限于实际比较的内部状态范围。
+- 记录非零周期检查点的软件Replay、FPGA Restore/Replay及再次保存检查点的阶段性结果，补充真实测试条件；后续评估状态导出开销与更大规模系统。
 
 ### 1.4 面向多FPGA仿真的自动化电路划分
 
