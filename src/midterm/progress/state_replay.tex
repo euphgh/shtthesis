@@ -42,9 +42,14 @@ REMUS将同一逻辑周期的分区扫描数据与Memory等信息组织为全局
 
 这一映射主要用于软件RTL状态恢复：软件按分区读取扫描数据，将局部比特对应到原始DUT的逻辑状态，再加载到配套的重放RTL对象中。对于FPGA恢复，如果使用相同的分区设计及扫描布局，则可以直接将各分区的扫描数据写回对应FPGA，不必先还原为原始DUT的层次结构。无论采用哪种方式，检查点、状态映射和相关编译产物都需要保持匹配。
 
-% TODO(分布式状态组织图)：绘制一张简洁的结构图，展示各FPGA的局部扫描
-% 数据、集中管理的Memory和Input、Host中的Global Snapshot及状态映射。
-% 可附带两条Restore路径；不重复REMU已有的Scanin或Input Replay细节。
+图\ref{fig:ckpt-and-replay}概括了各分区的局部状态汇聚为全局检查点，以及利用检查点进行FPGA状态恢复和软件RTL重放的流程。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figure/ckpt-and-replay.png}
+    \caption{多FPGA状态快照与恢复重放流程示意图}
+    \label{fig:ckpt-and-replay}
+\end{figure}
 
 \subsection{分布式状态提取与扫描控制协同}
 \label{sec:midterm-scan-control}
