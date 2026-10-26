@@ -43,10 +43,10 @@ class CheckpointDiagram(Diagram):
         self.group(name, [name+".Page", name+".Text"])
 
     def chip_stack(self, name, x, y, size=1.22):
-        """Three complete chip silhouettes, back-to-front, with a clear gap halo.
+        """Three complete chip silhouettes with transparent space around the pins.
 
-        Each chip is a native group. The small opaque background behind the
-        foreground chip prevents rear pins showing through the front silhouette.
+        Each chip is a native group containing only pins, body and label.
+        No backing rectangle masks the other chips in the staggered stack.
         All chips use equal size and equal diagonal offset; no internal partitions.
         """
         groups = []
@@ -54,8 +54,6 @@ class CheckpointDiagram(Diagram):
             px, py = x+depth*.34, y-depth*.34
             part = f"{name}.Chip{depth}"
             start = len(self.commands)
-            self.shape(part+".Halo", px-.14, py-.14, size+.28, size+.28,
-                       fill="EAF4F3", preset="roundRect", adj="adj:val 4500")
             for i in range(5):
                 at = size*(.15+i*.155)
                 for side, a, b, w, h in (
@@ -103,7 +101,7 @@ def build_commands():
             d.shape(name+"."+label, .98, y+dy, 2.13, .36,
                     fill="EAF4F3", text=label, size=18)
         d.shape(name+".Combinational", .98, y+2.57, 2.13, .68,
-                text="Combinational Logic", size=16, fill="EDF0F3")
+                text="Combinational Logic", size=16, fill="C5D7E5", line="8BA7BC:1")
         d.panel(name+".DDR", 3.70, y+.65, 2.23, 2.67, "FFF6E5", AMBER)
         d.shape(name+".DDRTitle", 3.81, y+.75, 2.01, .42,
                 text=f"DDR {i}", size=21, bold="true")
@@ -122,8 +120,6 @@ def build_commands():
             text="Dashed boundary: scanned state", size=16, color=TEAL)
     d.line("Host.CollectBus", 6.88, 3.32, 6.88, 7.42)
     d.line("Host.CollectArrow", 6.88, 5.35, 7.68, 5.35, arrow=True)
-    d.shape("Host.CollectLabel", 6.31, 4.32, 1.14, .78,
-            text="Host\ncollection", size=12, fill="FFFFFF")
 
     # Only cycle 0 is expanded. Header strips of later cycles remain visible.
     d.folder("Host.RootFolder", 7.72, 1.34, .48)
@@ -146,8 +142,6 @@ def build_commands():
         d.file("Checkpoint."+name, x, 4.03, 1.43, 1.78, text, color, font=15)
     d.shape("Checkpoint.SameCycle", 7.90, 5.98, 4.76, .44,
             text="All partitions · same cycle", size=16, bold="true")
-    d.shape("Checkpoint.CycleNote", 7.68, 6.74, 5.32, .38,
-            text="Illustrative checkpoint cycles", size=16, color="607184")
 
     # Auxiliary files are distinct from cycle snapshots. Avoid input-arrow clutter.
     d.file("Aux.Input", 7.85, 7.65, 2.12, 1.53, "Input Traces", "FFF0D9", font=18)

@@ -27,8 +27,7 @@ Driver在上层仍为各分区提供独立的寄存器和内存对象，但这�
 
 \begin{figure}[htbp]
     \centering
-    % 裁去参考图顶部内嵌标题，使用LaTeX统一生成图题。
-    \includegraphics[width=\linewidth,trim=0 0 0 65bp,clip]{figure/fabric-architecture-comparison-reference.png}
+    \includegraphics[width=\linewidth]{figure/fabric-architecture-comparison-reference.png}
     \caption{PCIe直连与Fabric统一访问的多FPGA连接架构}
     \label{fig:midterm-fabric-architecture-comparison}
 \end{figure}
@@ -66,8 +65,7 @@ Agent将请求转换为本地总线访问，读取DUT控制器中的周期计数
 
 \begin{figure}[htbp]
     \centering
-    % 裁去参考图顶部内嵌标题，保留组件、访问路径与图例。
-    \includegraphics[width=\linewidth,trim=0 0 0 85bp,clip]{figure/fabric-remote-access-reference.png}
+    \includegraphics[width=\linewidth]{figure/fabric-remote-access-reference.png}
     \caption{Host经Ref读取远端周期计数寄存器的请求与响应路径}
     \label{fig:midterm-fabric-remote-access}
 \end{figure}
