@@ -17,7 +17,7 @@
 \subsection{基于Fabric的统一访问架构}
 \label{sec:midterm-fabric-architecture}
 
-针对上述限制，REMUS采用Fabric连接各FPGA，并选择其中一个节点作为主机接入点。该节点称为参考节点Ref，通过PCIe与主机连接，其余普通节点通过板间链路接入Fabric。Ref与普通节点均承载本地DUT分区、控制寄存器和内存，Ref额外承担主机请求的接入与响应返回。主机通过Ref即可访问各节点的资源，普通节点不再要求分别建立独立的主机PCIe连接。
+针对上述限制，REMUS采用Fabric连接各FPGA，并选择其中一个节点作为主机接入点。该节点称为参考节点Ref，通过PCIe与主机连接，其余普通节点通过板间链路接入Fabric。Ref与普通节点均承载本地DUT分区、控制寄存器和内存，Ref额外承担主机请求的接入与响应返回。主机通过Ref即可访问各节点的资源，普通节点不再要求分别建立独立的主机PCIe连接。两种架构的连接方式如图\ref{fig:midterm-fabric-architecture-comparison}所示。
 
 Fabric为主机提供面向目标节点的统一资源访问接口。一次访问由目标节点、该节点内的局部地址以及读写操作共同确定。目标为Ref时，请求在Ref内部执行。目标为普通节点时，请求经板间链路送往对应FPGA。两种情况下，主机均以相同的方式指定目标资源，并获取访问结果。寄存器接口用于运行控制和状态查询，内存接口用于程序及模型数据等内容的传输。
 
@@ -25,8 +25,13 @@ Driver在上层仍为各分区提供独立的寄存器和内存对象，但这�
 
 通过这一结构，系统增加FPGA时可以利用板间互连扩展访问范围，减少对主机直连接口数量的依赖。不过，统一入口也使主机访问流量共享Ref的接入带宽，实际可扩展规模仍受板间连接、传输带宽和具体实现条件限制。
 
-% TODO(架构对照图)：并列展示Host分别直连各FPGA，以及Host经Ref接入Fabric。
-% 保留DUT跨片连接，突出两种方案中Host连接数量与资源访问路径的变化。
+\begin{figure}[htbp]
+    \centering
+    % 裁去参考图顶部内嵌标题，使用LaTeX统一生成图题。
+    \includegraphics[width=\linewidth,trim=0 0 0 65bp,clip]{figure/fabric-architecture-comparison-reference.png}
+    \caption{PCIe直连与Fabric统一访问的多FPGA连接架构}
+    \label{fig:midterm-fabric-architecture-comparison}
+\end{figure}
 
 \subsection{Fabric组件及统一访问过程}
 \label{sec:midterm-fabric-access}
@@ -51,7 +56,7 @@ Fabric中的资源访问由访问发起器（AccessInitiator）、路由器（Fa
     \end{tabularx}
 \end{table}
 
-以主机读取普通节点FPGA B的周期计数为例，访问过程如下。首先，Driver指定B的节点身份和周期计数寄存器的局部地址，通过Ref的PCIe接口提交读取请求。Ref中的Initiator将请求转换为Fabric报文，其中包含目标节点和本次操作的信息。随后，Ref的Router将报文发送到板间链路，B的Router接收后将其投递给本地Agent。
+以主机读取普通节点FPGA B的周期计数为例，图\ref{fig:midterm-fabric-remote-access}展示了请求与响应经过各组件的路径。首先，Driver指定B的节点身份和周期计数寄存器的局部地址，通过Ref的PCIe接口提交读取请求。Ref中的Initiator将请求转换为Fabric报文，其中包含目标节点和本次操作的信息。随后，Ref的Router将报文发送到板间链路，B的Router接收后将其投递给本地Agent。
 
 Agent将请求转换为本地总线访问，读取DUT控制器中的周期计数寄存器。待本地访问完成后，Agent生成包含读取值及执行状态的响应，经Router和板间链路返回Ref。Ref的Initiator匹配该响应与原请求，并向主机返回结果。这样，远端寄存器的实际读操作发生在B上，而主机只需通过Ref提交请求并等待完成。
 
@@ -59,8 +64,13 @@ Agent将请求转换为本地总线访问，读取DUT控制器中的周期计数
 
 这些组件将节点选择、跨片传送与本地资源操作连接起来，使主机能够以统一方式访问各FPGA。运行控制所需的寄存器读写和状态管理所需的内存访问由此获得共同的访问基础。
 
-% TODO(访问过程图)：展开Ref与一个普通节点，标出Initiator、Router、Agent、
-% 本地寄存器和内存，以请求和响应箭头对应正文中的远端读取过程。
+\begin{figure}[htbp]
+    \centering
+    % 裁去参考图顶部内嵌标题，保留组件、访问路径与图例。
+    \includegraphics[width=\linewidth,trim=0 0 0 85bp,clip]{figure/fabric-remote-access-reference.png}
+    \caption{Host经Ref读取远端周期计数寄存器的请求与响应路径}
+    \label{fig:midterm-fabric-remote-access}
+\end{figure}
 
 \subsection{阶段性实现与验证}
 \label{sec:midterm-fabric-validation}
