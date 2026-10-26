@@ -18,7 +18,7 @@ def build_commands():
         ("State", 0.35, 4.02, "FCF4E8", "Distributed State\nManagement",
          ["Extract local states", "Form a global snapshot\nfor restore and replay"]),
         ("Partition", 6.77, 4.02, "EAF4F3", "Automated\nPartitioning",
-         ["Balance resources and\ncut size", "Control Partition\nPropagation Depth (PPD)\nthrough granularity"]),
+         ["Balance resources and\ncut size", "Limit Maximum\nPath-Cut Number\nthrough granularity"]),
     ]
     for name, x, y, fill, heading, bullets in panels:
         commands.append(slide.shape(f"{name}.Panel", x, y, 6.22, 2.63, fill=fill,
@@ -109,8 +109,8 @@ def build_commands():
                          "pause requires all partitions at the same DUT cycle and drained links, "
                          "providing a stable boundary. Local partition states must be mapped and "
                          "aggregated into a global snapshot for restoration and deterministic replay. "
-                         "Partitioning must balance resources and cut size while controlling Partition "
-                         "Propagation Depth (PPD) through granularity. Multiple chip icons and the "
+                         "Partitioning must balance resources and cut size while limiting the maximum "
+                         "path-cut number through granularity selection. Multiple chip icons and the "
                          "partitioned circuit illustrate the problem, not an experimentally verified "
                          "FPGA count. Reference: figure/presentation-reference/midterm-background-03.png."
                      )}})

@@ -25,11 +25,11 @@
 | 页码 | Slide Title | 核心信息 | 主要视觉表现 |
 | --- | --- | --- | --- |
 | 6 | Mid-Term Progress Overview | 以REMUS架构为索引展示Partition、Cosim、Cycle Control、Scan Dump、Fabric Topology、双FPGA系统的实际完成情况。 | 系统框图上的Completed / In Progress / Planned标识；只使用真实进度。 |
-| 7 | Cycle-Accurate Multi-FPGA Execution | DUT逻辑时钟与FPGA物理时钟解耦；LI-TDM跨分区信号交换；一周期内多轮传播与PPD影响。 | DUT Cycle与物理时钟、跨片交换对应的时序图。 |
+| 7 | Cycle-Accurate Multi-FPGA Execution | DUT逻辑时钟与FPGA物理时钟解耦；LI-TDM跨分区信号交换；一周期内多轮传播与最大路径切割数对阶段数量的影响。 | DUT Cycle与物理时钟、跨片交换对应的时序图。 |
 | 8 | Cycle-Consistent Global Pause | 为什么各节点必须在同一DUT逻辑周期停止；运行、步进、暂停的统一控制语义。 | 两FPGA的时钟/暂停时序和Global Pause握手流程图。 |
 | 9 | Distributed State Capture & Global Snapshot | Scan Dump集成；分区局部状态导出；按原始状态映射聚合Global Snapshot。 | 多个FPGA→Local Dump→Global Snapshot的状态流向图。 |
 | 10 | State Restoration & Deterministic Replay | Snapshot写回与重执行的设计路径、重放正确性条件、目前完成与待验证范围。 | Dump→Snapshot→Restore→Replay→Waveform的闭环流程；未完成步骤明确标注。 |
-| 11 | Automated Multi-FPGA Circuit Partitioning | 层次分析、资源估计、自适应粒度、超图划分、RTL输出；资源均衡、Cut Size和PPD。 | 保留模块层次与按需展开的算法示意 + 有数据时展示评价指标。 |
+| 11 | Automated Multi-FPGA Circuit Partitioning | 层次分析、资源估计、自适应粒度、超图划分、RTL输出；资源均衡、Cut Size和最大路径切割数。 | 保留模块层次与按需展开的算法示意 + 有数据时展示评价指标。 |
 | 12 | Scalable Runtime Control & State Transfer | Fabric Topology、Host控制入口、数据/控制平面、命令分发和状态汇聚/恢复路径。 | Host→Fabric→FPGA节点结构图；控制和状态传输采用不同线型。 |
 
 每页强调“问题→机制→可证明的结果”；避免拆成过多工程模块清单。未实测或尚未实现的部分只以设计/计划形式表达。
@@ -45,7 +45,7 @@
 
 | 页码 | Slide Title | 核心信息 | 主要视觉表现 |
 | --- | --- | --- | --- |
-| 15 | Challenges & Future Work | 问题与行动配对：状态恢复/重放完善、通信与PPD优化、多FPGA扩展、大规模SoC部署、完整评估和论文计划。 | 两列Problem→Next Action，底部给出阶段性时间轴（仅写有依据的时间）。 |
+| 15 | Challenges & Future Work | 问题与行动配对：状态恢复/重放完善、通信与最大路径切割数优化、多FPGA扩展、大规模SoC部署、完整评估和论文计划。 | 两列Problem→Next Action，底部给出阶段性时间轴（仅写有依据的时间）。 |
 
 ## 封面、目录与结束页
 
@@ -57,7 +57,7 @@
 
 - 第1页：新主题状态为`PPTX Created`；[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_1.pptx)和[PNG预览](../figure/presentation-preview/midterm-background-01.png)已生成，OfficeCLI结构检查与独立PNG视觉检查通过，PowerPoint桌面端复核待完成。
 - 第2页：新主题状态为`PPTX Created`；[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_2.pptx)和[PNG预览](../figure/presentation-preview/midterm-background-02.png)已生成，OfficeCLI结构检查与独立PNG视觉检查通过，PowerPoint桌面端复核待完成。右栏以`Target capabilities`标明研究目标。
-- 第3页：新主题状态为`PPTX Created`；[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_3.pptx)和[PNG预览](../figure/presentation-preview/midterm-background-03.png)已生成，OfficeCLI结构检查与独立PNG视觉检查通过，PowerPoint桌面端复核待完成。四象限表达研究挑战，正文已展开PPD全称并说明全局暂停的共同逻辑周期与链路排空要求。
+- 第3页：新主题状态为`PPTX Created`；[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_3.pptx)和[PNG预览](../figure/presentation-preview/midterm-background-03.png)已生成，OfficeCLI结构检查与独立PNG视觉检查通过，PowerPoint桌面端复核待完成。四象限表达研究挑战，既有PPTX展开了旧术语PPD；生成脚本现改用Path-Cut Number，需重新生成并复核PPTX与PNG后，才能认为交付文件已完成术语统一。其他全局暂停说明保持原有设计。
 - 第4页：新主题状态为`PPTX Created`；[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_4.pptx)和[PNG预览](../figure/presentation-preview/midterm-background-04.png)已生成，OfficeCLI结构检查与独立PNG视觉检查通过，PowerPoint桌面端复核待完成。三栏区分原型验证侧重点、单FPGA容量限制与REMUS研究目标。
 - 第5页：新主题状态为`PPTX Created`；[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_5.pptx)和[PNG预览](../figure/presentation-preview/midterm-background-05.png)已生成，OfficeCLI结构检查与独立PNG视觉检查通过，PowerPoint桌面端复核待完成。采用更新后的五阶段设计；State Capture与前四阶段使用相同蓝色系，Restore/Replay标为计划，底部圆点表示工作范围。
 - 第6–15页：大纲已确定，图示细节应与真实实现和实验材料对应。

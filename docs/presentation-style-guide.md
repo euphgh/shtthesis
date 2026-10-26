@@ -27,7 +27,7 @@
 - 必须出现中文时可使用学校认可的中文字体（建议思源黑体/Noto Sans CJK SC），但英文字母和数字仍以Arial为准。
 - 页面主标题建议`28–32 pt`（Arial Bold）；分区标题`19–22 pt`；正文`17–20 pt`；表格/图中标签`14–17 pt`；脚注与页码`10–12 pt`。
 - 字号是布局建议而非机械限制。保证投影可读；不得仅通过将大量正文压缩到12pt以下解决拥挤问题。
-- 标题采用Title Case或简洁句式，术语拼写统一：`Multi-FPGA`、`Scan Dump`、`Global Pause`、`Snapshot`、`Replay`、`LI-TDM`、`PPD`。
+- 标题采用Title Case或简洁句式，术语拼写统一：`Multi-FPGA`、`Scan Dump`、`Global Pause`、`Snapshot`、`Replay`、`LI-TDM`、`Path-Cut Number`。
 
 ## 4. 页面几何与布局
 

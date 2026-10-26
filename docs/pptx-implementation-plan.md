@@ -67,7 +67,7 @@
 ## 4. 设计图需要调整的内容
 
 - **第2、4页的能力比较**：用“典型侧重点/常见局限”描述原型验证。没有文献依据时，不用一组叉号断言所有原型系统均不支持暂停或重放。第4页可使用`Primary focus`、`Limited by one FPGA`、`Research goal`等明确文字。
-- **第3页的术语**：PPD首次出现时解释为Partition Propagation Depth；若空间不足，改写短句或放入紧随其后的说明，不将关键解释只藏在讲稿中。
+- **第3页的术语**：改用Maximum Path-Cut Number，不再将PPD作为论文指标；如涉及LI-TDM传播阶段，应区分$N_{\mathrm{cut}}$与$S=N_{\mathrm{cut}}+1$。保持Slide文字精简，具体公式放在技术章节。
 - **第5页的完成标记**：参考图中的勾号不是实验记录。制作时改用中性圆点表示工作范围，并根据中期大纲将Restore/Replay标为`Planned`。后续若使用`Completed`或`In Progress`，必须逐项对应实现和验证依据。
 - **状态流向**：Dump/Scan Dump导出局部状态，聚合后形成Global Snapshot；Restore与Replay的执行端和方向在技术页明确，不把FPGA状态恢复与软件RTL重放画成无条件等价的步骤。
 - **缺少的图标**：`runtime-control`和`host-interface`尚无独立PNG。Runtime可用原生齿轮/控制框，Host可用矩形显示器及标签制作；无须因此阻塞第一批页面。
@@ -145,7 +145,7 @@ PNG复核已修正Restore节点换行与底部标签位置；`validate`通过，
 源PNG和历史PPTX的内容哈希与Git版本一致，第1页交付文件未改动。
 
 第3页使用30pt主标题、20pt两行分区标题、17pt正文、13–14pt图标标签、18pt总结与10pt页码，
-全部可编辑文字为Arial。正文展开Partition Propagation Depth（PPD），用跨FPGA通信延迟描述
+全部可编辑文字为Arial。此前导出的PPTX仍展开Partition Propagation Depth（PPD），本次已修改生成脚本使用Maximum Path-Cut Number；重新生成PPTX和预览图之前，旧产物仍包含历史术语。正文用跨FPGA通信延迟描述
 周期执行约束，避免在背景页额外引入LI-TDM缩写。全局暂停图标与三片FPGA、同步连线及
 共同DUT周期标签组合；局部状态经可编辑连线汇聚为Global Snapshot。三片FPGA为概念示意，
 不代表已完成三FPGA实验。已修正文本溢出提示和状态汇聚连线，`validate`通过、
