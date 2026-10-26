@@ -122,6 +122,8 @@ REMU已具备对DUT寄存器和SRAM的扫描访问、状态恢复及输入记录
 
 \paragraph{总体技术路线}
 
+图\ref{fig:remus-overall-workflow}展示了REMUS从RTL设计到多FPGA执行、全局检查点生成及恢复重放的总体技术路线。
+
 REMUS从待仿真的RTL设计出发，先根据模块层次和资源估计选择划分粒度，再构建带权超图，在FPGA资源约束下生成多个RTL分区。划分时需要考虑资源分布和跨分区连接规模；划分完成后，还要分析最大路径切割数，确定跨分区组合逻辑在一个DUT逻辑周期内所需的传播阶段数。这样，划分结果不仅决定逻辑部署的位置，也为后续周期精确执行提供参数。
 
 得到RTL分区后，系统为各分区接入跨FPGA通信接口和逻辑周期控制，并沿用REMU已有的局部扫描结构。跨分区组合信号通过LI-TDM分阶段传播，所有必要的传播完成后才推进DUT逻辑时钟。Fabric负责组织分区之间的物理通信路径，Runtime则向主机提供统一的运行和控制接口。需要保存检查点时，主机协调各分区停止在同一个DUT逻辑周期，然后启动各节点的状态提取。
@@ -130,11 +132,12 @@ REMUS从待仿真的RTL设计出发，先根据模块层次和资源估计选择
 
 上述流程从自动划分延伸到实际运行和状态重放，各环节还需要分别验证。Cosim用于检查划分前后的逻辑行为、周期控制和状态映射；FPGA板级实验则用于验证系统集成，并评价真实互连条件下的资源与性能开销。
 
-% TODO(总体技术路线图)：按RTL设计→自适应粒度及超图划分→多FPGA分区
-% →LI-TDM与统一Runtime→周期精确执行及一致暂停→分布式Scan Dump
-% →Global Snapshot→FPGA Restore / Software RTL Replay绘制简洁的流程图。
-% Input记录、状态映射作为辅助数据标在状态管理一侧，不画成额外的FPGA分区。
-% 图应表达总体设计流程，不能暗示各项实验已经完成。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{figure/presentation-preview/fpga-rtl-workflow.png}
+    \caption{REMUS总体技术路线示意图}
+    \label{fig:remus-overall-workflow}
+\end{figure}
 
 \paragraph{中期阶段进展}
 
