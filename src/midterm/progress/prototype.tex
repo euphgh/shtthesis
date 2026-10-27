@@ -1,9 +1,203 @@
 \section{双FPGA仿真加速原型系统与阶段性实验}
+\label{sec:midterm-prototype}
+
+前文分别讨论了跨分区执行、一致暂停、分布式状态管理和自动化划分。本节将这些机制集成到双FPGA平台，通过不同规模RISC-V处理器的裸机与操作系统负载检查系统能否实际运行，并报告扫描状态规模、综合资源和Host可见的性能开销。板级实验采用PCIe分别直连各FPGA的架构，不能作为Fabric统一访问架构已完成板级验收的依据。
 
 \subsection{实验平台与系统结构}
 
+实验使用两块课题组研制的NM37开发板，其核心器件为VU37P FPGA，每块板卡提供三个光口。Host通过PCIe分别访问两块板卡的控制寄存器和DDR，两个DUT分区之间通过QSFP连接的Aurora链路交换边界数据。各Part部署在对应FPGA的Role中，Shell提供主机访问、板间链路及内存等基础设施，DDR承载内存模型数据和扫描缓冲区。
+
+物理时钟由板卡时钟生成器产生，Shell运行在250 MHz，Role中的DUT执行控制及扫描链运行在50 MHz，相关AXI组件负责跨时钟域访问。50 MHz是驱动执行、通信和扫描电路的物理频率，不是DUT的有效逻辑频率。每个DUT逻辑周期还需等待跨分区传播及模型交互完成，因此实际推进速度需要通过运行日志测量。
+
+本阶段已将PicoRV32、Rocket、香山南湖（Nanhu）及单核昆明湖（KMH）生成比特流并部署到双FPGA平台。PicoRV32和Rocket使用手工编写的裸机测试程序，Nanhu与KMH运行OpenSBI和Linux。已收集的板级图片与性能摘录主要覆盖PicoRV32和KMH。
+
+% TODO(平台配置)：补实际启用的QSFP端口、Aurora lane数量与速率，
+% 以及Host/PCIe配置、DUT与Driver版本、内存模型配置和bitstream构建标识。
+% TODO(配置映射)：将本节板级运行逐项对应1.4的具体划分产物，
+% 未匹配前不将15组summary中的N_cut直接作为各次上板的执行参数。
+% TODO(平台配图)：若补充实物连接照片，标明两块NM37、各自PCIe和Aurora连接；
+% 当前复用已有架构图与实际终端记录，不新增未经核对的硬件示意参数。
+
 \subsection{DUT部署与运行}
 
+\paragraph{裸机程序与可观察结果}
+
+PicoRV32和Rocket运行的裸机程序来自同一组手工编写的测试源码，依次执行素数筛选和串口回显。程序先打印\texttt{Sieve benchmark}，随后计算小于128的素数，在\texttt{Primes:}之后逐行输出2至127的31个素数；最后进入Echo测试，打印\texttt{Input:}并等待用户输入，再将接收到的字符回显。
+
+图\ref{fig:midterm-picorv32-board}展示PicoRV32的双FPGA运行记录，素数输出与测试程序一致，终端还记录了\texttt{hello}、\texttt{world}等交互内容和再次出现的输入提示。该结果检查了程序计算、串口输出及用户输入通路，支持所测试裸机场景的功能正确性。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.83\linewidth,height=0.72\textheight,keepaspectratio]{experiments/figure/picorv32-2fpga.png}
+    \caption{PicoRV32双FPGA运行素数筛选与Echo裸机程序}
+    \label{fig:midterm-picorv32-board}
+\end{figure}
+
+% 源码：examples/workload/baremetal/main.c、sieve.c、echo.c。
+% TODO(裸机Case)：补Rocket独立终端记录、编译配置与镜像标识；
+% 如报告自动化输出比较，须另附实际UART文本和比较方法。
+
+\paragraph{操作系统启动与交互}
+
+KMH测试采用单核配置，固件为OpenSBI v1.6，Linux基于6.12.0版本，实际镜像在终端中标识为\texttt{6.12.0+}。图\ref{fig:midterm-kmh-opensbi}记录了OpenSBI启动、单HART平台信息及向后续软件交接所需的配置，表明所测设计已经能够执行系统固件。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.80\linewidth,height=0.70\textheight,keepaspectratio]{experiments/figure/kmh-2fpga-opensbi.png}
+    \caption{KMH双FPGA平台上的OpenSBI v1.6启动记录}
+    \label{fig:midterm-kmh-opensbi}
+\end{figure}
+
+下一步在OpenSBI运行后暂停DUT，于逻辑周期1099913保存检查点，然后继续执行并进入Linux早期启动，见图\ref{fig:midterm-kmh-save-linux}。而图\ref{fig:midterm-kmh-linux-cli}进一步记录了Linux运行\texttt{/init}、出现Shell提示符，以及执行\texttt{cat /proc/cpuinfo}和\texttt{uname -a}的结果，说明系统已进入可交互的Linux命令行，而不只是打印内核启动信息。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{experiments/figure/kmh-2fpga-linux.png}
+    \caption{KMH在周期1099913保存检查点后继续执行Linux启动}
+    \label{fig:midterm-kmh-save-linux}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth,height=0.70\textheight,keepaspectratio]{experiments/figure/kmh-linux-cli.png}
+    \caption{KMH进入Linux命令行并查询处理器及内核信息}
+    \label{fig:midterm-kmh-linux-cli}
+\end{figure}
+
+Nanhu也已完成OpenSBI、Linux启动及命令行运行。上述结果表明双FPGA系统能够支持所测试的固件和操作系统交互。
+
+% TODO(OS Case与配置)：补Nanhu固件/内核版本、独立CLI记录，
+% 并归档KMH各截图对应的完整日志、镜像与会话，核对是否同一次执行。
+% 若报告Linux启动时间/周期，明确复位或内核入口至CLI的边界，
+% 排除人工CLI停留，不能使用客户机内核时间代替Host耗时。
+
 \subsection{可暂停与可观测能力验证}
+\label{sec:midterm-prototype-observation}
+
+\paragraph{一致暂停与检查点保存}
+
+板级验证首先在DUT执行过程中请求一致暂停，再收集各Part的局部扫描数据和内存数据。KMH的记录显示两个Part在周期1099913完成同步暂停，Host可见耗时为1.04744 ms，随后在该周期保存检查点。保存结束后继续运行，终端出现Linux启动信息，表明该次状态导出后能够恢复正常执行模式并继续推进。这里的继续执行没有重新加载先前检查点，因而不将这张截图作为Restore正确性的证据。
+
+PicoRV32日志中共有23条双Part暂停摘录，响应时间最小为0.803 ms、最大为0.925 ms，中位数为0.814 ms。部分暂停由串口输入处理触发，可能处于同一段运行内，因此这些记录是已有执行过程的描述性样本，不作为23次独立重复实验或暂停成功率统计。Driver在报告同步暂停完成前检查所有Part的最终tick，但内部状态是否正确仍需与同周期参考状态比较。
+
+\paragraph{恢复、重放与状态比较案例}
+
+本阶段已在四个DUT上完成一致暂停、检查点保存、FPGA恢复与重放，以及软件RTL重放的功能实验。实验的关键比较方式是：先保留一条从初始状态连续运行的参考轨迹，再在非零周期$T_0$保存全局检查点；将该检查点实际加载回两个Part及相关内存，按记录施加后续输入，继续运行至目标周期$T_1$。最后将输出和选定的寄存器、存储内容与参考路径比较，检查恢复是否重现了后续行为，而不只检查加载命令是否结束。
+
+软件RTL重放使用同一检查点和编译期状态映射，将两个Part的扫描状态还原到配套RTL模型中，并在指定逻辑周期重现Input变化。针对待观察区间导出PC、控制状态或其他选定内部信号的波形，即可将FPGA上的长时间执行与软件中的细粒度观察连接起来。已有功能实验的后续运行结果符合预期；周期级事件、暂停点状态及重放波形的具体比较范围，分别按照第\ref{sec:midterm-cycle-cosim}节和第\ref{sec:midterm-state-validation}节的方法整理。
+
+% TODO(功能性实验材料，非新增性能数据)：上述四DUT功能状态由作者确认。
+% 1. 为每个DUT补一行Case索引：负载、暂停/检查点T_0、目标T_1、
+%    实际操作、参考对象和结果；不要求各DUT比较范围完全相同。
+% 2. 选一例记录各Part的屏障进度、目标、差异化步数和最终tick，
+%    附同周期可映射寄存器或SRAM内容的比较，区分计数对齐与状态正确。
+% 3. 选一例非零检查点真正load后继续执行的对照记录，
+%    不能用save后run或本节load计时单独替代。
+% 4. 加入软件RTL Replay代表波形，注明信号、输入轨迹、比较区间和结论。
+% 未归档详细Case不改变已完成的功能状态，但不据此声称全状态逐周期等价。
 
 \subsection{阶段性系统结果}
+\label{sec:midterm-prototype-results}
+
+\paragraph{有效逻辑运行频率}
+
+运行性能使用Driver一次运行作用域内推进的逻辑周期数$\Delta C$与Host单调时钟耗时$\Delta t$计算：
+\begin{equation}
+    f_{\mathrm{eff}}=\frac{\Delta C}{\Delta t}.
+    \label{eq:midterm-effective-frequency}
+\end{equation}
+该作用域包含内部轮询、UART交互以及期间发生的暂停或自动检查点开销，但不包含运行命令之外的CLI等待。表\ref{tab:midterm-board-frequency}选取已归档日志中耗时超过1 s的运行片段，避免将64周期等短片段中较显著的固定控制开销直接当作平台长期运行速度。
+
+\begin{table}[htbp]
+    \centering
+    \caption{已归档较长运行片段的有效逻辑频率}
+    \label{tab:midterm-board-frequency}
+    \small
+    \begin{tabular}{@{}lrrr@{}}
+        \toprule
+        DUT与片段      & 推进周期数   & Host耗时/s & 日志频率/MHz \\
+        \midrule
+        PicoRV32片段1 & 469496  & 1.43391  & 0.327423 \\
+        PicoRV32片段2 & 2979192 & 9.11789  & 0.326741 \\
+        KMH保存检查点前片段 & 1095817 & 3.40238  & 0.322073 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+PicoRV32两段合计推进3448688个周期，用时约10.5518 s，按总周期除以总时间得到约0.326834 MHz。KMH的0.322073 MHz对应保存检查点前的执行窗口，不是Linux完整启动或进入CLI后的频率。
+
+% TODO(频率配置)：补全原日志及命令、工作负载阶段、DUT/Driver构建版本，
+% 保留日志sink/filter/AutoFlush和加载校验配置。Rocket/Nanhu如需定量横比，
+% 再补同口径计时；当前不填四DUT全量频率表。
+
+\paragraph{检查点加载与保存开销}
+
+表\ref{tab:midterm-checkpoint-time}将检查点操作分为内存阶段、设计状态阶段和总时间。加载依次执行Host文件至DDR、DDR经扫描链至设计；保存按相反方向执行。内存阶段包含主机与FPGA DDR交换数据及文件处理，设计状态阶段覆盖扫描控制、模型空闲等待和完成轮询。总时间已包含两个子阶段，不应再次相加。
+
+\begin{table}[htbp]
+    \centering
+    \caption{双FPGA检查点操作的逐次计时（单位：s）}
+    \label{tab:midterm-checkpoint-time}
+    \small
+    \begin{tabular}{@{}llrrr@{}}
+        \toprule
+        DUT      & 操作  & 内存阶段      & 设计状态阶段     & 总时间       \\
+        \midrule
+        PicoRV32 & 加载1 & 0.0133662 & 0.00514643 & 0.0189032 \\
+                 & 加载2 & 0.0198311 & 0.00583279 & 0.0268912 \\
+                 & 保存1 & 0.0745898 & 0.00736113 & 0.0840378 \\
+                 & 保存2 & 0.0746148 & 0.00737647 & 0.0837636 \\
+        KMH      & 加载1 & 8.26399   & 0.18409    & 8.44846   \\
+                 & 加载2 & 8.1737    & 0.184071   & 8.35907   \\
+                 & 保存1 & 79.9447   & 0.185341   & 80.1357   \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+PicoRV32两条保存记录总时间约为84 ms。KMH的保存总时间为80.1357 s，其中设计状态扫描为0.185341 s，内存阶段为79.9447 s，占总时间约99.76\%。这说明该次保存的主要开销位于Host--DDR与文件处理通路，而不在设计状态扫描阶段。由于内存阶段同时包含文件I/O、缓冲和设备访问，尚不能把这一比例解释为PCIe、DDR或磁盘的独立瓶颈。
+
+\paragraph{数据交换规模与阶段有效吞吐}
+
+PicoRV32每次加载98304 Byte（96 KiB）有效内存数据，保存时实际读取102400 Byte。KMH加载的有效量为2148638720 Byte，保存实际读取2149613568 Byte。保存读取量较大是因为Driver先读取完整分配区域，再将文件裁剪到有效长度。这里统计的是检查点相关AXI内存区域，不等于仅寄存器/SRAM的扫描位数，也不等于含输入记录和元数据的整个检查点目录大小。
+
+使用实际DDR传输字节数除以内存阶段时间，PicoRV32加载的阶段有效吞吐为4.727--7.014 MiB/s，保存约1.309 MiB/s；KMH加载为247.955--250.694 MiB/s，保存为25.643 MiB/s。这些值均包含文件I/O等阶段开销，不能标为纯PCIe或DDR带宽。不同DUT的数据量差异很大，小数据固定开销与大数据流式访问的影响也不同，不据此直接判断硬件链路性能优劣。
+
+% 数据与字段口径：experiments/board-performance.md；raw/perf.txt原文保留。
+% TODO(检查点配置)：补每组检查点tick、AXI区域配置和实际目录文件清单；
+% 若要报告完整Snapshot大小，另行统计文件，不用payload_bytes替代。
+% 若需定位Host--DDR慢的原因，需隔离文件I/O与设备读写，不由现有计时归因。
+
+\paragraph{双分区综合资源}
+
+表\ref{tab:midterm-prototype-utilization}汇总Vivado 2024.2针对VU37P生成的双分区综合报告，统计层次为\texttt{role\_i/ClockResetCore\_0/emu\_system}及其子层次。数据包含该层次内的系统插入逻辑，不是纯DUT净占用，也不是整个Role或Shell总占用。BRAM以36 Kb Tile为单位，两个18 Kb块计为一个Tile，因此保留0.5计数。
+
+\begin{table}[htbp]
+    \centering
+    \caption{双分区EMU\_SYSTEM层次的综合资源数量}
+    \label{tab:midterm-prototype-utilization}
+    \small
+    \begin{tabular}{@{}lrrrrrr@{}}
+        \toprule
+        设计目录名      & Part & LUT    & FF     & BRAM Tile & URAM & DSP \\
+        \midrule
+        picorv32   & 0    & 3833   & 2869   & 6.5       & 0    & 0   \\
+                   & 1    & 2654   & 2076   & 0         & 0    & 4   \\
+        rocket     & 0    & 16005  & 9745   & 4.5       & 2    & 0   \\
+                   & 1    & 39465  & 19718  & 20        & 0    & 15  \\
+        xs-minimal & 0    & 528098 & 309532 & 320.5     & 13   & 0   \\
+                   & 1    & 343605 & 104227 & 0         & 0    & 0   \\
+        nanhu-g    & 0    & 872861 & 524416 & 340       & 141  & 0   \\
+                   & 1    & 662769 & 225610 & 36.5      & 0    & 0   \\
+        kmh        & 0    & 953991 & 460539 & 288.5     & 13   & 0   \\
+                   & 1    & 987830 & 212936 & 0         & 0    & 1   \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+不同设计的资源规模及分布差异明显：PicoRV32的LUT占用为数千个，而KMH两Part分别接近95万和99万个。同时，KMH的BRAM、URAM均集中在Part 0。综合FF数量与表\ref{tab:midterm-scan-state}的扫描寄存器位数含义不同，不能互相替代。当前仅有双分区综合资源，未纳入3、4分区综合或布局布线后时序报告，也没有匹配的未插入基础设施基线，因此不计算扫描、通信机制的独立资源增量，不以本表宣称实现后时序通过。
+
+% 数据来源：experiments/synthesis-utilization.md及10份完整原始报告。
+% TODO(实现与基线)：若保留最终实现资源、时序收敛或插入开销的结论，
+% 补匹配的布局布线后报告、WNS/TNS、时钟约束及未插入机制的基线。
+
+综上，双FPGA平台已能够运行所测试的裸机和操作系统负载，并支持一致暂停、检查点和恢复重放功能。当前定量材料给出了部分负载窗口的有效频率、状态管理开销及双分区综合资源。这些结果同时暴露了低逻辑频率、资源类型集中和较大检查点保存开销。下一章将围绕资源建模、跨片执行时间分解和Fabric控制流量分析尚待解决的问题。
