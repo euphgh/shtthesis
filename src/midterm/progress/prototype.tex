@@ -5,7 +5,15 @@
 
 \subsection{实验平台与系统结构}
 
-实验使用两块课题组研制的NM37开发板，其核心器件为VU37P FPGA，每块板卡提供三个光口。Host通过PCIe分别访问两块板卡的控制寄存器和DDR，两个DUT分区之间通过QSFP连接的Aurora链路交换边界数据。各Part部署在对应FPGA的Role中，Shell提供主机访问、板间链路及内存等基础设施，DDR承载内存模型数据和扫描缓冲区。
+实验使用两块课题组研制的NM37开发板，其核心器件为VU37P FPGA，每块板卡提供三个光口。如图\ref{remus-2fpga-hw}所示，主机通过PCIe分别访问两块板卡的控制寄存器和DDR，两个DUT分区之间通过QSFP连接的Aurora链路交换边界数据。各Part部署在对应FPGA的Role中，Shell提供主机访问、板间链路及内存等基础设施，DDR承载内存模型数据和扫描缓冲区。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\linewidth]{figure/remus-2fpga-hw.jpg}
+    \caption{双FPGA原型系统硬件结构实物图}
+    \label{fig:remus-2fpga-hw}
+\end{figure}
+
 
 物理时钟由板卡时钟生成器产生，Shell运行在250 MHz，Role中的DUT执行控制及扫描链运行在50 MHz，相关AXI组件负责跨时钟域访问。50 MHz是驱动执行、通信和扫描电路的物理频率，不是DUT的有效逻辑频率。每个DUT逻辑周期还需等待跨分区传播及模型交互完成，因此实际推进速度需要通过运行日志测量。
 
@@ -167,7 +175,7 @@ PicoRV32每次加载98304 Byte（96 KiB）有效内存数据，保存时实际�
 
 \paragraph{双分区综合资源}
 
-表\ref{tab:midterm-prototype-utilization}汇总Vivado 2024.2针对VU37P生成的双分区综合报告，统计层次为\texttt{role\_i/ClockResetCore\_0/emu\_system}及其子层次。数据包含该层次内的系统插入逻辑，不是纯DUT净占用，也不是整个Role或Shell总占用。BRAM以36 Kb Tile为单位，两个18 Kb块计为一个Tile，因此保留0.5计数。
+表\ref{tab:midterm-prototype-utilization}汇总Vivado 2024.2针对VU37P生成的双分区综合报告，统计层次为\texttt{role\_i/ClockResetCore\_0/emu\_system}及其子层次。即被划分后的DUT加上扫描链相关的控制电路所需的FPGA资源，不是Role或Shell总占用。BRAM以36 Kb Tile为单位，两个18 Kb块计为一个Tile，因此保留0.5计数。
 
 \begin{table}[htbp]
     \centering
