@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build REMUS background slides using OfficeCLI, outside the agent sandbox.
+"""Build REMUS midterm slides using OfficeCLI, outside the agent sandbox.
 
 Run with the system Python; no third-party Python packages are required.
 The default output stays in thesis/build/pptx until it has been reviewed.
@@ -12,11 +12,12 @@ from pathlib import Path
 import shutil
 import subprocess
 
-from midterm_pptx import slide_01, slide_02, slide_03, slide_04, slide_05
+from midterm_pptx import slide_01, slide_02, slide_03, slide_04, slide_05, slide_06, slide_07, slide_08, slide_09, slide_10
 from midterm_pptx.common import BUILD, NAVY, TEAL, AMBER
 
 # Register new page modules here; each exposes TITLE and build_commands().
-SLIDES = {1: slide_01, 2: slide_02, 3: slide_03, 4: slide_04, 5: slide_05}
+SLIDES = {1: slide_01, 2: slide_02, 3: slide_03, 4: slide_04, 5: slide_05, 6: slide_06,
+          7: slide_07, 8: slide_08, 9: slide_09, 10: slide_10}
 
 
 def main():
@@ -27,9 +28,11 @@ def main():
     parser.add_argument("--preview", type=Path)
     parser.add_argument("--officecli", default=shutil.which("officecli") or "/home/hgh/.local/bin/officecli")
     args = parser.parse_args()
-    args.output = (args.output or BUILD / f"REMUS_Background_Slide_{args.slide}.pptx").resolve()
-    args.preview = (args.preview or BUILD / f"midterm-background-{args.slide:02}.png").resolve()
     page = SLIDES[args.slide]
+    output_stem = getattr(page, "OUTPUT_STEM", f"REMUS_Background_Slide_{args.slide}")
+    preview_stem = getattr(page, "PREVIEW_STEM", f"midterm-background-{args.slide:02}")
+    args.output = (args.output or BUILD / f"{output_stem}.pptx").resolve()
+    args.preview = (args.preview or BUILD / f"{preview_stem}.png").resolve()
     commands = page.build_commands()
     log_prefix = f"slide-{args.slide:02}"
     BUILD.mkdir(parents=True, exist_ok=True)

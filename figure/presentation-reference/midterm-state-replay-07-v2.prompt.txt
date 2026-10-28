@@ -1,0 +1,40 @@
+Generation mode: built-in image_gen
+Design reference only; not an editable PPTX.
+
+Create ONE refined academic thesis defense slide design reference, landscape 16:9, high resolution. This is a NEW revised design for REMUS slide 7. Flat white background, crisp professional PowerPoint appearance, Arial typography, navy #183B56 headings, teal #008C95 accents, amber #DF973E used sparingly, body #20354A, soft teal #EAF4F3 and pale blue #DCEAF2. Thin teal line below title. Comfortable whitespace, no shadows, gradients or 3D.
+
+IMPORTANT CONTENT REVISION: The page must primarily explain the METHOD, not experimental procedures. REMOVE the top workflow diagram entirely. NO chip icons, snapshot cylinders, arrows, timelines or process diagrams. NO cycle counts, six-signal claims, PicoRV32 experiment configuration, validation checklists, experiment steps, or separate bottom result band.
+
+Top 13%:
+Single line title, bold navy, 30pt equivalent:
+"Distributed State Capture, Restore and Replay"
+Thin teal horizontal rule.
+
+Body y=20–86%, two columns with a generous gap.
+LEFT x=4–43%: three typography-led method sections. Use short teal numbered labels 01/02/03 aligned with section headings. Section 1 more compact; sections 2 and 3 are the central content. Typography hierarchy must make hardware write-back vs software mapping immediately clear. Native editable-looking text design, not a dense paragraph. Section headings 22pt equivalent bold navy, body 19pt equivalent. Use selective bold emphasis on "by partition" and "state mapping" if possible.
+Exact English copy:
+
+"01  Global Snapshot"
+"Capture partition states at the same DUT cycle."
+"Reuse REMU’s Scan Dump mechanism."
+
+"02  FPGA Restore"
+"Write back scan data by partition."
+"Restore local registers, SRAM and memory."
+
+"03  Software RTL Replay"
+"Decode partition data through state mapping."
+"Load RTL states and replay recorded inputs."
+
+Break long body lines naturally, keep good vertical separation. Section headings may have a small teal number beside them. No rounded card around each text section; use clean academic typography, fine spacing and whitespace.
+
+RIGHT x=48–96%, y=23–69%: ONE large horizontal light-blue rectangle #DCEAF2 with thin teal outline, reserved for an experimental waveform comparison screenshot. Aspect ratio about 2.44:1, centered vertically around y=44–48%. Only centered text inside:
+"Waveform Comparison"
+"Experimental image placeholder"
+No fake waveform, signal traces, screenshot, table or numerical data; this must be an obviously colored placeholder box.
+
+Immediately beneath the rectangle, one brief readable English sentence in navy, wrapped into two or three lines if needed:
+"Waveform replay reproduces the same signal values as FPGA execution."
+This is the ONLY experimental conclusion. No further explanation, footnote, caption, badge, metrics or caveat.
+
+The right image and caption should balance the text column: large enough for later screenshot insertion, with ample whitespace beneath and around. Bottom-right page number "7". Maintain the restrained REMUS navy/teal academic style. Ensure all method text is legible, with no overflow or touching columns. All listed copy must be accurate and spelled correctly.

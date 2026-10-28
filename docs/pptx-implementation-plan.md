@@ -1,5 +1,7 @@
 # REMUS中期PPT制作计划：从设计图到可编辑PPTX
 
+第6、7、10页已按后续确认的方案制作，见文末逐页制作记录；前五页的历史制作记录保留如下。
+
 本文面向后续制作PPT的作者与agent，记录材料入口、前五页的元素拆分和OfficeCLI实施步骤。
 当前已完成**第1–5页独立新主题PPTX及OfficeCLI PNG检查**；五页合并文件尚未创建。
 第1页文件：[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_1.pptx)、
@@ -247,3 +249,65 @@ HTML文本检查可以辅助排查，但不能代替对重叠、箭头方向、�
 第二批第6–15页需要进一步收集周期/暂停时序、局部状态到全局Snapshot的映射、
 Restore/Replay实际完成范围、划分指标、Runtime拓扑、真实板卡照片及实验条件。
 这些材料的缺失不妨碍先完成背景页面，但不能用示意图或开题预期数据填充实验结果页。
+
+## 第6页制作记录（2026-10-28）
+
+第6页采用简短左侧文字与右侧暂停示意图。按用户要求，删除设计图中的“One fewer”框、
+“Different progress”说明和底部“A common DUT”结论行，不展开LI-TDM首尾阶段细节。
+标题、左侧说明与页码为原生可编辑元素；右图在PPT中裁取设计参考的右侧面板，
+保留原始PNG像素与比例，不重新绘制。图中标签和箭头为栅格内容。
+
+- 页面源：`scripts/midterm_pptx/slide_06.py`。
+- 设计参考：`figure/presentation-reference/midterm-progress-06-v1.png`。
+- PPTX：`pptx/midterm/REMUS_Progress_Slide_6.pptx`。
+- 预览：`figure/presentation-preview/midterm-progress-06.png`。
+- 在沙箱外执行`/usr/bin/python3 scripts/build_midterm_pptx.py --slide 6`，默认产物位于`build/pptx/`。
+
+OfficeCLI的OpenXML校验通过，`view issues`为0；原生文字为Arial，画幅为16:9，
+PNG已进行视觉复核。完成左右标题对齐调整后重新生成并检查。PowerPoint桌面端尚未复核。
+右图中的周期数为概念示例，共用箭头概括Host对各节点的操作，不表示FPGA转发Host控制命令。
+
+## 第7页制作记录（2026-10-28）
+
+采用用户确认的第二版设计：左侧三个方法小节为Global Snapshot、FPGA Restore和Software RTL Replay，
+突出`by partition`和`state mapping`；右侧替换为真实波形对照图，下方保留一句实验结论。
+不添加流程图，不展开实验周期和操作步骤。图上保留简短的Cosim来源标签，讲稿备注区分
+软件重放截图、作者确认的板级检查点对照和FPGA恢复结果，不把它们合并成全状态或全周期等价证明。
+
+- 页面源：`scripts/midterm_pptx/slide_07.py`。
+- 设计参考：`figure/presentation-reference/midterm-state-replay-07-v2.png`。
+- 图片源：`experiments/figure/picorv32-cosim-vs-replay-state-tick42080.png`。
+- PPTX：`pptx/midterm/REMUS_Progress_Slide_7.pptx`。
+- 预览：`figure/presentation-preview/midterm-progress-07.png`。
+- 在沙箱外执行`/usr/bin/python3 scripts/build_midterm_pptx.py --slide 7`，默认产物位于`build/pptx/`。
+
+包含17个原生可编辑形状和1张独立图片；图内文字及波形属于原始截图，不能作为可编辑文字处理。
+原图按1275:522等比嵌入，嵌入数据与源文件SHA-256一致，不裁剪或重绘实验结果。
+标题30pt、小节标题24pt、正文18pt、结论20pt；全部原生文字为Arial，画幅16:9。
+增加正文文本框高度及行距后重新生成，OpenXML校验通过、`view issues`为0；对象边界检查及
+独立PNG视觉复核通过。截图细小信号文字需放大查看，不以拉伸图片换取版面填满。
+PowerPoint桌面端尚未复核。
+
+## 第10页制作记录（2026-10-28）
+
+采用用户确认的“左侧实物平台、右侧运行结果、底部性能数据”布局。
+左侧裁取真实双NM37实物照片，去掉上方示波器并保留Host内两块板卡；右侧两行可编辑表格列出
+PicoRV32/Rocket裸机负载及Nanhu/KMH的OpenSBI/Linux负载，下方使用KMH实际Linux Shell截图。
+截图保留完整的`cat /proc/cpuinfo`、`uname -a`与Shell提示符，不重绘终端文字。
+
+- 页面源：`scripts/midterm_pptx/slide_10.py`。
+- PPTX：`pptx/midterm/REMUS_Prototype_Slide_10.pptx`。
+- 预览：`figure/presentation-preview/midterm-prototype-10.png`。
+- 图片源：`figure/remus-2fpga-hw.jpg`、`experiments/figure/kmh-2fpga-linux-cli.png`。
+- 在沙箱外执行`/usr/bin/python3 scripts/build_midterm_pptx.py --slide 10`，默认产物位于`build/pptx/`。
+
+底部依次展示PicoRV32约0.327 MHz、KMH约0.322 MHz、Host可见全局暂停约0.8–1.1 ms。
+脚注注明运行窗口及Host计时口径，讲稿记录精确数据、来源、样本数量和适用范围。
+KMH频率为保存检查点前的运行片段，不作为完整Linux启动或进入CLI后的频率。
+本页为PCIe直连原型，不作为Fabric板级验证证据。
+
+页面包含29个原生可编辑形状和2张图片；表格由可编辑文本单元格及分隔线组成。
+标题30pt、分区标题22pt、平台与表格文字17pt、Linux结论18pt、性能数值22pt；原生文字均为Arial。
+两张嵌入图片与源文件SHA-256一致，PPT原生裁剪保持可见区域比例。修正终端截图边缘及数字框高度后，
+OpenXML校验通过、`view issues`为0，对象边界和图片比例检查、独立PNG视觉复核通过。
+既有交付PPTX哈希未变；PowerPoint桌面端尚未复核。
