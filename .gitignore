@@ -29,7 +29,7 @@ release*/
 *.pdf
 !shanghaitech-emblem.pdf
 !shtthesis-user-guide.pdf
-!resources/*.pdf
+!resource/*.pdf
 
 # ignore office temp files
 ~$*.doc*
