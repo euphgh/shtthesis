@@ -98,12 +98,13 @@ REMU已有运行、暂停、定步执行和扫描模式控制。引入LI-TDM跨�
 
 \paragraph{分布式状态提取与映射验证}
 
-状态提取实验比较PicoRV32和KMH的多分区Cosim与单体RTL仿真。多分区设计在一致暂停后执行Scan Dump，将扫描数据保存并按分区映射解码；单体RTL仿真运行到相同的DUT逻辑周期，作为状态对照。
+状态提取实验比较PicoRV32和KMH的多分区执行与同周期单体参考。多分区设计在一致暂停后执行Scan Dump，将扫描数据保存并按分区映射解码；参考环境推进到相同的DUT逻辑周期，再比较对应状态。第\ref{sec:midterm-cycle-cosim}节给出的PicoRV32单Part与双Part Cosim案例，在42080周期取得四个对应寄存器值一致的结果，同时明确了层次展开、重新打包后的名称映射。
 
 已有测试中，两种设计在实际比较的内部状态范围内结果相同，说明在已测试条件下，分区扫描、数据收集和状态映射能够得到与单体参考一致的状态。这一结果不等于全部内部状态或所有执行周期均已完成逐位对照。
 
-% TODO(状态提取实验)：补充各DUT版本、程序、分区数量、暂停周期、
-% 实际比较的寄存器和SRAM范围、对照方式及日志或波形依据。
+% PicoRV32具体Case已见1.2及experiments/picorv32-cosim-cycle-state.md。
+% TODO(状态提取复现)：补具体构建、完整映射和解码命令；
+% KMH对照仍补程序、暂停周期、实际寄存器/SRAM范围和日志。
 
 为说明分布式扫描需要处理的状态规模，表\ref{tab:midterm-scan-state}列出五组双分区设计生成RTL中的扫描参数。寄存器位数为扫描条目位宽之和，存储器位数为各扫描存储条目位宽与深度乘积之和，均以bit计量，而非寄存器声明或SRAM实例个数。设计名称沿用实验目录，其中\texttt{xs-minimal}保留为独立配置，不将其直接等同于其他香山配置。
 
@@ -140,36 +141,82 @@ PicoRV32双分区合计包含1635 bit寄存器状态和218080 bit存储器状态
 
 \paragraph{非零周期检查点的恢复与重放验证}
 
-为验证检查点能否用于后续执行，已有实验从非零逻辑周期保存的检查点出发，分别进行软件RTL Replay及FPGA上的Replay、Restore。已有测试的后续运行结果符合预期，继续运行后再次保存的检查点数据也符合预期。表\ref{tab:midterm-state-replay-tests}汇总了现阶段的定性结果。
+为验证检查点能否用于后续执行，选取PicoRV32双Part Cosim在$T_0=2048$周期保存的检查点，使用Icarus Verilog进行软件RTL恢复与重放。参考路径继续执行，并在全局暂停后的$T_1=42080$周期再次保存检查点。重放路径则实际加载2048周期状态，设置100000周期的重放长度并导出FST波形，运行记录如图\ref{fig:midterm-picorv32-nonzero-replay}所示。重放输出了2至127的31个素数，说明恢复后的模型能够继续执行素数筛选程序。
 
-该实验以检查点周期$T_0$和后续目标周期$T_1$描述比较过程。参考路径从相同初始条件运行至$T_1$；恢复路径将$T_0$的分区扫描状态、Memory及相应Input加载完成后，重现$(T_0,T_1]$内的输入变化，再比较$T_1$处的程序输出与选定状态。软件RTL路径则在相同恢复点加载映射后的状态，记录后续内部波形。这样，验证对象不仅是检查点文件能否读写，还包括恢复点是否足以重现后续执行。只有保持状态、输入记录及编译产物匹配，才能据此讨论确定性重放。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.86\linewidth,height=0.62\textheight,keepaspectratio]{experiments/figure/picorv32-replay.png}
+    \caption{PicoRV32从2048周期检查点加载状态并进行软件RTL重放}
+    \label{fig:midterm-picorv32-nonzero-replay}
+\end{figure}
+
+比较使用相同的DUT绝对逻辑周期，而不是直接比较波形横轴数值与检查点编号。重放的时间原点对应加载的2048周期状态，因此42080周期对应的相对周期为
+\begin{equation}
+    \Delta C=T_1-T_0=42080-2048=40032.
+    \label{eq:midterm-replay-cycle-offset}
+\end{equation}
+在相对周期40032处，将重放波形与42080周期检查点的解码值比较，得到图\ref{fig:midterm-picorv32-replay-state-comparison}和表\ref{tab:midterm-picorv32-replay-signals}所示结果。六个选定信号分布在两个Part层次中，包括UART接口及处理器数据通路，图示数值均一致。该比较检验了从早期检查点重新加载后到达后续逻辑状态的能力，而不只是保存后直接继续运行。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\linewidth]{experiments/figure/ckpt-vs-wave.png}
+    \caption{42080周期检查点解码值与重放相对40032周期处的波形比较}
+    \label{fig:midterm-picorv32-replay-state-comparison}
+\end{figure}
 
 \begin{table}[htbp]
     \centering
-    \caption{状态恢复与重放的阶段性验证结果}
+    \caption{PicoRV32后续同周期的检查点与软件重放信号值}
+    \label{tab:midterm-picorv32-replay-signals}
+    \small
+    \begin{tabular}{@{}lcll@{}}
+        \toprule
+        信号（简写） & 位宽/bit & 42080周期检查点 & 重放相对40032周期 \\
+        \midrule
+        \texttt{u\_uart.write\_addr} & 4 & \texttt{4} & \texttt{4} \\
+        \texttt{u\_uart.write\_data} & 32 & \texttt{00000031} & \texttt{00000031} \\
+        \texttt{u\_uart.write\_strb} & 4 & \texttt{f} & \texttt{f} \\
+        \texttt{pcpi\_rs1} & 32 & \texttt{30000000} & \texttt{30000000} \\
+        \texttt{pcpi\_rs2} & 32 & \texttt{0000000a} & \texttt{0000000a} \\
+        \texttt{alu\_out\_q} & 32 & \texttt{3000000a} & \texttt{3000000a} \\
+        \bottomrule
+    \end{tabular}
+    \par\smallskip
+    {\footnotesize 数值均为十六进制；UART位于Part 0，所列处理器信号位于Part 1。}
+\end{table}
+
+本次重放日志提示2048周期之后没有新的输入变化轨迹，后续输入保持不变，因此该案例验证的是这一输入条件下的恢复与后续执行，不作为变化外部输入或Echo交互重放的证据。100000周期是实际设置的重放长度，所展示的内部数值比较发生在其中一个后续周期，不能等同于整个区间全部状态均已逐周期核验。另外，表\ref{tab:midterm-single-part-state-comparison}与表\ref{tab:midterm-picorv32-replay-signals}的观察集合不同，只有共同出现的信号才能直接联系两种比较。
+
+除这两个Cosim案例外，单板、双板上板实验也已完成板级检查点与相应Cosim检查点的对照，并取得一致结果。这一补充将检查点正确性的检查延伸到实际FPGA执行与状态导出通路，具体板级验证范围在第\ref{sec:midterm-board-checkpoint-comparison}节说明。已有FPGA恢复与重放测试的后续运行及再次保存结果也符合预期；这些功能状态与当前新增的可见软件重放案例分别记录，表\ref{tab:midterm-state-replay-tests}概括了各类结果。
+
+\begin{table}[htbp]
+    \centering
+    \caption{状态提取、恢复与重放的阶段性验证结果}
     \label{tab:midterm-state-replay-tests}
     \small
     \renewcommand{\arraystretch}{1.25}
     \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.48\linewidth}>{\raggedright\arraybackslash}X@{}}
         \toprule
-        测试项目 & 已确认结果 \\
+        测试项目 & 阶段性结果及依据 \\
         \midrule
-        非零周期检查点的软件RTL Replay及FPGA Replay、Restore & 后续运行结果符合预期 \\
-        继续运行后再次保存检查点 & 检查点数据符合预期 \\
+        单Part与双Part Cosim的42080周期检查点 & 四个对应寄存器值一致，已有截图 \\
+        双Part 2048周期检查点的软件RTL恢复与重放 & 在绝对周期42080，六个选定信号值一致，已有波形截图 \\
+        单板、双板检查点与相应Cosim检查点 & 已取得一致结果，板级原始比较记录待归档 \\
+        已有FPGA Replay、Restore及再次保存实验 & 后续运行与保存结果符合预期，具体案例记录继续补充 \\
         \bottomrule
     \end{tabularx}
 \end{table}
 
-这些结果表明，分区检查点已能够接入既有的恢复与重放流程。但现有材料尚需补充各组测试的DUT、平台、检查点周期、继续执行区间和实际比较对象。因此，本节仅报告已确认的阶段性结果，不将运行结果符合预期等同于所有内部信号均已逐周期重放。
+上述结果分别检查了同周期分区状态、非零检查点的软件恢复与继续执行，以及板级导出状态与Cosim的对应关系。它们为状态管理流程提供了互补证据，但各实验的比较范围并不相同，不将其合并为全部寄存器、SRAM、输入或所有执行周期已经完成统一的全量比较。
 
-% TODO(恢复与重放实验)：补充每组测试的DUT、FPGA板卡或软件仿真器、
-% 分区配置、检查点周期、执行区间、参考结果与再次保存的比较范围。
-% 现有结论不推定各组测试覆盖相同DUT或全部内部波形。
-% TODO(恢复/重放Case)：选取一例非零T_0，补恢复命令及加载记录、
-% T_1参考输出/再导出状态对照，以及软件RTL重放的代表性波形。
-% 当前T_0/T_1为实验流程符号，不是已归档数值；
-% 1.6的KMH save后run截图仅证明保存后续跑，不证明曾执行Restore。
+% 已归档案例：experiments/picorv32-cosim-replay.md，T_0=2048、T_1=42080，
+% DURATION=100000，比较相对周期40032；原图为Cosim而非板级记录。
+% TODO(软件案例复现)：补两份检查点、完整FST、输入轨迹、构建标识和解码命令；
+% 保留实际timescale与采样相位，不将波形界面单位当作Host实际耗时。
+% TODO(FPGA恢复案例)：另补实际重新加载后的参考对照记录；
+% 板级检查点与Cosim一致不是FPGA重新加载恢复本身的证据。
+% KMH save后run截图仍只证明保存后续跑，不证明曾执行Restore。
 
 \paragraph{后续实验与评价}
 
-现有板级日志已记录PicoRV32和KMH的检查点加载、保存及扫描阶段耗时，第\ref{sec:midterm-prototype-results}节将结合有效数据量分析其开销。后续重点是补充恢复重放案例的对照材料、扩大状态比较范围，并在更多分区及工作负载下评价适用性，而不是以加载计时正常结束替代恢复正确性判断。
+现有板级日志已记录PicoRV32和KMH的检查点加载、保存及扫描阶段耗时，第\ref{sec:midterm-prototype-results}节将结合有效数据量分析其开销。后续重点是归档上述案例的原始产物、扩大状态与输入变化的比较范围，并在更多分区及工作负载下评价适用性，而不是以加载计时正常结束替代恢复正确性判断。
