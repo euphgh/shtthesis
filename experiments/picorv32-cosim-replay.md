@@ -37,7 +37,7 @@ T1 = 42080
 
 ### 3.1 双Part Cosim参考执行与两次保存
 
-![PicoRV32双Part Cosim在复位64周期后运行至2048保存检查点，再继续执行并在42080周期暂停保存](figure/picorv32-cosim.png)
+![PicoRV32双Part Cosim在复位64周期后运行至2048保存检查点，再继续执行并在42080周期暂停保存](figure/picorv32-cosim-2part-run-checkpoint.png)
 
 图片中的启动命令为：
 
@@ -53,7 +53,7 @@ remu-driver sysinfo.json platinfo/cosim.yaml ckpt
 
 ### 3.2 从2048周期检查点进行软件RTL重放
 
-![Icarus Verilog加载2048周期检查点并重放100000周期，生成FST波形且输出素数](figure/picorv32-replay.png)
+![Icarus Verilog加载2048周期检查点并重放100000周期，生成FST波形且输出素数](figure/picorv32-rtl-replay-from-tick2048.png)
 
 截图中的命令为：
 
@@ -83,7 +83,7 @@ WARNING: No more signal traces after tick 2048. Replay will continue but input s
 
 ### 3.3 后续同周期的检查点与波形比较
 
-![42080周期检查点解码的六个信号值与从2048检查点重放40032周期后的波形值一致](figure/ckpt-vs-wave.png)
+![42080周期检查点解码的六个信号值与从2048检查点重放40032周期后的波形值一致](figure/picorv32-cosim-vs-replay-state-tick42080.png)
 
 图的上半部分是作者从42080周期检查点取得的解码值，下半部分是重放波形中的对应信号。作者选取相对周期40032，因此对应DUT绝对周期42080。
 
@@ -130,8 +130,8 @@ WARNING: No more signal traces after tick 2048. Replay will continue but input s
 
 | 原图 | SHA-256 |
 | --- | --- |
-| `figure/picorv32-cosim.png` | `5ecd9053fc4ee05e58f60d8bb31c735d0af13dd9f2d615cdb5e789e4d56c9162` |
-| `figure/picorv32-replay.png` | `926594ea0a59c9a04bec19c4db4cec526feb122f2768ef46081ca0fba3a54960` |
-| `figure/ckpt-vs-wave.png` | `3708fc4d0f9cf3cc644ffc5d11d61c2fa2b5cc905393f4445201878a0b17d2c0` |
+| `figure/picorv32-cosim-2part-run-checkpoint.png` | `5ecd9053fc4ee05e58f60d8bb31c735d0af13dd9f2d615cdb5e789e4d56c9162` |
+| `figure/picorv32-rtl-replay-from-tick2048.png` | `926594ea0a59c9a04bec19c4db4cec526feb122f2768ef46081ca0fba3a54960` |
+| `figure/picorv32-cosim-vs-replay-state-tick42080.png` | `3708fc4d0f9cf3cc644ffc5d11d61c2fa2b5cc905393f4445201878a0b17d2c0` |
 
 本次仅新增实验文字归档并更新索引，保留原图文件名和内容；未修改TeX正文、代码或既有原始日志，未执行新的仿真或板级实验。

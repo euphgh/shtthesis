@@ -23,7 +23,7 @@
 
 当前划分数据于2026-10-27分两批采集，包含`picorv32`、`rocket`、`xs-minimal`、`nanhu-g`、`kmh`各2、3、4分区，共15组。首批12组原始快照保留不变，KMH三组单独归档；两次采集的checkout HEAD不同，具体标识及比较边界见结果汇总。
 
-2026-10-27补充的板级材料包含PicoRV32的素数/Echo输出，以及KMH运行OpenSBI v1.6后暂停保存、继续启动Linux 6.12.0+的记录。后续加入的`kmh-linux-cli.png`已记录Linux命令行及`cat /proc/cpuinfo`、`uname -a`交互；各图片的完整会话对应与启动墙钟时间仍待核对。
+2026-10-27补充的板级材料包含PicoRV32的素数/Echo输出，以及KMH运行OpenSBI v1.6后暂停保存、继续启动Linux 6.12.0+的记录。后续加入的`kmh-2fpga-linux-cli.png`已记录Linux命令行及`cat /proc/cpuinfo`、`uname -a`交互；各图片的完整会话对应与启动墙钟时间仍待核对。
 
 2026-10-28补充首个有具体周期与信号值对照的非零检查点软件重放案例：PicoRV32在双Part Cosim中保存2048和42080周期检查点，Icarus Verilog从2048恢复重放100000周期，在相对周期40032处比较六项信号，图示数值一致。作者已明确该参考环境为Cosim，不作为物理双FPGA上板恢复证据；详细比较范围及输入轨迹警告见独立记录。
 

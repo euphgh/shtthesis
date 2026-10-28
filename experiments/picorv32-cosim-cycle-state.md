@@ -8,12 +8,12 @@
 - 单Part参考：作者所称“单板Cosim”，本文统一写为单Part Cosim，不指物理单FPGA上板。
 - 双Part对象：上一例已确认的双Part Cosim运行，在全局暂停后停于42080周期；见[非零检查点重放案例](picorv32-cosim-replay.md)。
 - 工作负载：手工编写的baremetal程序，先执行素数筛选，再进行Echo。两种配置的串口输出一致由作者确认；截图可直接核对的范围见下文。
-- 新增图片：[单Part运行记录](figure/picorv32-single-run.png)、[单Part与双Part检查点对照](figure/single-vs-part2.png)。原图保持不变。
+- 新增图片：[单Part运行记录](figure/picorv32-cosim-1part-run-checkpoint.png)、[单Part与双Part检查点对照](figure/picorv32-cosim-1part-vs-2part-state-tick42080.png)。原图保持不变。
 - 本文以作者说明及图片中的可见结果为依据，未重新运行Cosim，也未读取完整检查点进行自动化全状态比较。整理时主仓库为`vivado2024.2`、论文仓库为`main`，不以此替代实验构建版本。
 
 ## 2. 单Part参考执行及与双Part的周期对齐
 
-![PicoRV32单Part Cosim复位64周期后运行到2048保存检查点，再运行到42080并保存](figure/picorv32-single-run.png)
+![PicoRV32单Part Cosim复位64周期后运行到2048保存检查点，再运行到42080并保存](figure/picorv32-cosim-1part-run-checkpoint.png)
 
 单Part截图中的操作与结果依次为：
 
@@ -41,7 +41,7 @@ Driver的`run <tick>`指定绝对目标周期，见[命令实现](../../driver/c
 
 ## 3. 检查点层次映射与寄存器对照
 
-![左侧双Part与右侧单Part在42080周期的检查点解码值，四个共同可见寄存器数值一致](figure/single-vs-part2.png)
+![左侧双Part与右侧单Part在42080周期的检查点解码值，四个共同可见寄存器数值一致](figure/picorv32-cosim-1part-vs-2part-state-tick42080.png)
 
 依据作者说明，图左为双Part、图右为单Part在42080周期的检查点解码结果。层次路径分别为：
 
@@ -108,7 +108,7 @@ Driver的`run <tick>`指定绝对目标周期，见[命令实现](../../driver/c
 
 | 原图 | SHA-256 |
 | --- | --- |
-| `figure/picorv32-single-run.png` | `cf0c0c6808bfe6ed8568e6fbe73fb4bc120fadcfb2c945ca4660ac9bfcb6772c` |
-| `figure/single-vs-part2.png` | `c3bfefacc699fafa301e6428c834d4a36eb9ffd61514c758cf7f024c33bf2c0d` |
+| `figure/picorv32-cosim-1part-run-checkpoint.png` | `cf0c0c6808bfe6ed8568e6fbe73fb4bc120fadcfb2c945ca4660ac9bfcb6772c` |
+| `figure/picorv32-cosim-1part-vs-2part-state-tick42080.png` | `c3bfefacc699fafa301e6428c834d4a36eb9ffd61514c758cf7f024c33bf2c0d` |
 
 本次仅整理实验材料并更新索引和案例间引用，未修改TeX正文、程序、原图或已有原始日志，未重新执行实验。

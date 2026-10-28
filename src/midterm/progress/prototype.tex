@@ -28,7 +28,7 @@ PicoRV32和Rocket运行的裸机程序来自同一组手工编写的测试源码
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.83\linewidth,height=0.72\textheight,keepaspectratio]{experiments/figure/picorv32-2fpga.png}
+    \includegraphics[width=0.83\linewidth,height=0.72\textheight,keepaspectratio]{experiments/figure/picorv32-2fpga-baremetal-uart.png}
     \caption{PicoRV32双FPGA运行素数筛选与Echo裸机程序}
     \label{fig:midterm-picorv32-board}
 \end{figure}
@@ -43,7 +43,7 @@ KMH测试采用单核配置，固件为OpenSBI v1.6，Linux基于6.12.0版本，
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.80\linewidth,height=0.70\textheight,keepaspectratio]{experiments/figure/kmh-2fpga-opensbi.png}
+    \includegraphics[width=0.80\linewidth,height=0.70\textheight,keepaspectratio]{experiments/figure/kmh-2fpga-opensbi-console.png}
     \caption{KMH双FPGA平台上的OpenSBI v1.6启动记录}
     \label{fig:midterm-kmh-opensbi}
 \end{figure}
@@ -52,14 +52,14 @@ KMH测试采用单核配置，固件为OpenSBI v1.6，Linux基于6.12.0版本，
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth]{experiments/figure/kmh-2fpga-linux.png}
+    \includegraphics[width=\linewidth]{experiments/figure/kmh-2fpga-checkpoint-linux-boot.png}
     \caption{KMH在周期1099913保存检查点后继续执行Linux启动}
     \label{fig:midterm-kmh-save-linux}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\linewidth,height=0.70\textheight,keepaspectratio]{experiments/figure/kmh-linux-cli.png}
+    \includegraphics[width=\linewidth,height=0.70\textheight,keepaspectratio]{experiments/figure/kmh-2fpga-linux-cli.png}
     \caption{KMH进入Linux命令行并查询处理器及内核信息}
     \label{fig:midterm-kmh-linux-cli}
 \end{figure}

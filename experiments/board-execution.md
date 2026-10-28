@@ -43,7 +43,7 @@
 
 ### 2.3 PicoRV32双FPGA运行记录
 
-![PicoRV32双FPGA运行手写裸机程序，显示Sieve benchmark、2至127的素数列表及Echo交互](figure/picorv32-2fpga.png)
+![PicoRV32双FPGA运行手写裸机程序，显示Sieve benchmark、2至127的素数列表及Echo交互](figure/picorv32-2fpga-baremetal-uart.png)
 
 图中可直接观察到：
 
@@ -73,7 +73,7 @@ Rocket实际输出/截图路径x、具体输入x、执行周期范围x、镜像�
 | OpenSBI截图中的平台名称 | `ICT SERVE` |
 | Linux完整镜像、配置及rootfs | x |
 
-![KMH双FPGA运行OpenSBI v1.6，显示单HART平台信息并在中断后返回Driver](figure/kmh-2fpga-opensbi.png)
+![KMH双FPGA运行OpenSBI v1.6，显示单HART平台信息并在中断后返回Driver](figure/kmh-2fpga-opensbi-console.png)
 
 OpenSBI截图显示固件版本、平台与Boot HART信息，末尾Driver报告`run completed tick=1285605 interrupted=true`。它记录一次手动停止的位置，不是Linux启动完成标记。
 
@@ -81,7 +81,7 @@ OpenSBI截图显示固件版本、平台与Boot HART信息，末尾Driver报告`
 
 作者说明：运行完OpenSBI后，手动暂停并保存检查点，然后继续运行Linux。下图中的日志展示了暂停、`save`完成、再`run`及Linux早期启动这一顺序。
 
-![KMH在tick 1099913暂停并保存检查点后继续执行，输出Linux 6.12.0+早期启动日志，尚无CLI提示符](figure/kmh-2fpga-linux.png)
+![KMH在tick 1099913暂停并保存检查点后继续执行，输出Linux 6.12.0+早期启动日志，尚无CLI提示符](figure/kmh-2fpga-checkpoint-linux-boot.png)
 
 从这张截图转录的关键日志如下，时间均为2026-10-27 UTC：
 
@@ -104,9 +104,9 @@ OpenSBI截图显示固件版本、平台与Boot HART信息，末尾Driver报告`
 
 ### 3.3 Linux命令行与交互
 
-后续提供的`kmh-linux-cli.png`已记录Linux执行`/init`后出现`~ #`提示符，以及以下命令与返回结果：
+后续提供的`kmh-2fpga-linux-cli.png`已记录Linux执行`/init`后出现`~ #`提示符，以及以下命令与返回结果：
 
-![KMH进入Linux命令行并执行处理器和内核信息查询](figure/kmh-linux-cli.png)
+![KMH进入Linux命令行并执行处理器和内核信息查询](figure/kmh-2fpga-linux-cli.png)
 
 - `cat /proc/cpuinfo`：可见processor 0、hart 0、MMU为sv48、uarch为`ICT,xiangshan`等处理器信息。
 - `uname -a`：返回Linux `6.12.0+`与`riscv64 GNU/Linux`，随后返回Shell提示符。
