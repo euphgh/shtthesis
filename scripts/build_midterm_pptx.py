@@ -12,6 +12,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import struct
+import sys
 
 from midterm_pptx import slide_01, slide_02, slide_03, slide_04, slide_05, slide_06, slide_07, slide_08, slide_09, slide_10, slide_11
 from midterm_pptx.common import BUILD, THESIS, inches, THEMES, DEFAULT_THEME, recolor_commands
@@ -26,12 +27,23 @@ def main():
     """Build, inspect, and render one slide through OfficeCLI outside the sandbox."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--slide", type=int, choices=tuple(SLIDES), default=1)
+    parser.add_argument("--all", action="store_true",
+                        help="Build the contents and all 11 numbered slides into build/pptx/")
     parser.add_argument("--theme", choices=tuple(THEMES), default=DEFAULT_THEME,
                         help="Palette (default: academic-red; alternative: navy-teal)")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--preview", type=Path)
     parser.add_argument("--officecli", default=shutil.which("officecli") or "/home/hgh/.local/bin/officecli")
     args = parser.parse_args()
+    if args.all:
+        if args.output is not None or args.preview is not None:
+            parser.error("--all cannot be used with --output or --preview")
+        script = Path(__file__).resolve()
+        for number in sorted(SLIDES):
+            subprocess.run([sys.executable, str(script), "--slide", str(number),
+                            "--theme", args.theme, "--officecli", args.officecli],
+                           check=True)
+        return
     page = SLIDES[args.slide]
     output_stem = getattr(page, "OUTPUT_STEM", f"REMUS_Background_Slide_{args.slide}")
     preview_stem = getattr(page, "PREVIEW_STEM", f"midterm-background-{args.slide:02}")
@@ -43,7 +55,8 @@ def main():
     if args.slide == 6 and args.theme == "academic-red":
         red_png = THESIS / "figure/presentation-reference/midterm-progress-06-academic-red.png"
         if red_png.is_file():
-            header = red_png.read_bytes()[:24]
+            with red_png.open('rb') as image_file:
+                header = image_file.read(24)
             if header[:8] != bytes.fromhex("89504e470d0a1a0a"):
                 raise ValueError(f"Invalid PNG: {red_png}")
             sw, sh = struct.unpack(">II", header[16:24])
