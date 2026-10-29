@@ -55,7 +55,7 @@ def recolor_commands(commands, theme=DEFAULT_THEME):
             # Layout edits can issue standalone paragraph/run commands. They
             # have no props.name; recover ownership from their OfficeCLI path.
             if not name and isinstance(obj.get("path"), str):
-                found = re.search(r"\\[@name=(S\\d{2}\\.[^\\]]+)\\]", obj["path"])
+                found = re.search(r"\[@name=(S\d{2}\.[^\]]+)\]", obj["path"])
                 if found:
                     name = found.group(1)
             return {k: walk(v, name, k) for k, v in obj.items()}
