@@ -25,7 +25,7 @@
 | 材料 | 用途 | 使用边界 |
 | --- | --- | --- |
 | [论文写作指导](thesis-writing-guidelines.md) | 研究定位、REMUS命名、方法与系统贡献的区分 | 决定新PPT的论述口径 |
-| [逐页大纲](midterm-presentation-outline.md) | 15页正文的主题、叙事和内容依赖 | 决定每页讲什么；不作为实验完成的证据 |
+| [逐页大纲](midterm-presentation-outline.md) | 当前11页正文的主题、叙事和内容依赖 | 决定每页讲什么；不作为实验完成的证据 |
 | [视觉规范](presentation-style-guide.md) | 配色、Arial字体、16:9画幅、可编辑性 | 决定新PPT的统一样式 |
 | [五张设计参考图](../figure/presentation-reference/README.md) | 前五页的构图、比例、图文关系 | 用于重建布局；图中文字和完成状态仍需核对 |
 | [十张组件插图](../figure/ppt-assets/README.md) | 芯片、波形、快照等可复用PNG | 只承担图示，不代替可编辑标签与技术连线 |
@@ -417,3 +417,31 @@ PowerPoint桌面端尚未复核。
 按页拆分后，已核对目录及11张正文页的OfficeCLI命令序列与拆分前完全一致，并重新生成、
 校验和渲染全部12页；预览与正式单页预览逐像素一致。本次只重构Python内容归属，
 不替换外观未变的正式PPTX。
+
+## 配色主题切换（2026-10-29）
+
+默认的`academic-red`主题参考开题答辩PDF：标题`#C00000`，分隔线`#C55A11`，重点橙色`#ED7D31`，辅助绿色`#70AD47`，正文`#1F1F1F`，技术轮廓`#333333`。旧的`navy-teal`主题仍可选。详细规范见[视觉规范](presentation-style-guide.md)。
+
+- 所有主题与颜色映射集中在`scripts/midterm_pptx/theme.py`，默认主题是`academic-red`。
+- `scripts/build_midterm_pptx.py`会在`build_commands()`和`LAYOUT_EDITS`完成后统一改色，包括字体、线条、原生图表及布局修订中写死的色值。无需逐页修改旧Python常量。
+- **栅格图不是可编辑主题元素**：第1～5页复用的`figure/ppt-assets/`图标继续使用原配色，真实设备照片及实验波形截图不应改色。
+- 第6页会自动检测`figure/presentation-reference/midterm-progress-06-academic-red.png`，存在时将该新图以原比例放入右侧区域；若不存在则打印提醒并保留旧蓝色设计图。需要将新生成PNG手动复制到上述位置，不能仅改Python颜色变量。
+- `scripts/build_fpga_rtl_workflow.py`与`scripts/build_checkpoint_replay.py`的原生对象也支持`--theme`。前者两张嵌入PNG仍保持原貌。
+- 封面及感谢页使用`scripts/restyle_midterm_frontmatter.py --theme academic-red`单独改色。合并脚本只合并已发布的PPTX，**不会重新生成单页或替换图片**。
+
+在`thesis/`根目录、能够运行OfficeCLI的环境下：
+
+```bash
+# 新配色（默认）以及旧主题对比
+/usr/bin/python3 scripts/build_midterm_pptx.py --slide 6 --theme academic-red
+/usr/bin/python3 scripts/build_midterm_pptx.py --slide 8 --theme navy-teal
+
+# 单独的可编辑技术图
+/usr/bin/python3 scripts/build_fpga_rtl_workflow.py --theme academic-red
+/usr/bin/python3 scripts/build_checkpoint_replay.py --theme academic-red
+
+# 封面/感谢页
+/usr/bin/python3 scripts/restyle_midterm_frontmatter.py --theme academic-red
+```
+
+这几条命令默认写入`build/pptx/`中并生成PNG预览，不自动覆盖已经提交的`pptx/midterm/`文件。若要更新最终合并PPT，需先审核并发布各页，再运行`scripts/merge_midterm_pptx.py`。本文前半部分记录的是**旧主题的历史制作过程**，新主题以重新生成的预览为准。
