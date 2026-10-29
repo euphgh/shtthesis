@@ -1,0 +1,90 @@
+"""Apply REMUS colors to the existing cover, contents and thanks slides.
+
+Run outside the sandbox, as required for all OfficeCLI invocations. The source
+is copied into build/pptx before editing; text, logos and geometry are retained.
+"""
+
+import json
+from pathlib import Path
+import shutil
+import subprocess
+from zipfile import ZipFile
+import xml.etree.ElementTree as ET
+
+
+ROOT = Path(__file__).resolve().parents[1]
+WORK = ROOT / "build/pptx/restyle-midterm"
+SOURCE = ROOT / "pptx/midterm/REMUS-midterm.pptx"
+BACKUP = WORK / "REMUS-midterm-original.pptx"
+OUTPUT = WORK / "REMUS-midterm.pptx"
+CLI = "/home/hgh/.local/bin/officecli"
+NS = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
+
+
+def main():
+    WORK.mkdir(parents=True, exist_ok=True)
+    if not BACKUP.exists():
+        shutil.copy2(SOURCE, BACKUP)
+    shutil.copy2(BACKUP, OUTPUT)
+    colors = dict(dk1="20354A", dk2="183B56", lt1="FFFFFF", lt2="F1F5F8",
+                  accent1="183B56", accent2="008C95", accent3="DF973E",
+                  accent4="EAF4F3", accent5="607184", accent6="F1F5F8",
+                  hlink="008C95", folHlink="183B56")
+    props = {f"theme.color.{key}": val for key, val in colors.items()}
+    props.update({"theme.font.major.latin": "Arial", "theme.font.minor.latin": "Arial"})
+    commands = [{"command": "set", "path": "/", "props": props}]
+    # Explicit fonts and red title defaults live in the template layouts.
+    # Raw-set changes only those attributes, preserving rich runs and fields.
+    with ZipFile(BACKUP) as archive:
+        for part in archive.namelist():
+            if not part.endswith(".xml") or not part.startswith(
+                    ("ppt/slides/", "ppt/slideLayouts/", "ppt/slideMasters/", "ppt/theme/")):
+                continue
+            tree = ET.fromstring(archive.read(part))
+            if tree.findall(".//a:latin", NS):
+                commands.append({"command": "raw-set", "part": "/" + part,
+                                 "xpath": "//a:latin", "action": "setattr",
+                                 "xml": "typeface=Arial"})
+            if any(e.get("val") == "C00000" for e in tree.findall(".//a:srgbClr", NS)):
+                commands.append({"command": "raw-set", "part": "/" + part,
+                                 "xpath": "//a:srgbClr[@val='C00000']",
+                                 "action": "setattr", "xml": "val=183B56"})
+    # The old connectors contain inherited color transforms; explicit teal
+    # ensures identical rendering on the cover and contents layouts.
+    for layout in (1, 2):
+        commands.append({"command": "raw-set",
+                         "part": f"/ppt/slideLayouts/slideLayout{layout}.xml",
+                         "xpath": "//p:cxnSp/p:spPr/a:ln", "action": "replace",
+                         "xml": '<a:ln w="19050"><a:solidFill><a:srgbClr val="008C95"/></a:solidFill></a:ln>'})
+    commands.append({"command": "set", "path": "/slide[1]/shape[@id=10]",
+                     "props": {"color": "183B56"}})
+    for page, ident in ((1, 5), (3, 4)):
+        commands.append({"command": "set", "path": f"/slide[{page}]/shape[@id={ident}]",
+                         "props": {"color": "607184"}})
+    # Raw XML loading drops standalone whitespace runs unless xml:space is
+    # explicit. Restore their original values after the color/font edits.
+    with ZipFile(BACKUP) as archive:
+        for page in (1, 2, 3):
+            part = f"ppt/slides/slide{page}.xml"
+            tree = ET.fromstring(archive.read(part))
+            for index, node in enumerate(tree.findall(".//a:t", NS), 1):
+                if node.text and not node.text.strip():
+                    commands.append({"command": "raw-set", "part": "/" + part,
+                                     "xpath": f"(//a:t)[{index}]", "action": "replace",
+                                     "xml": '<a:t xml:space="preserve">' + node.text + '</a:t>'})
+    batch = WORK / "recolor-commands.json"
+    batch.write_text(json.dumps(commands, ensure_ascii=False, indent=2) + "\n")
+    result = subprocess.run([CLI, "batch", str(OUTPUT), "--input", str(batch), "--json"],
+                            capture_output=True, text=True, check=True)
+    (WORK / "recolor-results.json").write_text(result.stdout)
+    print(result.stdout)
+    subprocess.run([CLI, "close", str(OUTPUT)], check=True)
+    subprocess.run([CLI, "validate", str(OUTPUT)], check=True)
+    subprocess.run([CLI, "view", str(OUTPUT), "issues"], check=True)
+    for page in (1, 2, 3):
+        subprocess.run([CLI, "view", str(OUTPUT), "screenshot", "--page", str(page),
+                        "-o", str(WORK / f"after-{page}.png")], check=True)
+
+
+if __name__ == "__main__":
+    main()

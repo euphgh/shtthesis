@@ -311,3 +311,21 @@ KMH频率为保存检查点前的运行片段，不作为完整Linux启动或进
 两张嵌入图片与源文件SHA-256一致，PPT原生裁剪保持可见区域比例。修正终端截图边缘及数字框高度后，
 OpenXML校验通过、`view issues`为0，对象边界和图片比例检查、独立PNG视觉复核通过。
 既有交付PPTX哈希未变；PowerPoint桌面端尚未复核。
+
+## 第11页制作记录（2026-10-28）
+
+采用已确认的四行Future Work布局，将当前问题融入后续计划：Fabric上板与四FPGA集成、
+性能分析与运行时优化、划分优化与评价、论文写作。以上均为后续工作，讲稿明确划分优化的
+实际性能收益仍需实验评价。按用户最新要求，将参考图中的大号双位编号改为`1.`至`4.`，
+与条目标题同为22pt。左侧标题、右侧说明及浅灰分隔线均为原生可编辑元素。
+
+- 页面源：`scripts/midterm_pptx/slide_11.py`。
+- 设计参考：`figure/presentation-reference/midterm-future-work-11-v1.png`。
+- PPTX：`pptx/midterm/REMUS_Future_Work_Slide_11.pptx`。
+- 预览：`figure/presentation-preview/midterm-future-work-11.png`。
+- 在沙箱外执行`/usr/bin/python3 scripts/build_midterm_pptx.py --slide 11`，默认产物位于`build/pptx/`。
+
+页面包含18个原生形状，无图片。标题32pt、编号与条目标题22pt、正文18pt，字体均为Arial。
+视觉复核后收紧右侧正文行距至1.25倍，重新生成并通过OpenXML校验、OfficeCLI问题检查
+（0项）、字体/编号/对象边界检查及独立PNG视觉复核。既有10份交付PPTX哈希未变；
+检查报告保存在`build/pptx/slide-11-artifact-check.json`。PowerPoint桌面端尚未复核。

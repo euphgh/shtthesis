@@ -3,7 +3,7 @@
 ## 定位与范围
 
 - **用途**：硕士学位论文中期答辩，正文全英文，围绕“从多FPGA原型验证到可暂停、可观测、可重放的多FPGA硬件仿真系统”展开。
-- **规模**：11页正文（背景与目标5页、技术进展4页、双FPGA原型及实验1页、问题与计划1页）；封面与结束页分别单列时合计约13页。根据实际答辩时长和实验材料可小幅调整。
+- **规模**：11页正文（背景与目标5页、技术进展4页、双FPGA原型及实验1页、问题与计划1页）；封面、Contents目录与结束页分别单列时合计14页。根据实际答辩时长和实验材料可小幅调整。
 - **叙事主线**：Why multi-FPGA? → Research gap & goal → REMUS workflow → Cycle-accurate execution & pause → Distributed state & replay → Automated partitioning → Runtime & Fabric → Dual-FPGA prototype & evaluation → Challenges & future work。
 - **术语**：新报告中的系统称REMUS（Replay EMUlation System）；开题阶段的SMART保留为历史名称，不在新页中混用。系统能力和实验完成状态须与最新研究材料一致。
 - **风格入口**：[演示文稿视觉规范](presentation-style-guide.md)；学术定位见[论文写作指导](thesis-writing-guidelines.md)；详细技术背景见[中期论文大纲](../src/midterm/outline.md)。
@@ -156,34 +156,35 @@
 - 本页不增加检查点耗时、综合资源表或暂停重放机制说明。底部仅保留三个指标及测量口径：`Measured run windows; KMH measured before checkpoint save. Pause latency includes Host control.`
 - 正文：`src/midterm/progress/summary.tex`；实验：`experiments/board-execution.md`、`experiments/board-performance.md`及`experiments/figure/`。
 
-## 第四部分：Problems & Next Plan（第11页）
+## 第四部分：Future Work（第11页）
 
-### Slide 11. Current Challenges and Future Work
+### Slide 11. Future Work
 
-此页以文字为主，用对应关系压缩当前问题和后续方案，不再新增技术图示。
+将当前问题融入后续计划，不单列问题清单或拆成两页。采用四行编号布局，
+参考`figure/presentation-reference/midterm-future-work-11-v1.png`；按用户最新要求，
+编号改为`1.`、`2.`、`3.`、`4.`，与左侧条目标题同字号，不沿用设计图的大号双位编号。
 
-| Current Challenges | Future Work |
+| Item | Plan |
 | --- | --- |
-| Imbalanced FPGA Resource Utilization | Multi-Dimensional Resource-Aware Partitioning |
-| Limited Multi-FPGA Execution Performance | Communication & Cycle Execution Optimization |
-| Fabric Polling Overhead | Interrupt-Driven Runtime Control |
-| Limited Scale of Current Prototype | Four-FPGA Extension & Large-Scale SoC Validation |
+| 1. Fabric Deployment & Four-FPGA Integration | Complete board-level Fabric integration and validation. / Build a four-FPGA emulation system. |
+| 2. Performance Analysis & Runtime Optimization | Analyze execution and communication overheads on four FPGAs. / Reduce polling overhead with interrupt-driven control. |
+| 3. Partitioning Optimization & Evaluation | Improve multi-resource balance and reduce communication cost. / Evaluate the impact on emulation performance. |
+| 4. Thesis Writing | Consolidate experimental results and complete the thesis. |
 
-**Thesis & Evaluation Plan**
-
-- Complete Functional & Performance Evaluation
-- Extend Multi-FPGA Experiments
-- Thesis Writing and Final Defense
-
-**说明**：对应`src/midterm/problems.tex`和`src/midterm/next_plan.tex`。多维资源约束、中断驱动及四FPGA扩展是下一阶段计划，不写成既有成果。预计答辩时间以学校/导师正式安排为准，尚未确认时不填入精确日期。
+左侧使用短标题，右侧每项一至两句计划；前三项以浅灰细线分隔，最后以论文写作收尾。
+所有文字与线条保持可编辑，不增加图标、时间线、完成勾号或未经确认的日期。
+Fabric上板、四FPGA扩展和中断驱动均为未来工作；划分优化的实际性能收益需实验评价。
+正文背景：`src/midterm/problems.tex`、`src/midterm/next_plan.tex`，具体顺序以本次确认方案为准。
 
 ## 封面、目录与结束页
 
 - **封面**：在上述11页正文之外单独制作；采用院校/研究机构标识、中文正式学位论文题目及英文译名、身份与日期信息，具体字段以学校要求为准。
-- **目录**：可与封面后的部分过渡页合并，优先不占用技术正文页数；若单独增加目录页，应相应调整总页数。
+- **目录**：独立Contents页置于封面之后，不占用11页正文的内容编号。采用四段顺序：Background & Research Goal → Research Progress → Prototype & Evaluation → Current Challenges & Future Work，每段附一句简短说明。含封面、目录与结束页时，全套共14页。
 - **结束页**：简洁的“Thank You / Q&A”，与封面保持视觉呼应。
 
 ## 制作状态与内容依赖
+
+- Contents页：状态为`PPTX Created`；[PPTX](../pptx/midterm/REMUS_Midterm_Contents.pptx)和[PNG预览](../figure/presentation-preview/midterm-contents.png)已生成，编号、标题、说明及顺序连线均可编辑。OfficeCLI校验、问题检查与PNG视觉复核通过；PowerPoint桌面端复核待完成。源文件为`scripts/midterm_pptx/slide_contents.py`，沙箱外执行`/usr/bin/python3 scripts/build_midterm_pptx.py --slide 0`重建。
 
 - 第1页：新主题状态为`PPTX Created`；[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_1.pptx)和[PNG预览](../figure/presentation-preview/midterm-background-01.png)已生成，OfficeCLI结构检查与独立PNG视觉检查通过，PowerPoint桌面端复核待完成。
 - 第2页：新主题状态为`PPTX Created`；[可编辑PPTX](../pptx/midterm/REMUS_Background_Slide_2.pptx)和[PNG预览](../figure/presentation-preview/midterm-background-02.png)已生成，OfficeCLI结构检查与独立PNG视觉检查通过，PowerPoint桌面端复核待完成。右栏以`Target capabilities`标明研究目标。
@@ -195,6 +196,6 @@
 - 第9页：状态为`PPTX Created`；[PPTX](../pptx/midterm/REMUS_Progress_Slide_9.pptx)和[PNG预览](../figure/presentation-preview/midterm-progress-09.png)已生成。架构图、箭头与文字均为原生可编辑元素，下方正文22pt；OfficeCLI校验、问题检查及PNG视觉复核通过。PowerPoint桌面端复核待完成。
 - 第10页：状态为`PPTX Created`；[PPTX](../pptx/midterm/REMUS_Prototype_Slide_10.pptx)和[PNG预览](../figure/presentation-preview/midterm-prototype-10.png)已生成。左侧实物照片、右侧DUT表格与Linux截图、底部三项性能指标；29个原生形状可编辑，2张原始图片通过PPT裁剪。OpenXML、OfficeCLI问题检查、字体/边界/图片比例检查及独立PNG视觉复核通过，PowerPoint桌面端复核待完成。
 - 第8页：状态为`PPTX Created`；[PPTX](../pptx/midterm/REMUS_Progress_Slide_8.pptx)和[PNG预览](../figure/presentation-preview/midterm-progress-08.png)已生成。方法说明、初步效率观察及KMH分组柱状图均可编辑；OfficeCLI校验、问题检查、图表数据核对与PNG视觉复核通过。PowerPoint桌面端复核待完成。
-- 第11页：英文标题及文字初稿已确认，PPTX尚未制作；按对应论文图与实验材料制作，不得将已规划文字视为已制作页面。
+- 第11页：状态为`PPTX Created`；[PPTX](../pptx/midterm/REMUS_Future_Work_Slide_11.pptx)和[PNG预览](../figure/presentation-preview/midterm-future-work-11.png)已生成。四行计划采用小号`1.`至`4.`编号，与条目标题同为22pt；18个原生形状全部可编辑，无栅格图片。OpenXML校验、OfficeCLI问题检查、字体/边界检查及独立PNG视觉复核通过，PowerPoint桌面端复核待完成。
 - 建议维护状态：`Planned`、`Designed`、`PPTX Created`、`Reviewed`。完成状态需随提交更新，避免以规划代替实际进度。
 - 制作入口：[OfficeCLI实施计划](pptx-implementation-plan.md)、[设计参考索引](../figure/presentation-reference/README.md)、[组件资产索引](../figure/ppt-assets/README.md)。

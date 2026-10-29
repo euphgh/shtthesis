@@ -1,0 +1,57 @@
+Generation mode: built-in image_gen
+Design reference only; not an editable PPTX.
+
+Use case: productivity-visual.
+Create ONE polished academic master's thesis midterm defense slide DESIGN REFERENCE for REMUS, landscape 16:9, high resolution. The slide is page 11, titled "Future Work". This is a restrained, text-led academic slide, not a marketing infographic.
+
+STYLE:
+Pure white background. Arial or closely matching Arial typography throughout. Main title deep navy #183B56, left aligned, bold, about 32pt equivalent. Thin teal #008C95 rule below title, matching the established REMUS presentation. Body text #20354A. Section titles navy bold. Large teal numbers. Muted gray #607184 page number. Flat colors, no shadows, gradients, illustrations, icons, charts, logos, timelines, arrows, or fake data. Generous whitespace.
+
+LAYOUT:
+Top header y=4–13%, left and right safe margins 4%.
+Four evenly aligned horizontal rows below the header. Each row has a large teal two-digit number at x=4–9%, a bold short title at x=12–43%, and the plan description at x=47–95%.
+Rows 1–3 each occupy approximately 19% of slide height and include TWO short body lines / sentences. Row 4 occupies about 14%, with ONE short body sentence. Do not turn the rows into a rigid table with boxed cells. Use subtle thin light-gray separators between rows, lots of breathing room, and consistent alignment. Title text may wrap into two lines deliberately. Body typography around 18–20pt equivalent; section headings around 21–23pt. Never shrink the text into tiny dense paragraphs.
+
+EXACT TEXT:
+Main title:
+"Future Work"
+
+Row 1 number:
+"01"
+Row 1 heading, with intentional two-line layout:
+"Fabric Deployment &"
+"Four-FPGA Integration"
+Row 1 body:
+"Complete board-level Fabric integration and validation."
+"Build a four-FPGA emulation system."
+
+Row 2 number:
+"02"
+Row 2 heading:
+"Performance Analysis &"
+"Runtime Optimization"
+Row 2 body:
+"Analyze execution and communication overheads on four FPGAs."
+"Reduce polling overhead with interrupt-driven control."
+
+Row 3 number:
+"03"
+Row 3 heading:
+"Partitioning Optimization"
+"& Evaluation"
+Row 3 body:
+"Improve multi-resource balance and reduce communication cost."
+"Evaluate the impact on emulation performance."
+
+Row 4 number:
+"04"
+Row 4 heading:
+"Thesis Writing"
+Row 4 body:
+"Consolidate experimental results and complete the thesis."
+
+Bottom-right page number:
+"11"
+
+CONSTRAINTS:
+The four plans are future work, not completed achievements. No checkmarks, completion badges, percentages, dates, or additional claims. Do not repeat the current problems in a separate column. Preserve the distinction between optimizing partitioning and evaluating whether that improves actual emulation performance. Do not add a bottom summary slogan. Ensure fully readable text, consistent row spacing, large clean typography, and no overlap or clipping. Make the first three items substantial and the final thesis item a quieter concise closing row.

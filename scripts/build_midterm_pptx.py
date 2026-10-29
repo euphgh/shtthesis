@@ -12,12 +12,13 @@ from pathlib import Path
 import shutil
 import subprocess
 
-from midterm_pptx import slide_01, slide_02, slide_03, slide_04, slide_05, slide_06, slide_07, slide_08, slide_09, slide_10
+from midterm_pptx import slide_01, slide_02, slide_03, slide_04, slide_05, slide_06, slide_07, slide_08, slide_09, slide_10, slide_11
 from midterm_pptx.common import BUILD, NAVY, TEAL, AMBER
+from midterm_pptx import slide_contents
 
 # Register new page modules here; each exposes TITLE and build_commands().
-SLIDES = {1: slide_01, 2: slide_02, 3: slide_03, 4: slide_04, 5: slide_05, 6: slide_06,
-          7: slide_07, 8: slide_08, 9: slide_09, 10: slide_10}
+SLIDES = {0: slide_contents, 1: slide_01, 2: slide_02, 3: slide_03, 4: slide_04, 5: slide_05, 6: slide_06,
+          7: slide_07, 8: slide_08, 9: slide_09, 10: slide_10, 11: slide_11}
 
 
 def main():
