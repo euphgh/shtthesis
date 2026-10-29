@@ -329,3 +329,62 @@ OpenXML校验通过、`view issues`为0，对象边界和图片比例检查、�
 视觉复核后收紧右侧正文行距至1.25倍，重新生成并通过OpenXML校验、OfficeCLI问题检查
 （0项）、字体/编号/对象边界检查及独立PNG视觉复核。既有10份交付PPTX哈希未变；
 检查报告保存在`build/pptx/slide-11-artifact-check.json`。PowerPoint桌面端尚未复核。
+
+## 封面、旧目录与感谢页改色（2026-10-29）
+
+在thesis的`main`工作树中更新`pptx/midterm/REMUS-midterm.pptx`的三页原稿。
+标题改为深蓝`183B56`，分隔线改为青绿`008C95`，正文采用`20354A`，
+日期说明采用`607184`；主题及显式英文字体统一为Arial。校徽与研究所标识保持原始图片和颜色。
+此次只统一视觉样式，保留原文字、对象位置、表格和页码：封面的“开题答辩”及旧六项目录
+尚未同步为当前中期内容；本文件不代表11页正文已合并。
+
+- 修改入口：`scripts/restyle_midterm_frontmatter.py`，按仓库要求在沙箱外执行。
+- 原稿备份：`build/pptx/restyle-midterm/REMUS-midterm-original.pptx`。
+- 预览：`figure/presentation-preview/REMUS-midterm-cover.png`、`REMUS-midterm-contents.png`、`REMUS-midterm-thanks.png`。
+- 检查：OpenXML通过、OfficeCLI问题检查0项，三页独立视觉复核通过；原文字、对象几何、
+  图片字节及原有关系保持一致。修复了工具处理XML时丢弃独立空格的问题，并重新渲染确认。
+- PowerPoint桌面端尚未复核；感谢页原有信息表较拥挤，此次未调整布局。
+
+## 完整演示文稿合并（2026-10-29）
+
+`scripts/merge_midterm_pptx.py`读取当前交付文件，生成
+`pptx/midterm/REMUS_Midterm_Final.pptx`，默认顺序为14页：
+
+1. `REMUS-midterm.pptx`第1页封面。
+2. `REMUS_Midterm_Contents.pptx`新版目录。
+3. `REMUS_Background_Slide_1.pptx`至`REMUS_Background_Slide_5.pptx`。
+4. `REMUS_Progress_Slide_6.pptx`至`REMUS_Progress_Slide_9.pptx`。
+5. `REMUS_Prototype_Slide_10.pptx`与`REMUS_Future_Work_Slide_11.pptx`。
+6. `REMUS-midterm.pptx`第3页感谢页。
+
+原三页文件中的旧目录不进入最终演示文稿。脚本保留源文字、布局、静态页码、可编辑形状、
+原生图表、图片、主题与讲稿备注；动态页码字段按合并后的位置显示。此次不修订封面的
+“开题答辩”及源页面中已有的旧内容，也不重新生成单页。
+
+在仓库根目录执行（OfficeCLI调用按约定在沙箱外运行）：
+
+```bash
+# 仅检查输入文件、页数、画幅和合并顺序
+/usr/bin/python3 thesis/scripts/merge_midterm_pptx.py --dry-run
+
+# 首次生成；已有输出时需要显式添加--force
+/usr/bin/python3 thesis/scripts/merge_midterm_pptx.py --force
+
+# 同时导出逐页预览
+/usr/bin/python3 thesis/scripts/merge_midterm_pptx.py --force \
+  --preview-dir thesis/figure/presentation-preview/REMUS_Midterm_Final
+```
+
+可用`--input-dir`指定单页目录、`--output`指定输出路径、`--officecli`指定工具路径。
+合并使用Python标准库处理PPTX依赖关系，不重绘页面；OfficeCLI负责OpenXML校验、问题检查
+和可选PNG预览。每个源文件使用独立部件名称，避免母版、图片、图表或备注相互覆盖。
+输出先在临时文件中验证，再原子替换目标。即使使用`--force`，也拒绝把任何输入文件当作输出。
+同名`.manifest.json`记录14页的来源、源页号、SHA-256和校验结果。
+
+已实际生成14页PPTX，OpenXML校验通过、OfficeCLI问题检查0项，并导出全部页面预览。
+已验证`--dry-run`、拒绝默认覆盖已有输出、拒绝覆盖源文件，以及失败时已有最终文件保持不变。
+PowerPoint桌面端尚未复核。
+
+逐页重新渲染当前源文件并与合并预览比较：第1–13页像素完全一致，第14页仅右下角动态页码
+由3变为14。源幻灯片、图表、图片、主题及备注XML/数据按字节保留；仅依赖路径和母版布局ID
+按合并所需重映射。原始单页文件的SHA-256在合并前后保持一致。
