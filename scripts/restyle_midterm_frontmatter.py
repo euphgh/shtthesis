@@ -57,7 +57,7 @@ def main():
                          "xpath": "//p:cxnSp/p:spPr/a:ln", "action": "replace",
                          "xml": '<a:ln w="19050"><a:solidFill><a:srgbClr val="008C95"/></a:solidFill></a:ln>'})
     commands.append({"command": "set", "path": "/slide[1]/shape[@id=10]",
-                     "props": {"color": "183B56"}})
+                     "props": {"color": "183B56", "text": "硕士研究生中期答辩"}})
     for page, ident in ((1, 5), (3, 4)):
         commands.append({"command": "set", "path": f"/slide[{page}]/shape[@id={ident}]",
                          "props": {"color": "607184"}})

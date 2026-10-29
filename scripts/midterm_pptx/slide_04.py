@@ -2,7 +2,7 @@
 
 from .common import SlideAPI, NAVY, TEAL, AMBER
 
-TITLE = '4. Research Gap and Goal'
+TITLE = 'Research Gap and Goal'
 slide = SlideAPI(4)
 
 

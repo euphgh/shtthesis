@@ -2,7 +2,7 @@
 
 from .common import SlideAPI, NAVY, TEAL, AMBER
 
-TITLE = '2. Multi-FPGA Prototyping Is Fast, but Hard to Debug'
+TITLE = 'Motivation: Multi-FPGA Prototyping Is Fast, but Hard to Debug'
 slide = SlideAPI(2)
 
 

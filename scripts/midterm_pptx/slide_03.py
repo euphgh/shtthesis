@@ -2,7 +2,7 @@
 
 from .common import SlideAPI, NAVY, TEAL, AMBER, inches
 
-TITLE = '3. Key Challenges of Replayable Multi-FPGA Emulation'
+TITLE = 'Key Challenges of Replayable Multi-FPGA Emulation'
 slide = SlideAPI(3)
 
 

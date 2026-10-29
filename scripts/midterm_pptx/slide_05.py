@@ -2,7 +2,7 @@
 
 from .common import SlideAPI, NAVY, TEAL, AMBER, INK, inches
 
-TITLE = '5. REMUS: Overall Workflow and Mid-Term Scope'
+TITLE = 'REMUS: Overall Workflow and Mid-Term Scope'
 slide = SlideAPI(5)
 
 

@@ -2,7 +2,7 @@
 
 from .common import SlideAPI, NAVY, TEAL
 
-TITLE = "9. Scalable Multi-FPGA Runtime"
+TITLE = 'Progress4: Scalable Multi-FPGA Runtime'
 OUTPUT_STEM = "REMUS_Progress_Slide_9"
 PREVIEW_STEM = "midterm-progress-09"
 slide = SlideAPI(9)

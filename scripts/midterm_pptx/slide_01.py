@@ -2,7 +2,7 @@
 
 from .common import SlideAPI, NAVY, TEAL, AMBER
 
-TITLE = '1. From RTL Simulation to Multi-FPGA Prototyping'
+TITLE = 'Intro: From RTL Simulation to Multi-FPGA Prototyping'
 slide = SlideAPI(1)
 
 

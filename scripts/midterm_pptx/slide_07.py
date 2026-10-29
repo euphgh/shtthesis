@@ -2,7 +2,7 @@
 
 from .common import SlideAPI, THESIS, NAVY, TEAL, inches
 
-TITLE = "7. Distributed State Capture, Restore and Replay"
+TITLE = 'Progress2: Distributed State Capture, Restore and Replay'
 OUTPUT_STEM = "REMUS_Progress_Slide_7"
 PREVIEW_STEM = "midterm-progress-07"
 slide = SlideAPI(7)

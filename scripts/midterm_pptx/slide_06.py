@@ -2,7 +2,7 @@
 
 from .common import SlideAPI, THESIS, NAVY, TEAL, inches
 
-TITLE = "6. Cycle-Accurate Execution and Global Pause"
+TITLE = 'Pregress1:  Cycle-Accurate Execution and Global Pause'
 OUTPUT_STEM = "REMUS_Progress_Slide_6"
 PREVIEW_STEM = "midterm-progress-06"
 slide = SlideAPI(6)

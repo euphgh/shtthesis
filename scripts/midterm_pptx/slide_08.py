@@ -2,7 +2,7 @@
 
 from .common import SlideAPI, NAVY, TEAL, inches
 
-TITLE = "8. Automated Multi-FPGA Circuit Partitioning"
+TITLE = 'Progress3: Automated Multi-FPGA Circuit Partitioning'
 OUTPUT_STEM = "REMUS_Progress_Slide_8"
 PREVIEW_STEM = "midterm-progress-08"
 slide = SlideAPI(8)
@@ -84,13 +84,12 @@ def build_commands():
         "props": {"text": (
             "REMUS implements adaptive RTL granularity selection, weighted hypergraph "
             "partitioning using KaHyPar, and path-cut analysis for LI-TDM configuration. "
-            "The author reports preliminary observations on well-structured hierarchical "
-            "designs: graph size around one tenth and hypergraph solver time around one "
-            "seventh of the netlist-level baseline, with similar Cut Size, scalar balance "
-            "and Path-Cut Number. The baseline runs are not finished. These ratios are "
-            "NOT finalized results and are omitted from the slide. Confirm matched DUTs, "
-            "configurations, graph-size definition and timing boundaries before publishing "
-            "quantitative gains. Solver time is not total transformation time. "
+            "The author's revised slide reports graph size around one tenth of the "
+            "netlist-level baseline, with no significant change in cut-size and "
+            "path-cut number. These are author-reported comparisons; this slide "
+            "synchronization does not independently validate the baseline runs. "
+            "Confirm matched DUTs, configurations and graph-size definitions when "
+            "finalizing the experimental record. "
             "The main chart uses archived KMH two-Part Vivado 2024.2 synthesis results: "
             "Part 0 LUT/FF/BRAM utilization 73.18/17.66/14.31 percent; Part 1 "
             "75.77/8.17/0.00 percent. BRAM counts are 288.5 and 0 tiles. URAM "
@@ -102,9 +101,7 @@ def build_commands():
             "scalar weights as its sole cause. Constraints, module grouping and synthesis "
             "mapping may also matter. Exact build matching between partition summaries "
             "and synthesis reports remains to be completed, so no estimation-error or "
-            "baseline-gain inference is made from their combination. This motivates the "
-            "resource-modeling discussion and proposed multidimensional constraints on "
-            "slide 11, without asserting that the planned improvement is already proven. "
+            "baseline-gain inference is made from their combination. "
             "Sources: experiments/synthesis-utilization.md (3.2); "
             "src/midterm/progress/partitioning.tex; src/midterm/problems.tex."
         )},

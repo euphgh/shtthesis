@@ -2,7 +2,7 @@
 
 from .common import SlideAPI, THESIS, NAVY, TEAL, AMBER, inches
 
-TITLE = "10. Dual-FPGA Prototype and Evaluation"
+TITLE = 'Evaluation: Dual-FPGA Emulation System'
 OUTPUT_STEM = "REMUS_Prototype_Slide_10"
 PREVIEW_STEM = "midterm-prototype-10"
 slide = SlideAPI(10)
