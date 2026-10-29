@@ -1,0 +1,104 @@
+{
+  "slides": [
+    {
+      "page": 1,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS-midterm.pptx",
+      "source_page": 1,
+      "source_sha256": "7e477d61139fc9eae84e32a47345b7660d60a8b59ebdd7133c6691e42cee4bcb",
+      "part": "ppt/slides/merged01_slide1.xml"
+    },
+    {
+      "page": 2,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS_Midterm_Contents.pptx",
+      "source_page": 1,
+      "source_sha256": "d413e2d31e7070bbb181c8d519d1743afddcd08f8dac8ee5c118845019d51c75",
+      "part": "ppt/slides/merged02_slide1.xml"
+    },
+    {
+      "page": 3,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS_Background_Slide_1.pptx",
+      "source_page": 1,
+      "source_sha256": "ef074c2a2e3c03bdd3584e60d4fc4a0642340b801d9fa73780b3f79a47ec4f4e",
+      "part": "ppt/slides/merged03_slide1.xml"
+    },
+    {
+      "page": 4,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS_Background_Slide_2.pptx",
+      "source_page": 1,
+      "source_sha256": "2b81ba37c47d0ebb49388dea2025ed7191f87e6618e7978f0005aebfaabc5cec",
+      "part": "ppt/slides/merged04_slide1.xml"
+    },
+    {
+      "page": 5,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS_Background_Slide_3.pptx",
+      "source_page": 1,
+      "source_sha256": "1f0d4d865fab639fc20ce1d7e3318d477ecc75d0e2eb202013c6ecb0599db12d",
+      "part": "ppt/slides/merged05_slide1.xml"
+    },
+    {
+      "page": 6,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS_Background_Slide_4.pptx",
+      "source_page": 1,
+      "source_sha256": "abda5a3bc3526a3d8e8578a58127ffa2a5595f52188cf4551c28491dc3e23134",
+      "part": "ppt/slides/merged06_slide1.xml"
+    },
+    {
+      "page": 7,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS_Background_Slide_5.pptx",
+      "source_page": 1,
+      "source_sha256": "cdbdeae84ef0ac3ef0ac0766df4d9e5e5ed4972ab47473967559d92936e1fb99",
+      "part": "ppt/slides/merged07_slide1.xml"
+    },
+    {
+      "page": 8,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS_Progress_Slide_6.pptx",
+      "source_page": 1,
+      "source_sha256": "cd1e6613a9f103b95a54c41c0187c4159aa1f29bbe24dbe1d9d1046f1446db62",
+      "part": "ppt/slides/merged08_slide1.xml"
+    },
+    {
+      "page": 9,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS_Progress_Slide_7.pptx",
+      "source_page": 1,
+      "source_sha256": "a998e2c8691f1f197d22928163d9e66c45661c3f091a43a34e0582d603f5fca9",
+      "part": "ppt/slides/merged09_slide1.xml"
+    },
+    {
+      "page": 10,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS_Progress_Slide_8.pptx",
+      "source_page": 1,
+      "source_sha256": "49567b30eca3ca772e575a5cdb421f83129f413117c16893b0f2a50028c4f090",
+      "part": "ppt/slides/merged10_slide1.xml"
+    },
+    {
+      "page": 11,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS_Progress_Slide_9.pptx",
+      "source_page": 1,
+      "source_sha256": "d8eacd87d0cebafca04b234ae2f5a478d197e791b0ca21e5365887ebdf998dd7",
+      "part": "ppt/slides/merged11_slide1.xml"
+    },
+    {
+      "page": 12,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS_Prototype_Slide_10.pptx",
+      "source_page": 1,
+      "source_sha256": "7666fb4c05c8364aeefe118effa28df6ba16d39923d8d1eb40ac7be20964bb43",
+      "part": "ppt/slides/merged12_slide1.xml"
+    },
+    {
+      "page": 13,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS_Future_Work_Slide_11.pptx",
+      "source_page": 1,
+      "source_sha256": "27c6b808ff4c4a360d337d796415ab1eb86a5fd3ecd2a2ebc97b566d363d1b48",
+      "part": "ppt/slides/merged13_slide1.xml"
+    },
+    {
+      "page": 14,
+      "source": "/Users/hgh/remu/thesis/build/pptx/REMUS-midterm.pptx",
+      "source_page": 3,
+      "source_sha256": "7e477d61139fc9eae84e32a47345b7660d60a8b59ebdd7133c6691e42cee4bcb",
+      "part": "ppt/slides/merged01_slide3.xml"
+    }
+  ],
+  "validation": "Validation passed: no errors found.\n",
+  "issues": "Found 10 issue(s):\n\nFormat Issues (10):\n  [O1] /slide[3]/shape[@id=2]: text overflow: 2 lines at 32.0pt need 66pt, usable 39pt. suggest.height=2.35cm\n  [O2] /slide[4]/shape[@id=2]: text overflow: 2 lines at 30.0pt need 62pt, usable 39pt. suggest.height=2.2cm\n  [O3] /slide[5]/shape[@id=100014]: text overflow: 3 lines at 17.0pt need 61pt, usable 44pt. suggest.height=2.2cm\n  [O4] /slide[5]/shape[@id=100063]: text overflow: 2 lines at 18.0pt need 43pt, usable 25pt. suggest.height=1.55cm\n  [O5] /slide[6]/shape[@id=100105]: text overflow: 2 lines at 18.0pt need 41pt, usable 31pt. suggest.height=1.5cm\n  [O6] /slide[9]/shape[@id=2]: text overflow: 2 lines at 30.0pt need 65pt, usable 39pt. suggest.height=2.3cm\n  [O7] /slide[10]/shape[@id=100007]: text overflow: 3 lines at 19.0pt need 66pt, usable 56pt. suggest.height=2.35cm\n  [O8] /slide[10]/shape[@id=100008]: text overflow: 8 lines at 22.0pt need 202pt, usable 188pt. suggest.height=7.15cm\n  [O9] /slide[10]/shape[@id=100008]: Text shape \"Experimental Results: The hypergraph siz…\" extends 0.7cm past slide bottom edge\n  [O10] /slide[10]/shape[@id=100013]: Text shape \"Similar LUT usage, uneven FF and BRAM di…\" extends 1.6cm past slide right edge\n"
+}

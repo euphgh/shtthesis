@@ -19,13 +19,14 @@ WORK = ROOT / "build/pptx/restyle-midterm"
 SOURCE = ROOT / "pptx/midterm/REMUS-midterm.pptx"
 BACKUP = WORK / "REMUS-midterm-original.pptx"
 OUTPUT = WORK / "REMUS-midterm.pptx"
-CLI = "/home/hgh/.local/bin/officecli"
+CLI = shutil.which("officecli") or "/home/hgh/.local/bin/officecli"
 NS = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--theme", choices=tuple(THEMES), default=DEFAULT_THEME)
+    parser.add_argument("--officecli", default=CLI)
     args = parser.parse_args()
     palette = THEMES[args.theme]
     WORK.mkdir(parents=True, exist_ok=True)
@@ -67,7 +68,10 @@ def main():
                 old: target for old, target in RED_MAP.items()
                 if old not in original_colors and args.theme == "academic-red"
             })
-            present = {e.get("val") for e in tree.findall(".//a:srgbClr", NS)}
+            # The first command already replaces the theme's color slots.
+            # Do not search those parts for old RGB values later in this batch.
+            present = (set() if part.startswith("ppt/theme/") else
+                       {e.get("val") for e in tree.findall(".//a:srgbClr", NS)})
             for old_color, new_color in original_colors.items():
                 if old_color in present and old_color != new_color:
                     commands.append({
@@ -99,15 +103,15 @@ def main():
                                      "xml": '<a:t xml:space="preserve">' + node.text + '</a:t>'})
     batch = WORK / "recolor-commands.json"
     batch.write_text(json.dumps(commands, ensure_ascii=False, indent=2) + "\n")
-    result = subprocess.run([CLI, "batch", str(OUTPUT), "--input", str(batch), "--json"],
+    result = subprocess.run([args.officecli, "batch", str(OUTPUT), "--input", str(batch), "--json"],
                             capture_output=True, text=True, check=True)
     (WORK / "recolor-results.json").write_text(result.stdout)
     print(result.stdout)
-    subprocess.run([CLI, "close", str(OUTPUT)], check=True)
-    subprocess.run([CLI, "validate", str(OUTPUT)], check=True)
-    subprocess.run([CLI, "view", str(OUTPUT), "issues"], check=True)
+    subprocess.run([args.officecli, "close", str(OUTPUT)], check=True)
+    subprocess.run([args.officecli, "validate", str(OUTPUT)], check=True)
+    subprocess.run([args.officecli, "view", str(OUTPUT), "issues"], check=True)
     for page in (1, 2, 3):
-        subprocess.run([CLI, "view", str(OUTPUT), "screenshot", "--page", str(page),
+        subprocess.run([args.officecli, "view", str(OUTPUT), "screenshot", "--page", str(page),
                         "-o", str(WORK / f"after-{page}.png")], check=True)
 
 

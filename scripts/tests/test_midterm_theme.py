@@ -42,6 +42,13 @@ class ThemeMappingTest(unittest.TestCase):
         self.assertEqual(result[4]["props"]["src"],
                          self.original[4]["props"]["src"])
 
+    def test_title_rich_runs_inherit_owner_from_parent(self):
+        commands = [{"command": "add", "type": "run",
+                     "parent": "/slide[1]/shape[@name=S08.Title]/paragraph[1]",
+                     "props": {"color": "#183B56", "text": "Progress3"}}]
+        self.assertEqual(recolor_commands(commands)[0]["props"]["color"],
+                         "#C00000")
+
     def test_legacy_and_source_not_mutated(self):
         result = recolor_commands(self.original, "navy-teal")
         self.assertEqual(result, self.original)

@@ -72,6 +72,14 @@ def main():
                 x=inches(4.50 + (bw - w) / 2),
                 y=inches(1.12 + (bh - h) / 2),
                 width=inches(w), height=inches(h))
+            # Final manual layout edits still contain the legacy image crop.
+            # Override them last so the replacement stays fully visible.
+            commands.append({
+                "command": "set",
+                "path": "/slide[1]/picture[@name=S06.Pause.Illustration]",
+                "props": {key: picture["props"][key]
+                          for key in ("crop", "x", "y", "width", "height")},
+            })
         else:
             print("NOTICE: Slide 6 still uses the blue raster illustration; "
                   "copy the new diagram to figure/presentation-reference/"

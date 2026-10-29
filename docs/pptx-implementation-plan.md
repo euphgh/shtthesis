@@ -458,3 +458,24 @@ PowerPoint桌面端尚未复核。
 ```
 
 这几条命令默认写入`build/pptx/`中并生成PNG预览，不自动覆盖已经提交的`pptx/midterm/`文件。若要更新最终合并PPT，需先审核并发布各页，再运行`scripts/merge_midterm_pptx.py`。本文前半部分记录的是**旧主题的历史制作过程**，新主题以重新生成的预览为准。
+
+## Academic Red完整版本（2026-10-29）
+
+已另存14页新主题稿：`pptx/midterm/REMUS_Midterm_Academic_Red.pptx`；逐页预览位于`figure/presentation-preview/REMUS_Midterm_Academic_Red/`。原最终稿`REMUS_Midterm_Final.pptx`及全部正式单页文件保持不变。新版与原最终稿的页面数量、画幅、文字和原生图表数据逐项一致，本次未修订内容。
+
+第6页正文采用作者新提供的红橙绿全局暂停时序图，复制至`figure/presentation-reference/midterm-progress-06-academic-red.png`供脚本复用，原文件保留。修复了旧布局裁切参数覆盖新图尺寸的问题，新版图以完整画面等比显示。真实照片、终端与波形截图、校徽和其他旧栅格图标保持原色。
+
+生成时修复两处主题脚本问题：富文本run从`parent`路径识别所属主标题，避免标题被映射为深灰；封面脚本先设置主题色后不再重复替换主题部件中的旧RGB。封面脚本新增`--officecli`参数，并默认从PATH发现工具，适用于当前macOS环境。
+
+本次在`thesis/`目录执行，OfficeCLI相关命令均在沙箱外运行：
+
+```bash
+/usr/bin/python3 scripts/build_midterm_pptx.py --all --theme academic-red
+/usr/bin/python3 scripts/restyle_midterm_frontmatter.py --theme academic-red
+cp build/pptx/restyle-midterm/REMUS-midterm.pptx build/pptx/REMUS-midterm.pptx
+/usr/bin/python3 scripts/merge_midterm_pptx.py --input-dir build/pptx \
+  --output pptx/midterm/REMUS_Midterm_Academic_Red.pptx \
+  --preview-dir figure/presentation-preview/REMUS_Midterm_Academic_Red
+```
+
+已有同名输出时，合并脚本需要显式添加`--force`；默认拒绝覆盖。颜色映射5项单元测试通过，OpenXML校验通过，全部14页经渲染和独立视觉复核，未见新增裁切或遮挡。OfficeCLI仍报告原稿已有的10项启发式布局告警，实际预览完整；未为消除告警改变作者布局。尚未在PowerPoint桌面端复核。
