@@ -5,6 +5,7 @@ standalone PPTX. These helpers do not run OfficeCLI or write presentation files.
 """
 
 from copy import deepcopy
+from .theme import DEFAULT_THEME, THEMES, recolor_commands
 from pathlib import Path
 
 THESIS = Path(__file__).resolve().parents[2]
