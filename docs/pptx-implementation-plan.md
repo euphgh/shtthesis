@@ -429,7 +429,20 @@ PowerPoint桌面端尚未复核。
 - `scripts/build_fpga_rtl_workflow.py`与`scripts/build_checkpoint_replay.py`的原生对象也支持`--theme`。前者两张嵌入PNG仍保持原貌。
 - 封面及感谢页使用`scripts/restyle_midterm_frontmatter.py --theme academic-red`单独改色。合并脚本只合并已发布的PPTX，**不会重新生成单页或替换图片**。
 
-在`thesis/`根目录、能够运行OfficeCLI的环境下：
+在`thesis/`根目录、能够运行OfficeCLI的环境下，**可先用一条命令重建目录页与全部11页正文的主题预览**（仅写入`build/pptx/`，不会自动覆盖交付文件）：
+
+```bash
+/usr/bin/python3 scripts/build_midterm_pptx.py --all --theme academic-red
+```
+
+如需先检查颜色映射而不启动OfficeCLI：
+
+```bash
+/usr/bin/python3 -m unittest discover -s scripts/tests -p test_midterm_theme.py
+```
+
+也可以逐页选择：
+
 
 ```bash
 # 新配色（默认）以及旧主题对比
