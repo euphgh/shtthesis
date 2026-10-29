@@ -459,7 +459,7 @@ PowerPoint桌面端尚未复核。
 
 这几条命令默认写入`build/pptx/`中并生成PNG预览，不自动覆盖已经提交的`pptx/midterm/`文件。若要更新最终合并PPT，需先审核并发布各页，再运行`scripts/merge_midterm_pptx.py`。本文前半部分记录的是**旧主题的历史制作过程**，新主题以重新生成的预览为准。
 
-## Academic Red完整版本（2026-10-29）
+## Academic Red首轮另存版本（2026-10-29，已由下节统一发布替代）
 
 已另存14页新主题稿：`pptx/midterm/REMUS_Midterm_Academic_Red.pptx`；逐页预览位于`figure/presentation-preview/REMUS_Midterm_Academic_Red/`。原最终稿`REMUS_Midterm_Final.pptx`及全部正式单页文件保持不变。新版与原最终稿的页面数量、画幅、文字和原生图表数据逐项一致，本次未修订内容。
 
@@ -479,3 +479,41 @@ cp build/pptx/restyle-midterm/REMUS-midterm.pptx build/pptx/REMUS-midterm.pptx
 ```
 
 已有同名输出时，合并脚本需要显式添加`--force`；默认拒绝覆盖。颜色映射5项单元测试通过，OpenXML校验通过，全部14页经渲染和独立视觉复核，未见新增裁切或遮挡。OfficeCLI仍报告原稿已有的10项启发式布局告警，实际预览完整；未为消除告警改变作者布局。尚未在PowerPoint桌面端复核。
+
+## 新配色统一发布与旧成品清理（2026-10-29）
+
+按作者要求，正式单页、封面/感谢页源文件及最终合并稿均统一为`academic-red`。
+当前唯一最终稿为`pptx/midterm/REMUS_Midterm_Final.pptx`，共14页；
+逐页预览为`figure/presentation-preview/REMUS_Midterm_Final/slide-01.png`至`slide-14.png`。
+目录及11页正文的独立预览也已更新，封面三页源文件另有`REMUS-midterm-*.png`预览。
+
+本次在`thesis/`根目录实际执行以下生成、发布和合并命令；调用OfficeCLI的脚本在沙箱外运行：
+
+```bash
+/usr/bin/python3 scripts/build_midterm_pptx.py --all --theme academic-red \
+  --officecli /Users/hgh/.local/bin/officecli
+/usr/bin/python3 scripts/restyle_midterm_frontmatter.py --theme academic-red \
+  --officecli /Users/hgh/.local/bin/officecli
+cp build/pptx/REMUS_Background_Slide_*.pptx \
+   build/pptx/REMUS_Progress_Slide_*.pptx \
+   build/pptx/REMUS_Midterm_Contents.pptx \
+   build/pptx/REMUS_Prototype_Slide_10.pptx \
+   build/pptx/REMUS_Future_Work_Slide_11.pptx pptx/midterm/
+cp build/pptx/restyle-midterm/REMUS-midterm.pptx pptx/midterm/REMUS-midterm.pptx
+cp build/pptx/midterm-*.png figure/presentation-preview/
+cp build/pptx/restyle-midterm/after-1.png figure/presentation-preview/REMUS-midterm-cover.png
+cp build/pptx/restyle-midterm/after-2.png figure/presentation-preview/REMUS-midterm-contents.png
+cp build/pptx/restyle-midterm/after-3.png figure/presentation-preview/REMUS-midterm-thanks.png
+/usr/bin/python3 scripts/merge_midterm_pptx.py --force \
+  --preview-dir figure/presentation-preview/REMUS_Midterm_Final \
+  --officecli /Users/hgh/.local/bin/officecli
+```
+
+封面改色脚本现在始终读取当前正式源文件，不再依赖旧配色备份，避免后续重建恢复过时内容。
+旧配色正式成品与预览已覆盖；旧构建缓存、旧封面备份及首轮另存的重复最终稿和预览已移出仓库。
+清理前的正式文件完整归档为`/private/tmp/remus-midterm-theme-cleanup.cR8BuR/published-before-update.tar.gz`，
+移出的缓存和重复文件位于同目录的`retired/`中，可临时恢复。开题材料、论文技术图、实验截图、图标和原始插图未删除。
+
+14页的文字、原生图表数据和画幅与首轮新主题稿一致，正式来源文件哈希与合并清单一致。
+OpenXML校验通过，12页目录/正文主标题均为`#C00000`，全部14页完成渲染与独立视觉复核。
+保留前述10项既有启发式布局告警，未发现新增裁切或遮挡；尚未在PowerPoint桌面端复核。

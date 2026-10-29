@@ -70,6 +70,7 @@
 
 - `/usr/bin/python3 scripts/build_midterm_pptx.py --slide N`默认使用`academic-red`主题，加`--theme navy-teal`可生成旧主题。脚本在逐页布局调整后替换原生形状、文字、线条与图表配色，包括布局修订中硬编码的颜色；图片像素不在替换范围。
 - 第6页的新主题时序图已保存为`figure/presentation-reference/midterm-progress-06-academic-red.png`，来源为作者提供的`figure/全局暂停协调时序图.png`。重新构建`academic-red`版本时自动完整按比例插入；旧主题PPTX和原图保留。
+- `figure/ppt-assets/`中的独立PNG仍是旧配色；后续制作新主题图标时应保留原文件，新图存入独立目录。真实实验截图、设备照片与校徽不改色。
 - `figure/ppt-assets/`顶层的10张独立PNG已改为新主题的深灰、绿色和橙色，沿用原文件名供脚本复用；旧配色原图保存在`figure/ppt-assets/navy-teal/`。已有PPTX中的嵌入图片需要重新构建才会更新。真实实验截图、设备照片与校徽不改色。
 
 

@@ -17,7 +17,6 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 WORK = ROOT / "build/pptx/restyle-midterm"
 SOURCE = ROOT / "pptx/midterm/REMUS-midterm.pptx"
-BACKUP = WORK / "REMUS-midterm-original.pptx"
 OUTPUT = WORK / "REMUS-midterm.pptx"
 CLI = shutil.which("officecli") or "/home/hgh/.local/bin/officecli"
 NS = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
@@ -30,9 +29,8 @@ def main():
     args = parser.parse_args()
     palette = THEMES[args.theme]
     WORK.mkdir(parents=True, exist_ok=True)
-    if not BACKUP.exists():
-        shutil.copy2(SOURCE, BACKUP)
-    shutil.copy2(BACKUP, OUTPUT)
+    # Always start from the current published source, not an old-theme cache.
+    shutil.copy2(SOURCE, OUTPUT)
     colors = dict(dk1=palette["body"], dk2=palette["outline"],
                   lt1="FFFFFF", lt2=palette["neutral"],
                   accent1=palette["accent1"], accent2=palette["accent2"],
@@ -44,7 +42,7 @@ def main():
     commands = [{"command": "set", "path": "/", "props": props}]
     # Explicit fonts and red title defaults live in the template layouts.
     # Raw-set changes only those attributes, preserving rich runs and fields.
-    with ZipFile(BACKUP) as archive:
+    with ZipFile(SOURCE) as archive:
         for part in archive.namelist():
             if not part.endswith(".xml") or not part.startswith(
                     ("ppt/slides/", "ppt/slideLayouts/", "ppt/slideMasters/", "ppt/theme/")):
@@ -92,7 +90,7 @@ def main():
                          "props": {"color": palette["muted"]}})
     # Raw XML loading drops standalone whitespace runs unless xml:space is
     # explicit. Restore their original values after the color/font edits.
-    with ZipFile(BACKUP) as archive:
+    with ZipFile(SOURCE) as archive:
         for page in (1, 2, 3):
             part = f"ppt/slides/slide{page}.xml"
             tree = ET.fromstring(archive.read(part))
