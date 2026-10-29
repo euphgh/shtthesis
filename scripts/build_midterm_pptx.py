@@ -11,9 +11,10 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import struct
 
 from midterm_pptx import slide_01, slide_02, slide_03, slide_04, slide_05, slide_06, slide_07, slide_08, slide_09, slide_10, slide_11
-from midterm_pptx.common import BUILD, NAVY, TEAL, AMBER
+from midterm_pptx.common import BUILD, THESIS, inches, THEMES, DEFAULT_THEME, recolor_commands
 from midterm_pptx import slide_contents
 
 # Register new page modules here; each exposes TITLE and build_commands().
@@ -25,6 +26,8 @@ def main():
     """Build, inspect, and render one slide through OfficeCLI outside the sandbox."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--slide", type=int, choices=tuple(SLIDES), default=1)
+    parser.add_argument("--theme", choices=tuple(THEMES), default=DEFAULT_THEME,
+                        help="Palette (default: academic-red; alternative: navy-teal)")
     parser.add_argument("--output", type=Path)
     parser.add_argument("--preview", type=Path)
     parser.add_argument("--officecli", default=shutil.which("officecli") or "/home/hgh/.local/bin/officecli")
@@ -35,6 +38,32 @@ def main():
     args.output = (args.output or BUILD / f"{output_stem}.pptx").resolve()
     args.preview = (args.preview or BUILD / f"{preview_stem}.png").resolve()
     commands = page.build_commands()
+    # A new full-size red pause diagram can be placed here without overwriting
+    # the legacy blue reference. Fit without changing the new PNG's aspect ratio.
+    if args.slide == 6 and args.theme == "academic-red":
+        red_png = THESIS / "figure/presentation-reference/midterm-progress-06-academic-red.png"
+        if red_png.is_file():
+            header = red_png.read_bytes()[:24]
+            if header[:8] != bytes.fromhex("89504e470d0a1a0a"):
+                raise ValueError(f"Invalid PNG: {red_png}")
+            sw, sh = struct.unpack(">II", header[16:24])
+            if not sw or not sh:
+                raise ValueError("Invalid PNG dimensions")
+            bw, bh = 8.48, 5.84
+            w = min(bw, bh * sw / sh)
+            h = w * sh / sw
+            picture = next(cmd for cmd in commands
+                           if cmd.get("props", {}).get("name") == "S06.Pause.Illustration")
+            picture["props"].update(
+                src=str(red_png), crop="0,0,0,0",
+                x=inches(4.50 + (bw - w) / 2),
+                y=inches(1.12 + (bh - h) / 2),
+                width=inches(w), height=inches(h))
+        else:
+            print("NOTICE: Slide 6 still uses the blue raster illustration; "
+                  "copy the new diagram to figure/presentation-reference/"
+                  "midterm-progress-06-academic-red.png")
+    commands = recolor_commands(commands, args.theme)
     log_prefix = f"slide-{args.slide:02}"
     BUILD.mkdir(parents=True, exist_ok=True)
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -55,8 +84,10 @@ def main():
         args.output.unlink()
     cli("create", args.output)
     cli("set", args.output, "/", "--prop", "slideSize=widescreen")
+    palette = THEMES[args.theme]
     cli("set", args.output, "/theme", "--prop", "headingFont=Arial", "--prop", "bodyFont=Arial",
-        "--prop", f"accent1={NAVY}", "--prop", f"accent2={TEAL}", "--prop", f"accent3={AMBER}")
+        "--prop", f"accent1={palette['accent1']}", "--prop", f"accent2={palette['accent2']}",
+        "--prop", f"accent3={palette['accent3']}")
     cli("add", args.output, "/", "--type", "slide", "--prop", "layout=blank",
         "--prop", "background=FFFFFF", "--prop", f"title={page.TITLE}")
     (BUILD / f"{log_prefix}-initial.txt").write_text(cli("get", args.output, "/slide[1]", "--depth", "1"))
