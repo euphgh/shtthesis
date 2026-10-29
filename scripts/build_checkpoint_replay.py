@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+from midterm_pptx.theme import DEFAULT_THEME, THEMES, recolor_commands
 
 from build_fpga_rtl_workflow import Diagram, ROOT, NAVY, TEAL, AMBER, BLUE, GREEN, unit
 
@@ -195,6 +196,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--publish", action="store_true",
                         help="Copy output to delivery paths after checks; review PNG first.")
+    parser.add_argument("--theme", choices=tuple(THEMES), default=DEFAULT_THEME)
     args = parser.parse_args()
     BUILD.mkdir(parents=True, exist_ok=True)
     pptx = BUILD / f"{STEM}.pptx"
@@ -214,11 +216,14 @@ def main():
     cli("create", pptx)
     cli("set", pptx, "/", "--prop", "slideWidth="+unit(20),
         "--prop", "slideHeight="+unit(10))
-    cli("set", pptx, "/theme", "--prop", "headingFont=Arial", "--prop", "bodyFont=Arial")
+    palette = THEMES[args.theme]
+    cli("set", pptx, "/theme", "--prop", "headingFont=Arial", "--prop", "bodyFont=Arial",
+        "--prop", f"accent1={palette['accent1']}", "--prop", f"accent2={palette['accent2']}",
+        "--prop", f"accent3={palette['accent3']}")
     cli("add", pptx, "/", "--type", "slide", "--prop", "layout=blank", "--prop", "background=FFFFFF")
     (BUILD/"initial.txt").write_text(cli("get", pptx, "/slide[1]", "--depth", "1"))
     batch = BUILD / "commands.json"
-    batch.write_text(json.dumps(build_commands(), indent=2))
+    batch.write_text(json.dumps(recolor_commands(build_commands(), args.theme), indent=2))
     (BUILD/"batch.json").write_text(cli("batch", pptx, "--input", batch, "--json"))
     cli("save", pptx)
     for mode in ("text", "issues"):
