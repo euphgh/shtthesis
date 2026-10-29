@@ -17,7 +17,7 @@ The assets are intended to be reused as standalone illustrations, with arrows, m
 | `fabric-topology.png` | FPGA fabric interconnection |
 | `circuit-partitioning.png` | Automated partitioning |
 
-Colors follow the [style guide](../../docs/presentation-style-guide.md): Deep Navy, Academic Teal, and Amber Orange.
+The **source PNG pixels still use the original** Deep Navy, Academic Teal, and Amber Orange palette. The [style guide](../../docs/presentation-style-guide.md) now defaults to Academic Red, but changing the PPT theme cannot recolor raster assets. Keep these originals; any red-theme replacements should be saved separately.
 See the [OfficeCLI implementation plan](../../docs/pptx-implementation-plan.md) for slide-by-slide placement and the [design reference index](../presentation-reference/README.md) for intended layouts.
 
 ## Placement and reuse
