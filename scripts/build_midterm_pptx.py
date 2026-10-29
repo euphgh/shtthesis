@@ -14,7 +14,6 @@ import subprocess
 
 from midterm_pptx import slide_01, slide_02, slide_03, slide_04, slide_05, slide_06, slide_07, slide_08, slide_09, slide_10, slide_11
 from midterm_pptx.common import BUILD, NAVY, TEAL, AMBER
-from midterm_pptx.manual_revision import apply_manual_adjustments
 from midterm_pptx import slide_contents
 
 # Register new page modules here; each exposes TITLE and build_commands().
@@ -35,7 +34,7 @@ def main():
     preview_stem = getattr(page, "PREVIEW_STEM", f"midterm-background-{args.slide:02}")
     args.output = (args.output or BUILD / f"{output_stem}.pptx").resolve()
     args.preview = (args.preview or BUILD / f"{preview_stem}.png").resolve()
-    commands = apply_manual_adjustments(args.slide, page.build_commands())
+    commands = page.build_commands()
     log_prefix = f"slide-{args.slide:02}"
     BUILD.mkdir(parents=True, exist_ok=True)
     args.output.parent.mkdir(parents=True, exist_ok=True)

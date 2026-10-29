@@ -58,4 +58,6 @@ def build_commands():
             "This contents page does not assert completion of all technical goals."
         )},
     })
+    # Explicit title spacing and page-specific finishing objects.
+    commands.extend([{'command': 'set', 'path': '/slide[1]/shape[@name=S00.Title]', 'props': {'lineSpacing': '0.9x'}}])
     return commands

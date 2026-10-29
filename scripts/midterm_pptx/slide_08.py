@@ -1,6 +1,6 @@
 """Page 8: automated partitioning and measured per-Part resource distribution."""
 
-from .common import SlideAPI, NAVY, TEAL, inches
+from .common import apply_layout_edits, SlideAPI, NAVY, TEAL, inches
 
 TITLE = 'Progress3: Automated Multi-FPGA Circuit Partitioning'
 OUTPUT_STEM = "REMUS_Progress_Slide_8"
@@ -13,6 +13,327 @@ slide = SlideAPI(8)
 RESOURCES = ("LUT", "FF", "BRAM")
 PART0 = (73.18, 17.66, 14.31)
 PART1 = (75.77, 8.17, 0.00)
+
+
+# Final reviewed layout for this page. These properties override the base
+# component layout below; edit revised text, geometry and rich text here.
+LAYOUT_EDITS = {'remove': ['S08.Efficiency.Text'],
+ 'objects': {'S08.Title': {'props': {'font': 'Arial',
+                                     'size': '30pt',
+                                     'color': '#183B56',
+                                     'bold': 'true',
+                                     'align': 'left',
+                                     'name': 'S08.Title',
+                                     'x': '25.2pt',
+                                     'y': '10.08pt',
+                                     'width': '910.08pt',
+                                     'height': '38.88pt',
+                                     'fill': 'none',
+                                     'line': 'none',
+                                     'margin': '0cm',
+                                     'autoFit': 'none'},
+                           'paragraphs': [{'command': 'add',
+                                           'parent': '{object}/paragraph[1]',
+                                           'type': 'run',
+                                           'props': {'size': '30pt',
+                                                     'bold': 'true',
+                                                     'color': '#183B56',
+                                                     'text': 'Progress3: Automated '}},
+                                          {'command': 'add',
+                                           'parent': '{object}/paragraph[1]',
+                                           'type': 'run',
+                                           'props': {'font.latin': 'Arial',
+                                                     'size': '30pt',
+                                                     'bold': 'true',
+                                                     'color': '#183B56',
+                                                     'text': 'Multi-FPGA Circuit Partitioning'}}]},
+             'S08.Method.Text3': {'props': {'font': 'Arial',
+                                            'size': '19pt',
+                                            'color': '#20354A',
+                                            'bold': 'false',
+                                            'align': 'left',
+                                            'name': 'S08.Method.Text3',
+                                            'x': '66.24pt',
+                                            'y': '290.88pt',
+                                            'width': '241.2pt',
+                                            'height': '56.16pt',
+                                            'fill': 'none',
+                                            'font.latin': 'Arial',
+                                            'line': 'none',
+                                            'margin': '0cm',
+                                            'autoFit': 'none'},
+                                  'paragraphs': [{'command': 'set',
+                                                  'path': '{object}/paragraph[1]',
+                                                  'props': {'font.latin': 'Arial',
+                                                            'size': '19pt',
+                                                            'color': '#20354A',
+                                                            'text': 'Path-cut number analysis'}},
+                                                 {'command': 'add',
+                                                  'parent': '{object}',
+                                                  'type': 'paragraph',
+                                                  'props': {'font.latin': 'Arial',
+                                                            'size': '19pt',
+                                                            'color': '#20354A',
+                                                            'text': 'for LI-TDM'}}]},
+             'S08.Efficiency.Status': {'props': {'font': 'Arial',
+                                                 'size': '18pt',
+                                                 'color': '#183B56',
+                                                 'bold': 'false',
+                                                 'align': 'left',
+                                                 'name': 'S08.Efficiency.Status',
+                                                 'x': '28.8pt',
+                                                 'y': '372.6pt',
+                                                 'width': '311.04pt',
+                                                 'height': '2386232emu',
+                                                 'fill': 'none',
+                                                 'font.latin': 'Arial',
+                                                 'line': 'none',
+                                                 'margin': '0cm',
+                                                 'autoFit': 'none'},
+                                       'paragraphs': [{'command': 'set',
+                                                       'path': '{object}/paragraph[1]',
+                                                       'props': {'font.latin': 'Arial',
+                                                                 'size': '22pt',
+                                                                 'bold': 'true',
+                                                                 'color': '#183B56',
+                                                                 'text': 'Experimental Results:'}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}',
+                                                       'type': 'paragraph',
+                                                       'props': {}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}',
+                                                       'type': 'paragraph',
+                                                       'props': {'indent': '-22.5pt',
+                                                                 'marginLeft': '22.5pt',
+                                                                 'bulletRaw': '<a:buFont '
+                                                                              'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                              'charset="0" '
+                                                                              'panose="020B0604020202020204" '
+                                                                              'pitchFamily="34" '
+                                                                              'typeface="Arial" '
+                                                                              '/><a:buChar '
+                                                                              'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                              'char="•" />'}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}/paragraph[3]',
+                                                       'type': 'run',
+                                                       'props': {'color': '#183B56',
+                                                                 'text': 'The hypergraph size was '
+                                                                         'reduced to '}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}/paragraph[3]',
+                                                       'type': 'run',
+                                                       'props': {'color': '#183B56',
+                                                                 'text': '1/10'}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}',
+                                                       'type': 'paragraph',
+                                                       'props': {'indent': '-22.5pt',
+                                                                 'marginLeft': '22.5pt',
+                                                                 'bulletRaw': '<a:buFont '
+                                                                              'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                              'charset="0" '
+                                                                              'panose="020B0604020202020204" '
+                                                                              'pitchFamily="34" '
+                                                                              'typeface="Arial" '
+                                                                              '/><a:buChar '
+                                                                              'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                              'char="•" />'}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}/paragraph[4]',
+                                                       'type': 'run',
+                                                       'props': {'color': '#183B56',
+                                                                 'text': 'No significant change in '
+                                                                         'the'}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}/paragraph[4]',
+                                                       'type': 'run',
+                                                       'props': {'color': '#183B56', 'text': ' '}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}/paragraph[4]',
+                                                       'type': 'run',
+                                                       'props': {'color': '#183B56', 'text': 'c'}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}/paragraph[4]',
+                                                       'type': 'run',
+                                                       'props': {'color': '#183B56', 'text': 'ut'}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}/paragraph[4]',
+                                                       'type': 'run',
+                                                       'props': {'color': '#183B56', 'text': '-'}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}/paragraph[4]',
+                                                       'type': 'run',
+                                                       'props': {'color': '#183B56',
+                                                                 'text': 'size and path'}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}/paragraph[4]',
+                                                       'type': 'run',
+                                                       'props': {'color': '#183B56', 'text': '-'}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}/paragraph[4]',
+                                                       'type': 'run',
+                                                       'props': {'color': '#183B56',
+                                                                 'text': 'cut'}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}/paragraph[4]',
+                                                       'type': 'run',
+                                                       'props': {'color': '#183B56', 'text': ' '}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}/paragraph[4]',
+                                                       'type': 'run',
+                                                       'props': {'color': '#183B56',
+                                                                 'text': 'number'}},
+                                                      {'command': 'add',
+                                                       'parent': '{object}',
+                                                       'type': 'paragraph',
+                                                       'props': {}}]},
+             'S08.Results.Context': {'props': {'font': 'Arial',
+                                               'size': '18pt',
+                                               'color': '#183B56',
+                                               'bold': 'false',
+                                               'align': 'left',
+                                               'name': 'S08.Results.Context',
+                                               'x': '344.16pt',
+                                               'y': '126.72pt',
+                                               'width': '588.96pt',
+                                               'height': '25.2pt',
+                                               'fill': 'none',
+                                               'font.latin': 'Arial',
+                                               'line': 'none',
+                                               'margin': '0cm',
+                                               'autoFit': 'none'},
+                                     'paragraphs': [{'command': 'set',
+                                                     'path': '{object}/paragraph[1]',
+                                                     'props': {'font.latin': 'Arial',
+                                                               'color': '#183B56',
+                                                               'text': 'KMH · Two partitions · '
+                                                                       'Utilization (%)'}}]},
+             'S08.Resources.Chart': {'props': {'chartStyle': '2',
+                                               'autoTitleDeleted': 'true',
+                                               'style': '2',
+                                               'roundedCorners': 'true',
+                                               'gridline.spPr': '<c:spPr '
+                                                                'xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"><a:ln '
+                                                                'w="6350" '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:solidFill><a:srgbClr '
+                                                                'val="DDE5EA" '
+                                                                '/></a:solidFill></a:ln></c:spPr>',
+                                               'catAx.txPr': '<c:txPr '
+                                                             'xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"><a:bodyPr '
+                                                             'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                             '/><a:lstStyle '
+                                                             'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                             '/><a:p '
+                                                             'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:pPr><a:defRPr '
+                                                             'sz="1600"><a:solidFill><a:srgbClr '
+                                                             'val="20354A" '
+                                                             '/></a:solidFill><a:latin '
+                                                             'typeface="Arial" /><a:ea '
+                                                             'typeface="Arial" '
+                                                             '/></a:defRPr></a:pPr><a:endParaRPr '
+                                                             'lang="en-CN" /></a:p></c:txPr>',
+                                               'valAx.txPr': '<c:txPr '
+                                                             'xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"><a:bodyPr '
+                                                             'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                             '/><a:lstStyle '
+                                                             'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                             '/><a:p '
+                                                             'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:pPr><a:defRPr '
+                                                             'sz="1600"><a:solidFill><a:srgbClr '
+                                                             'val="20354A" '
+                                                             '/></a:solidFill><a:latin '
+                                                             'typeface="Arial" /><a:ea '
+                                                             'typeface="Arial" '
+                                                             '/></a:defRPr></a:pPr><a:endParaRPr '
+                                                             'lang="en-CN" /></a:p></c:txPr>',
+                                               'series1.dlbls': '<c:dLbls '
+                                                                'xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"><c:spPr><a:noFill '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                '/><a:ln '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:noFill '
+                                                                '/></a:ln><a:effectLst '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                '/></c:spPr><c:txPr><a:bodyPr '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                '/><a:lstStyle '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                '/><a:p '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:pPr><a:defRPr '
+                                                                'sz="1800"><a:solidFill><a:srgbClr '
+                                                                'val="20354A" '
+                                                                '/></a:solidFill><a:latin '
+                                                                'typeface="Arial" /><a:ea '
+                                                                'typeface="Arial" '
+                                                                '/></a:defRPr></a:pPr><a:endParaRPr '
+                                                                'lang="en-CN" '
+                                                                '/></a:p></c:txPr><c:dLblPos '
+                                                                'val="outEnd" /><c:showLegendKey '
+                                                                'val="0" /><c:showVal val="1" '
+                                                                '/><c:showCatName val="0" '
+                                                                '/><c:showSerName val="0" '
+                                                                '/><c:showPercent val="0" '
+                                                                '/><c:showBubbleSize val="1" '
+                                                                '/><c:showLeaderLines val="0" '
+                                                                '/><c:extLst><c:ext '
+                                                                'xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart" '
+                                                                'uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}"><c15:showLeaderLines '
+                                                                'val="0" '
+                                                                '/></c:ext></c:extLst></c:dLbls>',
+                                               'series2.dlbls': '<c:dLbls '
+                                                                'xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart"><c:spPr><a:noFill '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                '/><a:ln '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:noFill '
+                                                                '/></a:ln><a:effectLst '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                '/></c:spPr><c:txPr><a:bodyPr '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                '/><a:lstStyle '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                '/><a:p '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:pPr><a:defRPr '
+                                                                'sz="1800"><a:solidFill><a:srgbClr '
+                                                                'val="20354A" '
+                                                                '/></a:solidFill><a:latin '
+                                                                'typeface="Arial" /><a:ea '
+                                                                'typeface="Arial" '
+                                                                '/></a:defRPr></a:pPr><a:endParaRPr '
+                                                                'lang="en-CN" '
+                                                                '/></a:p></c:txPr><c:dLblPos '
+                                                                'val="outEnd" /><c:showLegendKey '
+                                                                'val="0" /><c:showVal val="1" '
+                                                                '/><c:showCatName val="0" '
+                                                                '/><c:showSerName val="0" '
+                                                                '/><c:showPercent val="0" '
+                                                                '/><c:showBubbleSize val="1" '
+                                                                '/><c:showLeaderLines val="0" '
+                                                                '/><c:extLst><c:ext '
+                                                                'xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart" '
+                                                                'uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}"><c15:showLeaderLines '
+                                                                'val="0" '
+                                                                '/></c:ext></c:extLst></c:dLbls>',
+                                               'dataLabels': 'none'}},
+             'S08.Results.Observation': {'props': {'x': '416.16pt', 'y': '453.6pt'}},
+             'S08.Results.Scope': {'props': {'font': 'Arial',
+                                             'size': '12pt',
+                                             'color': '#607184',
+                                             'bold': 'false',
+                                             'align': 'left',
+                                             'name': 'S08.Results.Scope',
+                                             'x': '344.16pt',
+                                             'y': '498.24pt',
+                                             'width': '588.96pt',
+                                             'height': '20.16pt',
+                                             'fill': 'none',
+                                             'font.latin': 'Arial',
+                                             'line': 'none',
+                                             'margin': '0cm',
+                                             'autoFit': 'none'},
+                                   'paragraphs': [{'command': 'set',
+                                                   'path': '{object}/paragraph[1]',
+                                                   'props': {'size': '12pt'}}]}}}
 
 
 def build_commands():
@@ -106,4 +427,14 @@ def build_commands():
             "src/midterm/progress/partitioning.tex; src/midterm/problems.tex."
         )},
     })
+    commands = apply_layout_edits(commands, LAYOUT_EDITS)
+    # Explicit title spacing and page-specific finishing objects.
+    commands.extend([{'command': 'set', 'path': '/slide[1]/shape[@name=S08.Title]', 'props': {'lineSpacing': '0.9x'}},
+     {'command': 'raw-set',
+      'part': '/ppt/slides/charts/chart1.xml',
+      'xpath': '//c:barChart/c:gapWidth',
+      'action': 'insertbefore',
+      'xml': '<c:dLbls><c:dLblPos val="outEnd"/><c:showLegendKey val="0"/><c:showVal '
+             'val="1"/><c:showCatName val="0"/><c:showSerName val="0"/><c:showPercent '
+             'val="0"/><c:showBubbleSize val="1"/></c:dLbls>'}])
     return commands

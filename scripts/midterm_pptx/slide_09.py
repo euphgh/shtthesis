@@ -1,11 +1,46 @@
 """Page 9: direct PCIe versus Fabric access, using editable diagrams."""
 
-from .common import SlideAPI, NAVY, TEAL
+from .common import apply_layout_edits, SlideAPI, NAVY, TEAL
 
 TITLE = 'Progress4: Scalable Multi-FPGA Runtime'
 OUTPUT_STEM = "REMUS_Progress_Slide_9"
 PREVIEW_STEM = "midterm-progress-09"
 slide = SlideAPI(9)
+
+
+# Final reviewed layout for this page. These properties override the base
+# component layout below; edit revised text, geometry and rich text here.
+LAYOUT_EDITS = {'remove': ['S09.Direct.LinkCaption'],
+ 'objects': {'S09.Title': {'props': {'font': 'Arial',
+                                     'size': '30pt',
+                                     'color': '#183B56',
+                                     'bold': 'true',
+                                     'align': 'left',
+                                     'name': 'S09.Title',
+                                     'x': '25.2pt',
+                                     'y': '10.08pt',
+                                     'width': '910.08pt',
+                                     'height': '38.88pt',
+                                     'fill': 'none',
+                                     'line': 'none',
+                                     'margin': '0cm',
+                                     'autoFit': 'none'},
+                           'paragraphs': [{'command': 'add',
+                                           'parent': '{object}/paragraph[1]',
+                                           'type': 'run',
+                                           'props': {'size': '30pt',
+                                                     'bold': 'true',
+                                                     'color': '#183B56',
+                                                     'text': 'Progress4: Scalable '}},
+                                          {'command': 'add',
+                                           'parent': '{object}/paragraph[1]',
+                                           'type': 'run',
+                                           'props': {'font.latin': 'Arial',
+                                                     'size': '30pt',
+                                                     'bold': 'true',
+                                                     'color': '#183B56',
+                                                     'text': 'Multi-FPGA Runtime'}}]},
+             'S09.Direct.Text1': {'props': {'y': '5456237emu'}}}}
 
 
 def build_commands():
@@ -91,4 +126,7 @@ def build_commands():
             "All visible text, diagrams, and arrows are native editable PowerPoint elements."
         )},
     })
+    commands = apply_layout_edits(commands, LAYOUT_EDITS)
+    # Explicit title spacing and page-specific finishing objects.
+    commands.extend([{'command': 'set', 'path': '/slide[1]/shape[@name=S09.Title]', 'props': {'lineSpacing': '0.9x'}}])
     return commands

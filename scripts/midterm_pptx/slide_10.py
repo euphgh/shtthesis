@@ -1,6 +1,6 @@
 """Page 10: physical dual-FPGA platform, Linux execution and recorded metrics."""
 
-from .common import SlideAPI, THESIS, NAVY, TEAL, AMBER, inches
+from .common import apply_layout_edits, SlideAPI, THESIS, NAVY, TEAL, AMBER, inches
 
 TITLE = 'Evaluation: Dual-FPGA Emulation System'
 OUTPUT_STEM = "REMUS_Prototype_Slide_10"
@@ -25,6 +25,200 @@ def cropped_picture(name, source, source_size, bounds, x, y, width, alt):
             "crop": ",".join(f"{value:.6f}" for value in crop), "alt": alt,
         },
     }
+
+
+# Final reviewed layout for this page. These properties override the base
+# component layout below; edit revised text, geometry and rich text here.
+LAYOUT_EDITS = {'remove': ['S10.Metrics.Scope', 'S10.Platform.PhotoLabel'],
+ 'objects': {'S10.Title': {'props': {'font': 'Arial',
+                                     'size': '18pt',
+                                     'color': '#183B56',
+                                     'bold': 'true',
+                                     'align': 'left',
+                                     'name': 'S10.Title',
+                                     'x': '25.2pt',
+                                     'y': '10.08pt',
+                                     'width': '910.08pt',
+                                     'height': '38.88pt',
+                                     'fill': 'none',
+                                     'line': 'none',
+                                     'margin': '0cm',
+                                     'autoFit': 'none'},
+                           'paragraphs': [{'command': 'add',
+                                           'parent': '{object}/paragraph[1]',
+                                           'type': 'run',
+                                           'props': {'size': '32pt',
+                                                     'bold': 'true',
+                                                     'color': '#183B56',
+                                                     'text': 'Evaluation: '}},
+                                          {'command': 'add',
+                                           'parent': '{object}/paragraph[1]',
+                                           'type': 'run',
+                                           'props': {'font.latin': 'Arial',
+                                                     'size': '30pt',
+                                                     'bold': 'true',
+                                                     'color': '#183B56',
+                                                     'text': 'Dual-FPGA Emulation System'}}]},
+             'S10.Platform.Text1': {'props': {'font': 'Arial',
+                                              'size': '17pt',
+                                              'color': '#20354A',
+                                              'bold': 'false',
+                                              'align': 'left',
+                                              'name': 'S10.Platform.Text1',
+                                              'x': '25.2pt',
+                                              'y': '367.2pt',
+                                              'width': '334.8pt',
+                                              'height': '25.2pt',
+                                              'fill': 'none',
+                                              'bulletRaw': '<a:buFont '
+                                                           'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                           'charset="0" '
+                                                           'panose="020B0604020202020204" '
+                                                           'pitchFamily="34" typeface="Arial" '
+                                                           '/><a:buChar '
+                                                           'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                           'char="•" />',
+                                              'font.latin': 'Arial',
+                                              'line': 'none',
+                                              'margin': '0cm',
+                                              'autoFit': 'none',
+                                              'indent': '-22.5pt',
+                                              'marginLeft': '22.5pt'},
+                                    'paragraphs': [{'command': 'set',
+                                                    'path': '{object}/paragraph[1]',
+                                                    'props': {'indent': '-22.5pt',
+                                                              'marginLeft': '22.5pt',
+                                                              'bulletRaw': '<a:buFont '
+                                                                           'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                           'charset="0" '
+                                                                           'panose="020B0604020202020204" '
+                                                                           'pitchFamily="34" '
+                                                                           'typeface="Arial" '
+                                                                           '/><a:buChar '
+                                                                           'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                           'char="•" />',
+                                                              'font.latin': 'Arial',
+                                                              'size': '17pt',
+                                                              'color': '#20354A',
+                                                              'text': 'Two NM37 boards with VU37P '
+                                                                      'FPGAs'}}]},
+             'S10.Platform.Text2': {'props': {'font': 'Arial',
+                                              'size': '17pt',
+                                              'color': '#20354A',
+                                              'bold': 'false',
+                                              'align': 'left',
+                                              'name': 'S10.Platform.Text2',
+                                              'x': '25.2pt',
+                                              'y': '393.12pt',
+                                              'width': '334.8pt',
+                                              'height': '25.2pt',
+                                              'fill': 'none',
+                                              'bulletRaw': '<a:buFont '
+                                                           'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                           'charset="0" '
+                                                           'panose="020B0604020202020204" '
+                                                           'pitchFamily="34" typeface="Arial" '
+                                                           '/><a:buChar '
+                                                           'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                           'char="•" />',
+                                              'font.latin': 'Arial',
+                                              'line': 'none',
+                                              'margin': '0cm',
+                                              'autoFit': 'none',
+                                              'indent': '-22.5pt',
+                                              'marginLeft': '22.5pt'},
+                                    'paragraphs': [{'command': 'set',
+                                                    'path': '{object}/paragraph[1]',
+                                                    'props': {'indent': '-22.5pt',
+                                                              'marginLeft': '22.5pt',
+                                                              'bulletRaw': '<a:buFont '
+                                                                           'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                           'charset="0" '
+                                                                           'panose="020B0604020202020204" '
+                                                                           'pitchFamily="34" '
+                                                                           'typeface="Arial" '
+                                                                           '/><a:buChar '
+                                                                           'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                           'char="•" />',
+                                                              'font.latin': 'Arial',
+                                                              'size': '17pt',
+                                                              'color': '#20354A',
+                                                              'text': 'PCIe access from a shared '
+                                                                      'Host'}}]},
+             'S10.Platform.Text3': {'props': {'font': 'Arial',
+                                              'size': '17pt',
+                                              'color': '#20354A',
+                                              'bold': 'false',
+                                              'align': 'left',
+                                              'name': 'S10.Platform.Text3',
+                                              'x': '25.2pt',
+                                              'y': '419.04pt',
+                                              'width': '334.8pt',
+                                              'height': '25.2pt',
+                                              'fill': 'none',
+                                              'bulletRaw': '<a:buFont '
+                                                           'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                           'charset="0" '
+                                                           'panose="020B0604020202020204" '
+                                                           'pitchFamily="34" typeface="Arial" '
+                                                           '/><a:buChar '
+                                                           'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                           'char="•" />',
+                                              'font.latin': 'Arial',
+                                              'line': 'none',
+                                              'margin': '0cm',
+                                              'autoFit': 'none',
+                                              'indent': '-22.5pt',
+                                              'marginLeft': '22.5pt'},
+                                    'paragraphs': [{'command': 'set',
+                                                    'path': '{object}/paragraph[1]',
+                                                    'props': {'indent': '-22.5pt',
+                                                              'marginLeft': '22.5pt',
+                                                              'bulletRaw': '<a:buFont '
+                                                                           'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                           'charset="0" '
+                                                                           'panose="020B0604020202020204" '
+                                                                           'pitchFamily="34" '
+                                                                           'typeface="Arial" '
+                                                                           '/><a:buChar '
+                                                                           'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                           'char="•" />',
+                                                              'font.latin': 'Arial',
+                                                              'size': '17pt',
+                                                              'color': '#20354A',
+                                                              'text': 'QSFP/Aurora links between '
+                                                                      'FPGAs'}}]},
+             'S10.Metrics.Value2': {'props': {'font': 'Arial',
+                                              'size': '22pt',
+                                              'color': '#DF973E',
+                                              'bold': 'true',
+                                              'align': 'left',
+                                              'name': 'S10.Metrics.Value2',
+                                              'x': '644.88pt',
+                                              'y': '483.84pt',
+                                              'width': '277.2pt',
+                                              'height': '26.64pt',
+                                              'fill': 'none',
+                                              'font.latin': 'Arial',
+                                              'line': 'none',
+                                              'margin': '0cm',
+                                              'autoFit': 'none'},
+                                    'paragraphs': [{'command': 'add',
+                                                    'parent': '{object}/paragraph[1]',
+                                                    'type': 'run',
+                                                    'props': {'font.latin': 'Arial',
+                                                              'size': '22pt',
+                                                              'bold': 'true',
+                                                              'color': '#DF973E',
+                                                              'text': '≈0.8~1.1 '}},
+                                                   {'command': 'add',
+                                                    'parent': '{object}/paragraph[1]',
+                                                    'type': 'run',
+                                                    'props': {'font.latin': 'Arial',
+                                                              'size': '22pt',
+                                                              'bold': 'true',
+                                                              'color': '#DF973E',
+                                                              'text': 'ms'}}]}}}
 
 
 def build_commands():
@@ -147,4 +341,7 @@ def build_commands():
             "and cropped only through PPT properties; all slide text/cells are editable."
         )},
     })
+    commands = apply_layout_edits(commands, LAYOUT_EDITS)
+    # Explicit title spacing and page-specific finishing objects.
+    commands.extend([{'command': 'set', 'path': '/slide[1]/shape[@name=S10.Title]', 'props': {'lineSpacing': '0.9x'}}])
     return commands

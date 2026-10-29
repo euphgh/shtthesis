@@ -396,10 +396,12 @@ PowerPoint桌面端尚未复核。
 图表格式、删除对象及新增箭头同步到Python；封面改为“硕士研究生中期答辩”，未来工作保留
 作者调整后的三项。未额外改写作者的英文表述或改变实验数据。
 
-- `scripts/midterm_pptx/manual_adjustments.py`保存按稳定对象名组织的可编辑属性和富文本。
-  后续修改已经覆盖的对象，应编辑此文件；原`slide_*.py`继续提供资产、基础结构和讲稿备注。
-- `scripts/midterm_pptx/manual_revision.py`执行覆盖、标题行距和图表标签样式，并添加出处。
-  `build_midterm_pptx.py`已接入该步骤，重新生成不依赖最终PPTX或其截图。
+- 每页的手动调整归入对应的`scripts/midterm_pptx/slide_01.py`至`slide_11.py`。
+  各文件的`LAYOUT_EDITS`集中列出本页最终文字、几何属性和富文本；它覆盖下方基础组件布局，
+  修改已调整的对象时直接编辑本页对应条目。脚注、图表标签设置和讲稿备注也由本页维护。
+- `common.py`仅保留通用的`apply_layout_edits`执行逻辑，不包含页面内容或按页分支。
+  `build_midterm_pptx.py`直接调用各页的`build_commands()`；已移除集中式
+  `manual_adjustments.py`与`manual_revision.py`。重新生成不依赖最终PPTX或其截图。
 - 文件中的页号沿用正文编号：0为目录，1–11对应最终稿第3–13页。封面文字同步在
   `restyle_midterm_frontmatter.py`中；合并仍使用`merge_midterm_pptx.py`。
 - 最终稿第6页的两组名称加上`Related work:`；第8页的`[1]`对应
@@ -411,3 +413,7 @@ PowerPoint桌面端尚未复核。
 新增出处区域外，其余页面像素一致。OfficeCLI仍报告原稿已有的10项启发式排版告警；
 对应页面的实际渲染未新增裁切或碰撞，未为消除告警擅自改变手动排版。未在PowerPoint
 桌面端复核。手动原稿备份位于`build/pptx/manual-sync/manual-original.pptx`。
+
+按页拆分后，已核对目录及11张正文页的OfficeCLI命令序列与拆分前完全一致，并重新生成、
+校验和渲染全部12页；预览与正式单页预览逐像素一致。本次只重构Python内容归属，
+不替换外观未变的正式PPTX。

@@ -1,11 +1,201 @@
 """Page 6: concise execution summary and a cropped global-pause illustration."""
 
-from .common import SlideAPI, THESIS, NAVY, TEAL, inches
+from .common import apply_layout_edits, SlideAPI, THESIS, NAVY, TEAL, inches
 
 TITLE = 'Pregress1:  Cycle-Accurate Execution and Global Pause'
 OUTPUT_STEM = "REMUS_Progress_Slide_6"
 PREVIEW_STEM = "midterm-progress-06"
 slide = SlideAPI(6)
+
+
+# Final reviewed layout for this page. These properties override the base
+# component layout below; edit revised text, geometry and rich text here.
+LAYOUT_EDITS = {'remove': ['S06.Execution.Bullet2', 'S06.Execution.Attribution', 'S06.Execution.Bullet1'],
+ 'objects': {'S06.Title': {'props': {'font': 'Arial',
+                                     'size': '30pt',
+                                     'color': '#183B56',
+                                     'bold': 'true',
+                                     'align': 'left',
+                                     'name': 'S06.Title',
+                                     'x': '25.2pt',
+                                     'y': '10.08pt',
+                                     'width': '910.08pt',
+                                     'height': '38.88pt',
+                                     'fill': 'none',
+                                     'font.latin': 'Arial',
+                                     'line': 'none',
+                                     'margin': '0cm',
+                                     'autoFit': 'none'},
+                           'paragraphs': [{'command': 'set',
+                                           'path': '{object}/paragraph[1]',
+                                           'props': {'font.latin': 'Arial',
+                                                     'size': '30pt',
+                                                     'bold': 'true',
+                                                     'color': '#183B56',
+                                                     'text': 'Pregress1:  Cycle-Accurate Execution '
+                                                             'and Global Pause'}}]},
+             'S06.Execution.Text1': {'props': {'font': 'Arial',
+                                               'size': '18pt',
+                                               'color': '#20354A',
+                                               'bold': 'false',
+                                               'align': 'left',
+                                               'name': 'S06.Execution.Text1',
+                                               'x': '424844emu',
+                                               'y': '146.16pt',
+                                               'width': '3642111emu',
+                                               'height': '43.2pt',
+                                               'fill': 'none',
+                                               'bulletRaw': '<a:buFont '
+                                                            'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                            'charset="0" '
+                                                            'panose="020B0604020202020204" '
+                                                            'pitchFamily="34" typeface="Arial" '
+                                                            '/><a:buChar '
+                                                            'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                            'char="•" />',
+                                               'font.latin': 'Arial',
+                                               'line': 'none',
+                                               'margin': '0cm',
+                                               'autoFit': 'none',
+                                               'indent': '-22.5pt',
+                                               'marginLeft': '22.5pt'},
+                                     'paragraphs': [{'command': 'set',
+                                                     'path': '{object}/paragraph[1]',
+                                                     'props': {'indent': '-22.5pt',
+                                                               'marginLeft': '22.5pt',
+                                                               'bulletRaw': '<a:buFont '
+                                                                            'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                            'charset="0" '
+                                                                            'panose="020B0604020202020204" '
+                                                                            'pitchFamily="34" '
+                                                                            'typeface="Arial" '
+                                                                            '/><a:buChar '
+                                                                            'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                            'char="•" />'}},
+                                                    {'command': 'add',
+                                                     'parent': '{object}/paragraph[1]',
+                                                     'type': 'run',
+                                                     'props': {'font.latin': 'Arial',
+                                                               'color': '#20354A',
+                                                               'text': 'Execution b'}},
+                                                    {'command': 'add',
+                                                     'parent': '{object}/paragraph[1]',
+                                                     'type': 'run',
+                                                     'props': {'font.latin': 'Arial',
+                                                               'size': '18pt',
+                                                               'color': '#20354A',
+                                                               'text': 'ased on DUOHUAFEN LI-TDM'}},
+                                                    {'command': 'add',
+                                                     'parent': '{object}/paragraph[1]',
+                                                     'type': 'run',
+                                                     'props': {'font.latin': 'Arial',
+                                                               'baseline': '30%',
+                                                               'color': '#20354A',
+                                                               'text': '[1]'}}]},
+             'S06.Execution.Text2': {'props': {'font': 'Arial',
+                                               'size': '18pt',
+                                               'color': '#20354A',
+                                               'bold': 'false',
+                                               'align': 'left',
+                                               'name': 'S06.Execution.Text2',
+                                               'x': '406556emu',
+                                               'y': '2589160emu',
+                                               'width': '3552795emu',
+                                               'height': '43.2pt',
+                                               'fill': 'none',
+                                               'bulletRaw': '<a:buFont '
+                                                            'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                            'charset="0" '
+                                                            'panose="020B0604020202020204" '
+                                                            'pitchFamily="34" typeface="Arial" '
+                                                            '/><a:buChar '
+                                                            'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                            'char="•" />',
+                                               'font.latin': 'Arial',
+                                               'line': 'none',
+                                               'margin': '0cm',
+                                               'autoFit': 'none',
+                                               'indent': '-22.5pt',
+                                               'marginLeft': '22.5pt'},
+                                     'paragraphs': [{'command': 'set',
+                                                     'path': '{object}/paragraph[1]',
+                                                     'props': {'indent': '-22.5pt',
+                                                               'marginLeft': '22.5pt',
+                                                               'bulletRaw': '<a:buFont '
+                                                                            'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                            'charset="0" '
+                                                                            'panose="020B0604020202020204" '
+                                                                            'pitchFamily="34" '
+                                                                            'typeface="Arial" '
+                                                                            '/><a:buChar '
+                                                                            'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                            'char="•" />',
+                                                               'font.latin': 'Arial',
+                                                               'size': '18pt',
+                                                               'color': '#20354A',
+                                                               'text': 'Optimized communication '
+                                                                       'flow'}}]},
+             'S06.Pause.Heading': {'props': {'y': '4028585emu'}},
+             'S06.Pause.Number1': {'props': {'y': '4760105emu'}},
+             'S06.Pause.Text1': {'props': {'y': '4750961emu'}},
+             'S06.Pause.Number2': {'props': {'y': '5272169emu'}},
+             'S06.Pause.Text2': {'props': {'y': '5263025emu'}},
+             'S06.Pause.Number3': {'props': {'y': '5784233emu'}},
+             'S06.Pause.Text3': {'props': {'y': '5775089emu'}},
+             'S06.Pause.Illustration': {'props': {'x': '324.72pt',
+                                                  'y': '1186107emu',
+                                                  'height': '5052713emu',
+                                                  'crop': '35.526,12.752,1.076,13.846'}},
+             'S06.Execution.Reduction': {'add': 'textbox',
+                                         'props': {'name': 'S06.Execution.Reduction',
+                                                   'x': '406556emu',
+                                                   'y': '249.12pt',
+                                                   'width': '3552795emu',
+                                                   'height': '43.2pt',
+                                                   'fill': 'none',
+                                                   'bulletRaw': '<a:buFont '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                'charset="0" '
+                                                                'panose="020B0604020202020204" '
+                                                                'pitchFamily="34" typeface="Arial" '
+                                                                '/><a:buChar '
+                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                'char="•" />',
+                                                   'color': '#20354A',
+                                                   'line': 'none',
+                                                   'margin': '0cm',
+                                                   'autoFit': 'none',
+                                                   'indent': '-22.5pt',
+                                                   'marginLeft': '22.5pt'},
+                                         'paragraphs': [{'command': 'set',
+                                                         'path': '{object}/paragraph[1]',
+                                                         'props': {'indent': '-22.5pt',
+                                                                   'marginLeft': '22.5pt',
+                                                                   'bulletRaw': '<a:buFont '
+                                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                                'charset="0" '
+                                                                                'panose="020B0604020202020204" '
+                                                                                'pitchFamily="34" '
+                                                                                'typeface="Arial" '
+                                                                                '/><a:buChar '
+                                                                                'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+                                                                                'char="•" />'}},
+                                                        {'command': 'add',
+                                                         'parent': '{object}/paragraph[1]',
+                                                         'type': 'run',
+                                                         'props': {'color': '#20354A',
+                                                                   'text': 'Reduce once'}},
+                                                        {'command': 'add',
+                                                         'parent': '{object}/paragraph[1]',
+                                                         'type': 'run',
+                                                         'props': {'color': '#20354A',
+                                                                   'text': ' '}},
+                                                        {'command': 'add',
+                                                         'parent': '{object}/paragraph[1]',
+                                                         'type': 'run',
+                                                         'props': {'color': '#20354A',
+                                                                   'text': 'data exchange  per '
+                                                                           'cycle'}}]}}}
 
 
 def build_commands():
@@ -73,25 +263,45 @@ def build_commands():
     commands.append({
         "command": "add", "parent": "/slide[1]", "type": "notes",
         "props": {"text": (
-            "REMUS builds on DUOHUAFEN's LI-TDM for cycle-accurate execution. "
-            "The first-stage receive and last-stage send are omitted to reduce "
-            "redundant communication; this is a protocol optimization, not a measured "
-            "percentage speedup. Keep these implementation details in the narration. "
-            "For global pause, the Host collects all receive-barrier acknowledgements "
-            "before sampling stable counters. Barrier acknowledgement alone is not "
-            "a valid global pause. In the illustrative example, B is at 41 and A at 42. "
-            "The common target is 43; configure two steps for B and one for A while "
-            "barriers remain held, then release B before A. LI-TDM dependencies still "
-            "apply. Finally check stopped/pause status and final counters on all "
-            "partitions. Equal logical cycles do not imply simultaneous physical "
-            "stops or prove all-state equivalence. Required propagation must finish. "
-            "The diagram's shared arrows are a simplified visual summary of Host "
-            "operations on each partition, not FPGA-to-FPGA forwarding of Host commands. "
-            "The cycle numbers are illustrative, not experimental data. "
-            "Source: src/midterm/progress/cycle_control.tex. The right illustration "
-            "is intentionally a raster crop per user request; the title, left text "
-            "and page number are editable. The three requested supplementary "
-            "callouts from the design reference are omitted."
+            "REMUS builds on DUOHUAFEN's LI-TDM for cycle-accurate execution. The first-stage "
+            'receive and last-stage send are omitted to reduce redundant communication; this is a '
+            'protocol optimization, not a measured percentage speedup. Keep these implementation '
+            'details in the narration. For global pause, the Host collects all receive-barrier '
+            'acknowledgements before sampling stable counters. Barrier acknowledgement alone is not'
+            ' a valid global pause. In the illustrative example, B is at 41 and A at 42. The common'
+            ' target is 43; configure two steps for B and one for A while barriers remain held, '
+            'then release B before A. LI-TDM dependencies still apply. Finally check stopped/pause '
+            'status and final counters on all partitions. Equal logical cycles do not imply '
+            'simultaneous physical stops or prove all-state equivalence. Required propagation must '
+            "finish. The diagram's shared arrows are a simplified visual summary of Host operations"
+            ' on each partition, not FPGA-to-FPGA forwarding of Host commands. The cycle numbers '
+            'are illustrative, not experimental data. Source: '
+            'src/midterm/progress/cycle_control.tex. The right illustration is intentionally a '
+            'raster crop per user request; the title, left text and page number are editable. The '
+            'three requested supplementary callouts from the design reference are omitted. '
+            'Reference [1]: G. Zhu. Cross-Node Deployment of Digital Logic Design for FPGA Cloud. '
+            "Master's thesis, ShanghaiTech University, 2024."
         )},
     })
+    commands = apply_layout_edits(commands, LAYOUT_EDITS)
+    # Explicit title spacing and page-specific finishing objects.
+    commands.extend([{'command': 'set', 'path': '/slide[1]/shape[@name=S06.Title]', 'props': {'lineSpacing': '0.9x'}},
+     {'command': 'add',
+      'parent': '/slide[1]',
+      'type': 'shape',
+      'props': {'name': 'S06.Reference1',
+                'x': '0.400000in',
+                'y': '7.060000in',
+                'width': '12.150000in',
+                'height': '0.280000in',
+                'fill': 'none',
+                'line': 'none',
+                'shadow': 'none',
+                'font': 'Arial',
+                'size': '10',
+                'color': '607184',
+                'margin': '0pt',
+                'autoFit': 'none',
+                'text': '[1] G. Zhu. Cross-Node Deployment of Digital Logic Design for FPGA Cloud. '
+                        "Master's thesis, ShanghaiTech University, 2024."}}])
     return commands

@@ -4,6 +4,7 @@ SlideAPI names objects by presentation page while targeting slide[1] in each
 standalone PPTX. These helpers do not run OfficeCLI or write presentation files.
 """
 
+from copy import deepcopy
 from pathlib import Path
 
 THESIS = Path(__file__).resolve().parents[2]
@@ -113,3 +114,48 @@ class SlideAPI:
             "type": "connector",
             "props": {"name": f"{self.prefix}.{name}", "shape": "straight", **props},
         }
+
+
+def apply_layout_edits(commands, edits):
+    """Apply stable-name deltas after the original page has been constructed.
+
+    Rich text is rebuilt through OfficeCLI paragraph/run commands. Only the
+    paragraph container is reset with raw-set; this avoids inheriting obsolete
+    bullets and preserves superscript citations, line breaks and mixed weights.
+    """
+    commands = deepcopy(commands)
+    kinds = {
+        c.get("props", {}).get("name"): c.get("type", "shape")
+        for c in commands if c.get("props", {}).get("name")
+    }
+
+    def path_for(name, kind=None):
+        kind = kind or kinds.get(name, "shape")
+        kind = kind if kind in ("picture", "chart", "table", "connector") else "shape"
+        return f"/slide[1]/{kind}[@name={name}]"
+
+    for name in edits.get("remove", []):
+        commands.append({"command": "remove", "path": path_for(name)})
+    for name, edit in edits.get("objects", {}).items():
+        path = path_for(name, edit.get("add"))
+        props = deepcopy(edit["props"])
+        if "add" in edit:
+            commands.append({"command": "add", "parent": "/slide[1]",
+                             "type": edit["add"], "props": props})
+        if "paragraphs" in edit:
+            body = f"//p:sp[p:nvSpPr/p:cNvPr[@name='{name}']]/p:txBody"
+            commands.extend([
+                {"command": "raw-set", "part": "/slide[1]", "xpath": body + "/a:p",
+                 "action": "remove"},
+                {"command": "raw-set", "part": "/slide[1]", "xpath": body,
+                 "action": "append", "xml": "<a:p/>"},
+            ])
+        commands.append({"command": "set", "path": path, "props": props})
+        for child in edit.get("paragraphs", []):
+            cmd = deepcopy(child)
+            for key in ("path", "parent"):
+                if key in cmd:
+                    cmd[key] = cmd[key].replace("{object}", path)
+            commands.append(cmd)
+
+    return commands

@@ -1,11 +1,70 @@
 """Page 11: future work, with compact numbered headings and editable prose."""
 
-from .common import SlideAPI, NAVY, TEAL
+from .common import apply_layout_edits, SlideAPI, NAVY, TEAL
 
 TITLE = "11. Future Work"
 OUTPUT_STEM = "REMUS_Future_Work_Slide_11"
 PREVIEW_STEM = "midterm-future-work-11"
 slide = SlideAPI(11)
+
+
+# Final reviewed layout for this page. These properties override the base
+# component layout below; edit revised text, geometry and rich text here.
+LAYOUT_EDITS = {'remove': ['S11.Item3.Body', 'S11.Item2.Separator', 'S11.Item3.Number', 'S11.Item3.Heading'],
+ 'objects': {'S11.Item2.Body': {'props': {'font': 'Arial',
+                                          'size': '18pt',
+                                          'color': '#20354A',
+                                          'bold': 'false',
+                                          'align': 'left',
+                                          'name': 'S11.Item2.Body',
+                                          'x': '399.6pt',
+                                          'y': '211.68pt',
+                                          'width': '535.68pt',
+                                          'height': '666528emu',
+                                          'fill': 'none',
+                                          'font.latin': 'Arial',
+                                          'line': 'none',
+                                          'margin': '0cm',
+                                          'autoFit': 'none',
+                                          'lineSpacing': '1.25x',
+                                          'spaceBefore': '0pt',
+                                          'spaceAfter': '0pt'},
+                                'paragraphs': [{'command': 'set',
+                                                'path': '{object}/paragraph[1]',
+                                                'props': {'lineSpacing': '1.25x',
+                                                          'spaceBefore': '0pt',
+                                                          'spaceAfter': '0pt',
+                                                          'font.latin': 'Arial',
+                                                          'size': '18pt',
+                                                          'color': '#20354A',
+                                                          'text': 'Analyze execution and '
+                                                                  'communication overheads on four '
+                                                                  'FPGAs.'}}]},
+             'S11.Item3.Separator': {'props': {'y': '3609067emu'}},
+             'S11.Item4.Number': {'props': {'font': 'Arial',
+                                            'size': '22pt',
+                                            'color': '#008C95',
+                                            'bold': 'true',
+                                            'align': 'left',
+                                            'name': 'S11.Item4.Number',
+                                            'x': '34.56pt',
+                                            'y': '3892531emu',
+                                            'width': '27.36pt',
+                                            'height': '34.56pt',
+                                            'fill': 'none',
+                                            'font.latin': 'Arial',
+                                            'line': 'none',
+                                            'margin': '0cm',
+                                            'autoFit': 'none'},
+                                  'paragraphs': [{'command': 'set',
+                                                  'path': '{object}/paragraph[1]',
+                                                  'props': {'font.latin': 'Arial',
+                                                            'size': '22pt',
+                                                            'bold': 'true',
+                                                            'color': '#008C95',
+                                                            'text': '3.'}}]},
+             'S11.Item4.Heading': {'props': {'y': '3892531emu'}},
+             'S11.Item4.Body': {'props': {'y': '3874243emu'}}}}
 
 
 def build_commands():
@@ -53,25 +112,10 @@ def build_commands():
     commands.append({
         "command": "add", "parent": "/slide[1]", "type": "notes",
         "props": {"text": (
-            "This page combines the remaining problems with the work that addresses "
-            "them; it does not repeat a separate problem list. First complete Fabric "
-            "board-level integration and validation, then assemble a four-FPGA "
-            "emulation system. That platform will support analysis of execution and "
-            "communication overheads. Use the measurements to guide runtime changes, "
-            "including interrupt-driven control to reduce Fabric polling overhead. "
-            "Optimize partitioning for multiple resource types and communication cost, "
-            "then evaluate whether those changes improve actual emulation performance. "
-            "Do not promise a performance gain before the experiments. These technical "
-            "activities may iterate rather than forming a strict one-pass sequence. "
-            "Finally consolidate experimental results and complete the thesis. "
-            "Fabric board validation, four-FPGA deployment and interrupt-driven control "
-            "are future work, not completed results. No defense date is implied. "
-            "Sources: src/midterm/problems.tex and src/midterm/next_plan.tex; wording "
-            "and ordering follow the user's approved four-item plan. Design reference: "
-            "figure/presentation-reference/midterm-future-work-11-v1.png. The user "
-            "requested smaller 1., 2., 3., 4. numbering at the heading font size, "
-            "replacing the large 01–04 in that image. All visible objects are native "
-            "editable PowerPoint shapes, not an embedded design screenshot."
+            "The author's revised plan contains three items: Fabric board-level integration and validation followed by a four-FPGA system; execution and communication overhead analysis on that system; consolidation of results and thesis writing. These are future work. The separate partitioning-optimization item and interrupt-driven-control sentence were removed in the author's 2026-10-29 revision."
         )},
     })
+    commands = apply_layout_edits(commands, LAYOUT_EDITS)
+    # Explicit title spacing and page-specific finishing objects.
+    commands.extend([{'command': 'set', 'path': '/slide[1]/shape[@name=S11.Title]', 'props': {'lineSpacing': '0.9x'}}])
     return commands
