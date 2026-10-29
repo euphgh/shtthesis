@@ -4,7 +4,9 @@ Run outside the sandbox, as required for all OfficeCLI invocations. The source
 is copied into build/pptx before editing; text, logos and geometry are retained.
 """
 
+import argparse
 import json
+from midterm_pptx.theme import DEFAULT_THEME, THEMES, RED_MAP
 from pathlib import Path
 import shutil
 import subprocess
@@ -22,14 +24,20 @@ NS = {"a": "http://schemas.openxmlformats.org/drawingml/2006/main"}
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--theme", choices=tuple(THEMES), default=DEFAULT_THEME)
+    args = parser.parse_args()
+    palette = THEMES[args.theme]
     WORK.mkdir(parents=True, exist_ok=True)
     if not BACKUP.exists():
         shutil.copy2(SOURCE, BACKUP)
     shutil.copy2(BACKUP, OUTPUT)
-    colors = dict(dk1="20354A", dk2="183B56", lt1="FFFFFF", lt2="F1F5F8",
-                  accent1="183B56", accent2="008C95", accent3="DF973E",
-                  accent4="EAF4F3", accent5="607184", accent6="F1F5F8",
-                  hlink="008C95", folHlink="183B56")
+    colors = dict(dk1=palette["body"], dk2=palette["outline"],
+                  lt1="FFFFFF", lt2=palette["neutral"],
+                  accent1=palette["accent1"], accent2=palette["accent2"],
+                  accent3=palette["accent3"], accent4=palette["surface"],
+                  accent5=palette["muted"], accent6=palette["neutral"],
+                  hlink=palette["accent2"], folHlink=palette["title"])
     props = {f"theme.color.{key}": val for key, val in colors.items()}
     props.update({"theme.font.major.latin": "Arial", "theme.font.minor.latin": "Arial"})
     commands = [{"command": "set", "path": "/", "props": props}]
@@ -45,22 +53,39 @@ def main():
                 commands.append({"command": "raw-set", "part": "/" + part,
                                  "xpath": "//a:latin", "action": "setattr",
                                  "xml": "typeface=Arial"})
-            if any(e.get("val") == "C00000" for e in tree.findall(".//a:srgbClr", NS)):
-                commands.append({"command": "raw-set", "part": "/" + part,
-                                 "xpath": "//a:srgbClr[@val='C00000']",
-                                 "action": "setattr", "xml": "val=183B56"})
+            # The proposal/legacy template contains explicit RGB runs, not just
+            # theme slots. Convert the known originals while keeping logos intact.
+            original_colors = {
+                "C00000": palette["title"],
+                "183B56": palette["title"],
+                "008C95": palette["rule"],
+                "DF973E": palette["accent3"],
+                "20354A": palette["body"],
+                "607184": palette["muted"],
+            }
+            original_colors.update({
+                old: target for old, target in RED_MAP.items()
+                if old not in original_colors and args.theme == "academic-red"
+            })
+            present = {e.get("val") for e in tree.findall(".//a:srgbClr", NS)}
+            for old_color, new_color in original_colors.items():
+                if old_color in present and old_color != new_color:
+                    commands.append({
+                        "command": "raw-set", "part": "/" + part,
+                        "xpath": f"//a:srgbClr[@val='{old_color}']",
+                        "action": "setattr", "xml": f"val={new_color}"})
     # The old connectors contain inherited color transforms; explicit teal
     # ensures identical rendering on the cover and contents layouts.
     for layout in (1, 2):
         commands.append({"command": "raw-set",
                          "part": f"/ppt/slideLayouts/slideLayout{layout}.xml",
                          "xpath": "//p:cxnSp/p:spPr/a:ln", "action": "replace",
-                         "xml": '<a:ln w="19050"><a:solidFill><a:srgbClr val="008C95"/></a:solidFill></a:ln>'})
+                         "xml": '<a:ln w="19050"><a:solidFill><a:srgbClr val="' + palette["rule"] + '"/></a:solidFill></a:ln>'})
     commands.append({"command": "set", "path": "/slide[1]/shape[@id=10]",
-                     "props": {"color": "183B56", "text": "硕士研究生中期答辩"}})
+                     "props": {"color": palette["title"], "text": "硕士研究生中期答辩"}})
     for page, ident in ((1, 5), (3, 4)):
         commands.append({"command": "set", "path": f"/slide[{page}]/shape[@id={ident}]",
-                         "props": {"color": "607184"}})
+                         "props": {"color": palette["muted"]}})
     # Raw XML loading drops standalone whitespace runs unless xml:space is
     # explicit. Restore their original values after the color/font edits.
     with ZipFile(BACKUP) as archive:
