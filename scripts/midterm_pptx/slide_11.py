@@ -2,7 +2,7 @@
 
 from .common import SlideAPI, NAVY, TEAL
 
-TITLE = "Future Work"
+TITLE = "11. Future Work"
 OUTPUT_STEM = "REMUS_Future_Work_Slide_11"
 PREVIEW_STEM = "midterm-future-work-11"
 slide = SlideAPI(11)
