@@ -52,6 +52,12 @@ def recolor_commands(commands, theme=DEFAULT_THEME):
             return [walk(v, owner, key) for v in obj]
         if isinstance(obj, dict):
             name = obj.get("name", owner)
+            # Layout edits can issue standalone paragraph/run commands. They
+            # have no props.name; recover ownership from their OfficeCLI path.
+            if not name and isinstance(obj.get("path"), str):
+                found = re.search(r"\\[@name=(S\\d{2}\\.[^\\]]+)\\]", obj["path"])
+                if found:
+                    name = found.group(1)
             return {k: walk(v, name, k) for k, v in obj.items()}
         if not isinstance(obj, str) or key in SKIP_KEYS:
             return obj
