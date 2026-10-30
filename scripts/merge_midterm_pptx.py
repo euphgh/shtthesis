@@ -249,7 +249,7 @@ def merge(sources, pages, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--input-dir", type=Path, default=ROOT / "pptx/midterm")
+    parser.add_argument("--input-dir", type=Path, default=ROOT / "build/pptx/midterm/single")
     parser.add_argument(
         "--output", type=Path, default=ROOT / "pptx/midterm/REMUS_Midterm_Final.pptx"
     )
@@ -280,13 +280,13 @@ def main():
     sources = [
         Source((args.input_dir / name).resolve(), i) for i, name in enumerate(names, 1)
     ]
-    if len(sources[0].slides) != 3 or any(len(s.slides) != 1 for s in sources[1:]):
+    if len(sources[0].slides) != 2 or any(len(s.slides) != 1 for s in sources[1:]):
         parser.error(
-            "Expected three frontmatter slides and one slide in each remaining source."
+            "Expected two frontmatter slides and one slide in each remaining source."
         )
     if any(s.size != sources[0].size for s in sources):
         parser.error("Source slide sizes differ; refusing to stretch slides.")
-    pages = [(sources[0], 1)] + [(s, 1) for s in sources[1:]] + [(sources[0], 3)]
+    pages = [(sources[0], 1)] + [(s, 1) for s in sources[1:]] + [(sources[0], 2)]
     output = args.output.resolve()
     if output in [s.path for s in sources] or (
         output.exists() and any(os.path.samefile(output, s.path) for s in sources)

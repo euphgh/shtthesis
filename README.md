@@ -20,6 +20,15 @@
 % ...
 ```
 
+## REMUS中期答辩PPT
+
+在本目录运行`make pptx`，或在REMUS仓库根目录运行`make -C thesis pptx`。
+命令从逐页Python与模板源生成红色主题的14页最终稿，校验并导出预览。
+
+- 最终文件：`pptx/midterm/REMUS_Midterm_Final.pptx`（唯一纳入Git的PPTX）。
+- 单页、预览和日志：`build/pptx/midterm/`（不纳入Git）。
+- 修改方式、依赖和检查：[PPT构建与维护](docs/pptx-implementation-plan.md)。
+
 ## Get the Template
 - Stable version: Install or download with any of following methods
   - CTAN (**highly recommended**): [`shtthesis`](https://ctan.org/pkg/shtthesis) package on CTAN can be installed via `tlmgr` for TeX Live and MacTeX users:

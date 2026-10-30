@@ -22,12 +22,12 @@ class ThemeMappingTest(unittest.TestCase):
                  {"fill": "183B56"}, {"fill": "008C95"}]}},
             {"command": "add", "type": "picture",
              "props": {"name": "S06.Pause.Illustration",
-                       "src": "figure/presentation-reference/midterm-progress-06-v1.png"}},
+                       "src": "figure/midterm-pause-timing.png"}},
         ]
 
-    def test_default_and_both_palettes(self):
+    def test_only_academic_red(self):
         self.assertEqual(DEFAULT_THEME, "academic-red")
-        self.assertIn("navy-teal", THEMES)
+        self.assertEqual(set(THEMES), {"academic-red"})
 
     def test_red_theme_main_title_and_rule(self):
         result = recolor_commands(self.original, "academic-red")
@@ -50,9 +50,8 @@ class ThemeMappingTest(unittest.TestCase):
                          "#C00000")
 
     def test_legacy_and_source_not_mutated(self):
-        result = recolor_commands(self.original, "navy-teal")
-        self.assertEqual(result, self.original)
-        self.assertIsNot(result, self.original)
+        with self.assertRaises(ValueError):
+            recolor_commands(self.original, "navy-teal")
         recolor_commands(self.original, "academic-red")
         self.assertEqual(self.original[0]["props"]["color"], "#183B56")
 

@@ -1,9 +1,8 @@
 """Switch REMUS slide colors without modifying photographs or raster diagrams.
 
 Recolor commands AFTER layout edits, so even hard-coded rich text and charts
-obey the chosen palette. Keep the original blue theme for comparison.
+obey the chosen palette. Only Academic Red is supported; legacy RGB values are mapping inputs.
 """
-from copy import deepcopy
 import re
 
 DEFAULT_THEME = "academic-red"
@@ -12,10 +11,7 @@ THEMES = {
                          outline="333333", accent1="C00000", accent2="70AD47",
                          accent3="ED7D31", surface="F1F7EC", neutral="F5F5F5",
                          muted="898989", background="FFFFFF"),
-    "navy-teal": dict(title="183B56", rule="008C95", body="20354A",
-                      outline="183B56", accent1="183B56", accent2="008C95",
-                      accent3="DF973E", surface="EAF4F3", neutral="F1F5F8",
-                      muted="607184", background="FFFFFF"),
+
 }
 
 # Legacy-to-academic-red mapping. Structural navy becomes dark gray; only
@@ -44,8 +40,6 @@ def recolor_commands(commands, theme=DEFAULT_THEME):
     """Transform editable OfficeCLI commands, preserving raster picture bytes."""
     if theme not in THEMES:
         raise ValueError(f"Unknown theme: {theme}")
-    if theme == "navy-teal":
-        return deepcopy(commands)
 
     def walk(obj, owner="", key=""):
         if isinstance(obj, list):

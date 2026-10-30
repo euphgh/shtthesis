@@ -236,7 +236,7 @@ def main():
         target = ROOT/"pptx/figures"/pptx.name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(pptx, target)
-        shutil.copy2(preview, ROOT/"figure/presentation-preview"/preview.name)
+        shutil.copy2(preview, ROOT/"figure"/preview.name)
     print(pptx)
 
 

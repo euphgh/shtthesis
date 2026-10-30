@@ -12,3 +12,7 @@ proposal-with-cover.pdf: resource/proposal-cover.pdf proposal.pdf
 
 clean:
 	latexmk -CA
+.PHONY: pptx
+PYTHON ?= python3
+pptx:
+	$(PYTHON) scripts/build_midterm_pptx.py

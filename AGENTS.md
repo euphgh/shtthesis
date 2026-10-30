@@ -21,7 +21,7 @@
 | `docs/thesis-writing-guidelines.md` | 中期与最终学位论文共用的研究定位、命名和写作指导 |
 | `docs/midterm-presentation-outline.md` | 中期答辩逐页内容、图示与工作状态规划 |
 | `docs/presentation-style-guide.md` | 中期及最终答辩共用的颜色、Arial字体、布局和质量规范 |
-| `docs/pptx-implementation-plan.md` | 设计参考与资产索引、前五页OfficeCLI实施计划和验证边界 |
+| `docs/pptx-implementation-plan.md` | 统一构建入口、源码与产物边界、验证方法 |
 | `reference.bib` | BibLaTeX文献数据库 |
 | `figure/` | 论文与PPT共用的插图资产，统一存放独立PNG及其他图像（包括部分SVG原稿） |
 | `pptx/` | 答辩PPTX文件；共用插图从`figure/`复用 |
@@ -74,12 +74,13 @@ make clean
 
 ## PPT与图像资产
 
-- 制作中期PPT前先阅读`docs/midterm-presentation-outline.md`（逐页内容）和`docs/presentation-style-guide.md`（统一视觉规范）；两者分别管理内容与样式，不以开题PPT的旧红橙配色覆盖新规范。
-- 将设计图转为可编辑PPTX时，接着阅读[OfficeCLI制作计划](docs/pptx-implementation-plan.md)，按页复用`figure/ppt-assets/`中的组件，并将渲染预览与`figure/presentation-reference/`中的原始设计参考分开。
-- **OfficeCLI执行与预览**：所有OfficeCLI命令（包括读取、编辑、校验和截图）必须在沙箱外运行；由脚本调用时，脚本也应在沙箱外执行。PPTX预览统一使用`officecli view <file> screenshot --page N -o <output.png>`导出PNG。当前沙箱外PATH若找不到命令，使用`/home/hgh/.local/bin/officecli`。导出与交付前执行`save`或`close`，预览PNG存放于`figure/presentation-preview/`。
+- 制作中期PPT前先阅读`docs/midterm-presentation-outline.md`（逐页内容）和`docs/presentation-style-guide.md`（统一视觉规范）；两者分别管理内容与样式，当前仅维护Academic Red红橙绿主题。
+- 构建与维护PPT时阅读[构建说明](docs/pptx-implementation-plan.md)。在REMUS仓库根目录执行`make -C thesis pptx`，从逐页Python和封面/感谢页XML源生成最终稿。
+- **OfficeCLI执行与预览**：所有OfficeCLI命令（包括读取、编辑、校验和截图）必须在沙箱外运行；由脚本调用时，脚本也应在沙箱外执行。PPTX预览统一使用`officecli view <file> screenshot --page N -o <output.png>`导出PNG。当前沙箱外PATH若找不到命令，使用`/home/hgh/.local/bin/officecli`。导出与交付前执行`save`或`close`，预览PNG与单页PPTX统一存放于忽略Git的`build/pptx/`。
 
+- Git只跟踪`pptx/midterm/REMUS_Midterm_Final.pptx`这一个最终演示稿；单页PPTX、预览、检查清单、旧配色和设计草稿不跟踪。逐页Python、原始图片资产及封面/感谢页OpenXML模板源继续跟踪。
 - `pptx/`存放英文答辩PPTX；FPGA芯片、波形显示器、数据库快照等独立PNG资产统一存放在`figure/`，供论文与PPT复用，不在`pptx/`保留重复副本。PPTX内部嵌入的图片保留，以保证演示文稿可独立打开。
-- **新PPT统一风格**：延续开题的16:9、白底和低文字密度，但新主题采用**深蓝标题（#183B56）、青绿分隔线（#008C95）、琥珀橙强调（#DF973E）**。英文标题、正文和图表标签统一Arial；详见`docs/presentation-style-guide.md`。
+- **新PPT统一风格**：延续开题的16:9、白底和低文字密度，采用**红色标题（#C00000）、橙棕分隔线（#C55A11）、橙色强调（#ED7D31）、绿色辅助（#70AD47）**。英文标题、正文和图表标签统一Arial；详见`docs/presentation-style-guide.md`。
 - PPT中的标题、说明、图形框、箭头等尽量保持可编辑；复杂插图可作为独立的高分辨率图片嵌入。已有插图应优先复用，避免同一种符号在不同页出现不一致的样式。
 - 不把生成的整页图片当成唯一PPT内容来代替可编辑文件；交付PPTX时尽量同时检查渲染预览、文字溢出、图片透明背景、对齐与长宽比。
 - 图表和测试结果只能依据已有数据绘制；示意图应与实际系统架构或明确的规划相符。

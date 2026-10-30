@@ -1,5 +1,7 @@
 """Page 6: concise execution summary and a cropped global-pause illustration."""
 
+import struct
+
 from .common import apply_layout_edits, SlideAPI, THESIS, NAVY, TEAL, inches
 
 TITLE = 'Pregress1:  Cycle-Accurate Execution and Global Pause'
@@ -249,7 +251,7 @@ def build_commands():
         "command": "add", "parent": "/slide[1]", "type": "picture",
         "props": {
             "name": "S06.Pause.Illustration",
-            "src": str(THESIS / "figure/presentation-reference/midterm-progress-06-v1.png"),
+            "src": str(THESIS / "figure/midterm-pause-timing.png"),
             "x": inches(4.50), "y": inches(1.12),
             "width": inches(width), "height": inches(height),
             "crop": ",".join(f"{value:.6f}" for value in crop),
@@ -284,6 +286,24 @@ def build_commands():
         )},
     })
     commands = apply_layout_edits(commands, LAYOUT_EDITS)
+    # Place the current author-provided diagram after the manual crop overrides.
+    diagram = THESIS / "figure/midterm-pause-timing.png"
+    with diagram.open("rb") as stream:
+        header = stream.read(24)
+    if header[:8] != bytes.fromhex("89504e470d0a1a0a"):
+        raise ValueError(f"Invalid PNG: {diagram}")
+    sw, sh = struct.unpack(">II", header[16:24])
+    if not sw or not sh:
+        raise ValueError(f"Invalid PNG dimensions: {diagram}")
+    width = min(8.48, 5.84 * sw / sh)
+    height = width * sh / sw
+    commands.append({"command": "set",
+                     "path": "/slide[1]/picture[@name=S06.Pause.Illustration]",
+                     "props": {"crop": "0,0,0,0",
+                               "x": inches(4.50 + (8.48 - width) / 2),
+                               "y": inches(1.12 + (5.84 - height) / 2),
+                               "width": inches(width), "height": inches(height)}})
+
     # Explicit title spacing and page-specific finishing objects.
     commands.extend([{'command': 'set', 'path': '/slide[1]/shape[@name=S06.Title]', 'props': {'lineSpacing': '0.9x'}},
      {'command': 'add',

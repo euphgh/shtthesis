@@ -22,7 +22,7 @@ From `thesis/`, run **outside the sandbox**, as required by `AGENTS.md`:
 The script writes the PPTX, PNG preview, OfficeCLI batch and check reports to
 `build/pptx/fpga-rtl-workflow/`. Inspect the preview before using `--publish`,
 which rebuilds and copies the checked PPTX here and the PNG to
-`figure/presentation-preview/fpga-rtl-workflow.png`.
+`figure/fpga-rtl-workflow.png`.
 
 The two reused illustrations remain raster assets; this is not an all-vector
 figure. For paper placement, check the labels at the actual printed width.
@@ -50,7 +50,9 @@ Run outside the sandbox from `thesis/`:
 
 Review `build/pptx/checkpoint-replay/checkpoint-and-replay.png` and its check
 reports before using `--publish`. The published preview is
-`figure/presentation-preview/checkpoint-and-replay.png`. The original PNG and
+`figure/checkpoint-and-replay.png`. The original PNG and
 the report's existing figure reference are not replaced by this command.
 Native drawing helpers are imported from `scripts/build_fpga_rtl_workflow.py`;
 checkpoint-specific layout and components belong to the new script.
+
+These figure PPTXs are local build products and are not tracked by Git. Their Python sources and the two PNGs used by the thesis remain tracked.

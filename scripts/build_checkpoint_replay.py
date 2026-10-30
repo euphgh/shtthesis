@@ -243,7 +243,7 @@ def main():
         raise RuntimeError("Figure checks failed; inspect reports and preview.")
     if args.publish:
         shutil.copy2(pptx, ROOT/"pptx/figures"/pptx.name)
-        shutil.copy2(preview, ROOT/"figure/presentation-preview"/preview.name)
+        shutil.copy2(preview, ROOT/"figure"/preview.name)
     print(pptx)
 
 

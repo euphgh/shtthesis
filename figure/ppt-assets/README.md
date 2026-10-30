@@ -17,8 +17,8 @@ The assets are intended to be reused as standalone illustrations, with arrows, m
 | `fabric-topology.png` | FPGA fabric interconnection |
 | `circuit-partitioning.png` | Automated partitioning |
 
-The ten top-level PNGs now use the **Academic Red illustration palette**, matching `presentation-preview/REMUS_Midterm_Academic_Red/` and `scripts/midterm_pptx/theme.py`: dark gray `#333333` structure, green `#70AD47` auxiliary marks, orange `#ED7D31` emphasis, and neutral light gray/white surfaces. Red is reserved for slide titles, not the icon outlines. Original PNGs are preserved in `navy-teal/`. Existing slide scripts continue to reference the top-level filenames. Existing PPTX files retain their embedded images until rebuilt.
-See the [OfficeCLI implementation plan](../../docs/pptx-implementation-plan.md) for slide-by-slide placement and the [design reference index](../presentation-reference/README.md) for intended layouts.
+The ten top-level PNGs now use the **Academic Red illustration palette**, matching `scripts/midterm_pptx/theme.py`: dark gray `#333333` structure, green `#70AD47` auxiliary marks, orange `#ED7D31` emphasis, and neutral light gray/white surfaces. Red is reserved for slide titles, not the icon outlines. The optional local `navy-teal/` backup is ignored by Git and is not a build input. Existing slide scripts continue to reference the top-level filenames. Existing PPTX files retain their embedded images until rebuilt.
+See the [OfficeCLI implementation plan](../../docs/pptx-implementation-plan.md) for slide-by-slide placement for source and build-output locations.
 
 ## Placement and reuse
 
@@ -28,7 +28,7 @@ See the [OfficeCLI implementation plan](../../docs/pptx-implementation-plan.md) 
 - `state-capture.png` is a conceptual snapshot illustration, not a scan-chain or DMA architecture diagram.
 - Build multi-FPGA arrangements by repeating `fpga-chip.png` and adding editable links. A four-chip illustration does not establish a completed four-FPGA experiment.
 - The originally proposed `runtime-control` and `host-interface` assets are not included. They can be drawn with editable PowerPoint shapes and labels.
-- Preserve the original PNGs in `navy-teal/`. Put future rendered slide previews in `figure/presentation-preview/`, separate from the component assets and design references.
+- Keep reusable input assets tracked here. Rendered slide previews belong in ignored `build/pptx/`; historical reference images are not build inputs.
 
 ## Recoloring record
 

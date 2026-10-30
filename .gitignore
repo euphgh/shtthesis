@@ -51,3 +51,15 @@ Fonts/LICENSE-Source.txt
 
 # ignore Python import caches from presentation scripts
 __pycache__/
+
+# Presentation deliverables: track only the current red final deck.
+*.pptx
+!/pptx/midterm/REMUS_Midterm_Final.pptx
+/pptx/**/*.manifest.json
+/figure/presentation-preview/
+/figure/presentation-reference/
+/figure/ppt-assets/navy-teal/
+
+# Editable frontmatter source is unpacked OpenXML, not a generated PPTX.
+!/scripts/midterm_pptx/frontmatter/**/*.xml
+!/scripts/midterm_pptx/frontmatter/[[]Content_Types].xml
