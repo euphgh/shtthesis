@@ -1,5 +1,7 @@
 # 双分区EMU_SYSTEM综合资源结果
 
+> 本文件对应**自适应划分批次**（2026-10-27，10份双分区报告）。网表划分后的综合结果见[网表划分EMU_SYSTEM综合资源结果](netlist-synthesis-utilization.md)；两批目录命名与数值均不同，不可混用。
+
 ## 1. 采集范围与来源
 
 - 服务器：`serve41`；远端仓库：`/home/huguanghui/remu`。

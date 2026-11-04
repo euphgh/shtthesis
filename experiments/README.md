@@ -2,6 +2,11 @@
 
 本目录集中保存REMUS中期报告及后续论文的实测材料和实验图片，与报告正文、大纲及[实验需求清单](../src/midterm/experiment_data_checklist.md)分开维护。只有已采集结果写入结果文件，计划与待补项明确标记，不以占位值充当实测。
 
+当前划分数据分**两个算法批次**维护，目录名相同但算法与数值均不同，不可混用：
+
+- **自适应划分批次**（2026-10-27）：下表中未加“网表”前缀的文件，共15组。
+- **网表划分批次**（2026-11-04）：2026-10-28起serve41改用基于网表的划分后重新生成的RTL、综合与划分结果，见下文“网表划分批次”一节。
+
 ## 当前内容
 
 | 文件/目录 | 内容 |
@@ -30,6 +35,21 @@
 同日另补单Part参考：在相同42080逻辑周期保存检查点，与双Part全局暂停检查点比较，图中四个对应寄存器值一致，串口可见输出前缀也相同。该案例单独记录层次展开、重新打包后的名称对应，与软件恢复重放案例互补，不混同为全状态或全周期等价证明。
 
 随后作者进一步确认已完成单板、双板上板检查点与相应Cosim检查点的比较，结果一致，具体板级周期、比较范围和原始记录继续归档。当前中期正文已将Cosim同周期对照写入1.2、非零检查点软件重放写入1.3、板级检查点对照写入1.6，并同步阶段总结；不将Cosim图像用作物理板级证据。
+
+## 网表划分批次
+
+2026-10-28起`serve41`上的RTL与部分综合改为**基于网表的划分**（`transform/src/partition/decomposer.cc`中自适应展开阈值分支被关闭），并重新生成了划分、RTL与综合结果。该批次与上面的自适应批次是两组独立数据，目录名相同、数值不同，引用时须先确认批次。
+
+| 文件/目录 | 内容 |
+| --- | --- |
+| [netlist-partitioning.md](netlist-partitioning.md) | 网表划分下15组结果：图规模、求解时间、Cut Size、km1、N_cut、阶段数、标量负载，以及与自适应批次的对照 |
+| [raw/netlist-partitioning-2026-11-04.md](raw/netlist-partitioning-2026-11-04.md) | 15份summary原文、mtime与SHA-256 |
+| [netlist-scan-state.md](netlist-scan-state.md) | 网表划分RTL的45个Part扫描寄存器/存储器位数及合计 |
+| [raw/netlist-scan-state-2026-11-04.md](raw/netlist-scan-state-2026-11-04.md) | 45份`EmuScanCtrl`参数摘录、行号、十六进制原值与完整RTL SHA-256 |
+| [netlist-synthesis-utilization.md](netlist-synthesis-utilization.md) | 网表划分EMU_SYSTEM综合资源：40份报告覆盖2/3/4分区，缺5个Part |
+| [raw/netlist-synthesis-utilization-2026-11-04.md](raw/netlist-synthesis-utilization-2026-11-04.md) | 40份Vivado综合报告全文及SHA-256 |
+
+采集时间统一为`2026-11-04T04:18:18Z`，采集时远端checkout为`vivado2024.2` / `828600a0`。该批次各配置的生成时间分散在2026-10-28至2026-11-04之间，不是同一次批量运行；`picorv32_part2`的综合报告早于其当前RTL，引用时须注意时间差。
 
 ## 目录约定
 
